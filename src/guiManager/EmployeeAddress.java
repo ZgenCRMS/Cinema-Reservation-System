@@ -323,6 +323,11 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Add");
         jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel28.add(jButton1);
 
         jButton2.setBackground(new java.awt.Color(24, 119, 242));
@@ -432,17 +437,23 @@ public class EmployeeAddress extends javax.swing.JDialog {
                 } else {
                     mySQL.executeIUD("INSERT INTO `city`(`name`)"
                             + "VALUES('" + city + "') ");
+
+                    JOptionPane.showMessageDialog(this, "City successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
 
                 loadCity();
                 jTextField3.setText("");
-                JOptionPane.showMessageDialog(this, "City successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loardCompany() {
 
