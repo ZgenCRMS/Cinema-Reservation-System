@@ -8,7 +8,12 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import guiLogin.LogingOption;
 import guiManager.EmployeeManage;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  *
@@ -21,6 +26,21 @@ public class SupAdminDashboard extends javax.swing.JFrame {
      */
     public SupAdminDashboard() {
         initComponents();
+        setLiveDateTime(jLabel8);
+
+    }
+
+    public void setLiveDateTime(javax.swing.JLabel jLabel8) {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateTime = sdf.format(now);
+                jLabel8.setText(dateTime);
+            }
+        });
+        timer.start();
     }
 
     /**
@@ -427,25 +447,24 @@ public class SupAdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         jPanel3.removeAll();
-        
-        
+
         dashboard Dashboard = new dashboard();
         jPanel3.add(Dashboard, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(jPanel3);
-       
-        
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-       
+
         jPanel3.removeAll();
 
         UserRegistration userRegistration = new UserRegistration();
-        jPanel3.add(userRegistration,BorderLayout.CENTER);
+        jPanel3.add(userRegistration, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(jPanel3);
-        
+
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
