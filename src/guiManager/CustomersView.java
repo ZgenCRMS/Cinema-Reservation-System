@@ -16,9 +16,8 @@ import model.mySQL;
  */
 public class CustomersView extends javax.swing.JPanel {
 
-        private static HashMap<String, String> කුස්ටොමෙර්TypeMap = new HashMap<>();
+    private static HashMap<String, String> කුස්ටොමෙර්TypeMap = new HashMap<>();
 
-    
     public CustomersView() {
         initComponents();
         init();
@@ -30,6 +29,29 @@ public class CustomersView extends javax.swing.JPanel {
         jComboBox1.putClientProperty("JComponent.roundRect", true);
         jButton1.putClientProperty("JButton.buttonType", "roundRect");
 
+    }
+
+    private void viewCustomerFiltered(String type) {
+        try {
+            String query = "SELECT * FROM customer "
+                    + "INNER JOIN customer_type ON customer.customer_type_id = customer_type.id "
+                    + "WHERE customer_type.type = '" + type + "'";
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("mobile"));
+                vector.add(resultSet.getString("customer_type.type"));
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void viewCustomer() {
@@ -44,7 +66,6 @@ public class CustomersView extends javax.swing.JPanel {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("mobile"));
                 vector.add(resultSet.getString("customer_type.type"));
-               
 
                 dtm.addRow(vector);
 
@@ -55,7 +76,7 @@ public class CustomersView extends javax.swing.JPanel {
         }
 
     }
-    
+
     private void loadtype() {
         try {
 
@@ -77,9 +98,6 @@ public class CustomersView extends javax.swing.JPanel {
         }
     }
 
-
- 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -234,6 +252,11 @@ public class CustomersView extends javax.swing.JPanel {
         jPanel18.setPreferredSize(new java.awt.Dimension(250, 45));
         jPanel18.setLayout(new java.awt.GridLayout(1, 0));
 
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -243,7 +266,7 @@ public class CustomersView extends javax.swing.JPanel {
 
         jPanel17.add(jPanel18, java.awt.BorderLayout.LINE_START);
 
-        jPanel19.setLayout(new java.awt.GridLayout());
+        jPanel19.setLayout(new java.awt.GridLayout(1, 0));
         jPanel19.add(jLabel3);
         jPanel19.add(jLabel5);
         jPanel19.add(jLabel4);
@@ -387,6 +410,17 @@ public class CustomersView extends javax.swing.JPanel {
         jComboBox1.setSelectedIndex(0);
         viewCustomer();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            String selectedType = jComboBox1.getSelectedItem().toString();
+
+            if (!selectedType.equals("Select")) {
+                viewCustomerFiltered(selectedType);
+            } else {
+                viewCustomer(); // Show all if "Select" is chosen
+            }
+        }    }//GEN-LAST:event_jComboBox1ItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
