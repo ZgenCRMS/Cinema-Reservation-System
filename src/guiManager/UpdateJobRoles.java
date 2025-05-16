@@ -437,7 +437,6 @@ public class UpdateJobRoles extends javax.swing.JDialog {
 
                         loadJobs();
                         reset();
-                        this.dispose();
                         JOptionPane.showMessageDialog(this, "Job Role successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                     }

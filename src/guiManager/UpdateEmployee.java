@@ -574,7 +574,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
 
                     loadEmployees();
                     reset();
-                    this.dispose();
+                    
                     JOptionPane.showMessageDialog(this, "Customer successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }

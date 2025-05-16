@@ -385,7 +385,6 @@ public class AddJobRoles extends javax.swing.JDialog {
                             + "VALUES ('" + job + "')");
                     loadJobs();
                     reset();
-                    this.dispose();
                     JOptionPane.showMessageDialog(this, "Job Role successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }

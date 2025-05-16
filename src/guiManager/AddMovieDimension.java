@@ -27,7 +27,7 @@ public class AddMovieDimension extends javax.swing.JDialog {
         initComponents();
         init();
         loadDimensionable();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
     }
     
@@ -499,7 +499,7 @@ public class AddMovieDimension extends javax.swing.JDialog {
     private void reset() {
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
     }
 }
