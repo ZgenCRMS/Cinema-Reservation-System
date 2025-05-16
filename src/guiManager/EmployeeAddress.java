@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
@@ -24,6 +26,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Admin
  */
 public class EmployeeAddress extends javax.swing.JDialog {
+    private static HashMap<String, String> employeeCityMap = new HashMap<>();
 
     /**
      * Creates new form companyRegistration
@@ -33,8 +36,9 @@ public class EmployeeAddress extends javax.swing.JDialog {
         initComponents();
         loardCompany();
         init();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
+        loadCity();
     }
 
     private void init() {
@@ -76,8 +80,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
@@ -187,38 +189,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 45));
-
-        jButton4.setBackground(new java.awt.Color(0, 65, 112));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Print");
-        jButton4.setBorderPainted(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(263, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        getContentPane().add(jPanel3, java.awt.BorderLayout.PAGE_END);
-
         jPanel4.setPreferredSize(new java.awt.Dimension(20, 438));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -229,7 +199,7 @@ public class EmployeeAddress extends javax.swing.JDialog {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.LINE_START);
@@ -245,7 +215,7 @@ public class EmployeeAddress extends javax.swing.JDialog {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel5, java.awt.BorderLayout.LINE_END);
@@ -439,24 +409,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jTextField2.grabFocus();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
-        try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-            
-            JasperPrint report = JasperFillManager.fillReport("src/reports/CompanyNew.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-             
-            connection.close();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void loardCompany() {
 
         try {
@@ -477,6 +429,27 @@ public class EmployeeAddress extends javax.swing.JDialog {
             e.printStackTrace();
         }
 
+    }
+    
+        private void loadCity() {
+        try {
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT* FROM `city`");
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                employeeCityMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(vector);
+            jComboBox2.setModel(defaultComboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -506,7 +479,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -532,7 +504,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel4;
@@ -549,13 +520,12 @@ public class EmployeeAddress extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void reaset() {
-        jTextField1.setEnabled(false);
         jTextField2.setText(" ");
         jTextField2.grabFocus();
         jComboBox2.setSelectedIndex(0);
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
 
     }
