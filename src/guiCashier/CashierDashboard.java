@@ -57,6 +57,8 @@ public class CashierDashboard extends javax.swing.JFrame {
         jTextField2.grabFocus();
         generateInvoceId();
         loadPay();
+        setLiveDateTime(jLabel8);
+
     }
 
     public int laky;
@@ -167,6 +169,19 @@ public class CashierDashboard extends javax.swing.JFrame {
             jTextField7.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Payid Amount");
         }
 
+    }
+
+    public void setLiveDateTime(javax.swing.JLabel jLabel8) {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateTime = sdf.format(now);
+                jLabel8.setText(dateTime);
+            }
+        });
+        timer.start();
     }
 
     private void loadInvoiceItems() {
@@ -1185,7 +1200,6 @@ public class CashierDashboard extends javax.swing.JFrame {
 //                    for (int i = 0; i < rowCount; i++) {
 //
 //                    }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

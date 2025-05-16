@@ -11,11 +11,16 @@ import guiSnackbar.snackbarDashboard;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  *
@@ -29,9 +34,23 @@ public class AdminDashboard extends javax.swing.JFrame {
     public AdminDashboard() {
         initComponents();
         progressChart();
+        setLiveDateTime(jLabel8);
         
 
 //        Frame();
+    }
+    
+    public void setLiveDateTime(javax.swing.JLabel jLabel8) {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateTime = sdf.format(now);
+                jLabel8.setText(dateTime);
+            }
+        });
+        timer.start();
     }
 
     public void progressChart() {

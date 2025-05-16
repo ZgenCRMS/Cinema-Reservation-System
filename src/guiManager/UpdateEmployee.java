@@ -36,23 +36,25 @@ public class UpdateEmployee extends javax.swing.JDialog {
         status();
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter First Name");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Last Name");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Mobile");
-        }if (jTextField4 != null) {
+        }
+        if (jTextField4 != null) {
             jTextField4.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter NIC");
-        }if (jTextField5 != null) {
+        }
+        if (jTextField5 != null) {
             jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Email");
         }
-        
 
     }
-
 
     private void loadEmployees() {
 
@@ -536,6 +538,8 @@ public class UpdateEmployee extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Please enter a valid Mobile !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (nic.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter your nic !", "Warning", JOptionPane.WARNING_MESSAGE);
+            }else if (!nic.matches("^(?:\\d{9}[vVxX]|\\d{12})$")) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid Sri Lankan NIC!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (email.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter your Email !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!email.matches("^(?=.{1,64}@)[A-Za-z0-9\\+_-]+(\\.[A-Za-z0-9\\+_-]+)*@[^-][A-Za-z0-9\\+-]+(\\.[A-Za-z0-9\\+-]+)*(\\.[A-Za-z]{2,})$")) {
@@ -570,6 +574,8 @@ public class UpdateEmployee extends javax.swing.JDialog {
 
                     loadEmployees();
                     reset();
+                    this.dispose();
+                    JOptionPane.showMessageDialog(this, "Customer successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }
 

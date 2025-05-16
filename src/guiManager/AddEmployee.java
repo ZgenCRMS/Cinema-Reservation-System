@@ -30,9 +30,8 @@ public class AddEmployee extends javax.swing.JDialog {
     /**
      * Creates new form AddEmployee
      */
-    
     EmployeeManage employeeManage = new EmployeeManage();
-    
+
     public AddEmployee(java.awt.Frame parent, boolean view) {
 
         super(parent, view);
@@ -43,22 +42,25 @@ public class AddEmployee extends javax.swing.JDialog {
         jTextField1.grabFocus();
         hint();
     }
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter First Name");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Last Name");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Mobile");
-        }if (jTextField4 != null) {
+        }
+        if (jTextField4 != null) {
             jTextField4.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter NIC");
-        }if (jTextField5 != null) {
+        }
+        if (jTextField5 != null) {
             jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Email");
         }
-        
 
     }
-
 
     private void editableFalse() {
         jComboBox2.setEnabled(false);
@@ -538,7 +540,7 @@ public class AddEmployee extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       jTextField1.grabFocus();
+        jTextField1.grabFocus();
 
         try {
 
@@ -558,6 +560,8 @@ public class AddEmployee extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Please enter your Mobile !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!mobile.matches("^07[01245678]{1}[0-9]{7}$")) {
                 JOptionPane.showMessageDialog(this, "Invalid Mobile Number !", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!nic.matches("^(?:\\d{9}[vVxX]|\\d{12})$")) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid Sri Lankan NIC!", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (nic.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter your NIC !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (email.isEmpty()) {
@@ -582,11 +586,9 @@ public class AddEmployee extends javax.swing.JDialog {
 
                     loadJobRole();
                     reset();
-                    
 
                     this.dispose();
-                    
-                   
+                    JOptionPane.showMessageDialog(this, "Customer successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }
             }
