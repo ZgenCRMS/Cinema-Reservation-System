@@ -26,6 +26,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Admin
  */
 public class EmployeeAddress extends javax.swing.JDialog {
+
     private static HashMap<String, String> employeeCityMap = new HashMap<>();
 
     /**
@@ -51,20 +52,20 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
 
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Address Line 01");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Address Line 02");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Add City");
         }
-        
 
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -284,6 +285,11 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/icons8-plus-20.png"))); // NOI18N
         jButton5.setBorderPainted(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel12.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 40, 30));
 
         jPanel24.add(jPanel12, java.awt.BorderLayout.CENTER);
@@ -409,6 +415,35 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jTextField2.grabFocus();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String city = jTextField3.getText();
+
+        if (city.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Add City", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            try {
+
+                java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT * FROM  `city` WHERE `name`='" + city + "'");
+
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "Alredy Added!", "Warning", JOptionPane.WARNING_MESSAGE);
+
+                } else {
+                    mySQL.executeIUD("INSERT INTO `city`(`name`)"
+                            + "VALUES('" + city + "') ");
+                }
+
+                loadCity();
+                jTextField3.setText("");
+                JOptionPane.showMessageDialog(this, "City successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }    }//GEN-LAST:event_jButton5ActionPerformed
+
     private void loardCompany() {
 
         try {
@@ -430,8 +465,8 @@ public class EmployeeAddress extends javax.swing.JDialog {
         }
 
     }
-    
-        private void loadCity() {
+
+    private void loadCity() {
         try {
 
             java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT* FROM `city`");
