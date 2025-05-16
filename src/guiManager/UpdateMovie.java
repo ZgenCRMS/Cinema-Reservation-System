@@ -34,8 +34,9 @@ public class UpdateMovie extends javax.swing.JDialog {
         Language();
         loadgenres();
         movie_dimension();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
+        jTextField3.setEditable(false);
     }
 
     private void hint() {
@@ -509,6 +510,8 @@ public class UpdateMovie extends javax.swing.JDialog {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
 
+        jButton2.setEnabled(true);
+
         int row = jTable2.getSelectedRow();
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
         jTextField2.setText(String.valueOf(jTable2.getValueAt(row, 2)));
@@ -563,9 +566,6 @@ public class UpdateMovie extends javax.swing.JDialog {
                     ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `movie` WHERE `name` = '" + moviename + "' AND `relased_Date` = '" + releaseddate + "'");
 
                     if (resultSet.next()) {
-                        JOptionPane.showMessageDialog(this, "Movie name is already registered", "Warning", JOptionPane.WARNING_MESSAGE);
-
-                    } else {
 
                         mySQL.executeIUD("UPDATE `movie` SET "
                                 + "`name` = '" + moviename + "',"
@@ -575,10 +575,14 @@ public class UpdateMovie extends javax.swing.JDialog {
                                 + "  `movie_dimension_id`= '" + movie_dimensionMap.get(moviedimension) + "',"
                                 + "`language_id`= '" + LanguageMap.get(language) + "'"
                                 + "WHERE `movie_id`='" + movieid + "'");
-                        JOptionPane.showMessageDialog(this, "Update Successfull", "Inform", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Movie Update Successfull", "Inform", JOptionPane.INFORMATION_MESSAGE);
                         LoadMovieTable();
                         reset();
                         jButton2.setEnabled(false);
+
+                    } else {
+
+                        JOptionPane.showMessageDialog(this, "Movie name is already registered", "Warning", JOptionPane.WARNING_MESSAGE);
 
                     }
                 } catch (Exception e) {
@@ -683,6 +687,7 @@ public class UpdateMovie extends javax.swing.JDialog {
         jComboBox3.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
         jTextField1.grabFocus();
+        jButton2.setEnabled(false);
 
     }
 }
