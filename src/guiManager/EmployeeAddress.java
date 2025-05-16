@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
@@ -52,6 +54,18 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
 
     }
+
+    public int empNumber;
+
+    public int getEMPNUM() {
+        return empNumber;
+    }
+
+    public void setEMPNUM(int tprice) {
+        this.empNumber = tprice;
+    }
+    
+   
 
     private void hint() {
         if (jTextField1 != null) {
@@ -452,7 +466,40 @@ public class EmployeeAddress extends javax.swing.JDialog {
         }    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
 
+            String Line1 = jTextField1.getText();
+            String Line2 = jTextField2.getText();
+            String City = String.valueOf(jComboBox2.getSelectedItem());
+
+            if (Line1.isEmpty() && Line2.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter Address", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (City.equals("Select")) {
+                JOptionPane.showMessageDialog(this, "Please select City", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `emp_address` WHERE `employee_mobile` = '" + empNumber + "'");
+
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "This employee Address Already registered !", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+
+//                    mySQL.executeIUD("INSERT INTO `emp_address`(`line_1`,`line_2`,`city_id`,`employee_mobile`)"
+//                            + "VALUES('" + Line1 + "','" + Line2 + "','" + City + "','" + empNumber + "')");
+
+                    loardCompany();
+                    reaset();
+
+                    this.dispose();
+                    JOptionPane.showMessageDialog(this, "Employee Address successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println(empNumber);
+                }
+            }
+
+            //System.out.println("OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loardCompany() {
