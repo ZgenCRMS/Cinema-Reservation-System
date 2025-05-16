@@ -36,19 +36,19 @@ public class AddMovie extends javax.swing.JDialog {
         jTextField1.grabFocus();
         hint();
     }
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Movie Name");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Duration");
-        }if (jDateChooser1 != null) {
+        }
+        if (jDateChooser1 != null) {
             jDateChooser1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Relese Date");
         }
-        
 
     }
-
-    
 
     private void loadgenres() {
         try {
@@ -522,7 +522,7 @@ public class AddMovie extends javax.swing.JDialog {
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         jComboBox3.grabFocus();
-        
+
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -541,13 +541,13 @@ public class AddMovie extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Enter Duration", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (ReleseDate == null) {
             JOptionPane.showMessageDialog(this, "Enter ReleseDate", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (MovieGenres.isEmpty()) {
+        } else if (MovieGenres.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Select MovieGenres", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (MovieDimension.isEmpty()) {
+        } else if (MovieDimension.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Select MovieDimension", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (Language.isEmpty()) {
+        } else if (Language.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Select Language", "Warning", JOptionPane.WARNING_MESSAGE);
-       
+
         } else {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -558,6 +558,8 @@ public class AddMovie extends javax.swing.JDialog {
                         + "VALUES('" + MovieName + "','" + Duration + "','" + sdf.format(ReleseDate) + "','" + loadgenresMap.get(MovieGenres) + "','" + movie_dimensionMap.get(MovieDimension) + "','" + LanguageMap.get(Language) + "')");
 
                 reset();
+                this.dispose();
+                JOptionPane.showMessageDialog(this, "Successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -596,7 +598,7 @@ public class AddMovie extends javax.swing.JDialog {
     }//GEN-LAST:event_jComboBox1KeyPressed
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
-       char c = evt.getKeyChar();
+        char c = evt.getKeyChar();
 
         if (Character.isLetter(c)) {
             evt.consume();

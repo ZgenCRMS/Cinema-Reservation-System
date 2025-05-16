@@ -4,6 +4,7 @@
  */
 package guiManager;
 
+import guiCashier.CashierDashboard;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.event.ActionListener;
@@ -29,15 +30,13 @@ import java.sql.Connection;
  */
 public class EmployeeManage extends javax.swing.JPanel {
 
-    /**
-     * Creates new form EmployeeManage
-     */
+    EmployeeAddress ea;
+
     public EmployeeManage() {
         initComponents();
         init();
         viewEmployee();
         reload();
-
     }
 
     private void init() {
@@ -50,16 +49,16 @@ public class EmployeeManage extends javax.swing.JPanel {
         jButton11.putClientProperty("JButton.buttonType", "roundRect");
 
     }
-    
-    private void reload(){
-    
+
+    private void reload() {
+
         java.lang.Runnable runnable = new java.lang.Runnable() {
             @Override
             public void run() {
 
                 while (true) {
 
-                   viewEmployee();
+                    viewEmployee();
 
                     try {
                         Thread.sleep(3000);
@@ -74,7 +73,7 @@ public class EmployeeManage extends javax.swing.JPanel {
 
         java.lang.Thread thread = new java.lang.Thread(runnable);
         thread.start();
-    
+
     }
 
     private void viewEmployee() {
@@ -106,8 +105,6 @@ public class EmployeeManage extends javax.swing.JPanel {
         }
 
     }
-
- 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -467,12 +464,11 @@ public class EmployeeManage extends javax.swing.JPanel {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployeeNew.jasper",null, connection);
-            JasperViewer.viewReport(report,false);
-            
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployeeNew.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
 //            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployee.jasper", null, connection);
 //            JasperViewer.viewReport(report, false);
-            
             connection.close();
 
         } catch (Exception e) {
@@ -483,21 +479,24 @@ public class EmployeeManage extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        if (evt.getClickCount() == 2) {
-            
-              int row = jTable2.getSelectedRow();
-              String email = String.valueOf(jTable2.getValueAt(row, 4));
-              
-              EmployeeAddress addressView = new EmployeeAddress(null, true);
-              addressView.setVisible(true);
-        }
+//        if (evt.getClickCount() == 2) {
+//
+//            int row = jTable2.getSelectedRow();
+//            String email = String.valueOf(jTable2.getValueAt(row, 4));
+//
+//            EmployeeAddress addressView = new EmployeeAddress(null, true);
+//            addressView.setVisible(true);
+//
+//            int empnumber = Integer.parseInt(jTable2.getValueAt(row, 2).toString());
+//            ea.setEMPNUM(empnumber);
+//        }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-       
+
         CreateQRCode1 createQRCode = new CreateQRCode1();
         createQRCode.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton11ActionPerformed
 
 

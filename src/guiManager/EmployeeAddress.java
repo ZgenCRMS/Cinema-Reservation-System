@@ -11,7 +11,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
@@ -25,6 +29,8 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class EmployeeAddress extends javax.swing.JDialog {
 
+    private static HashMap<String, String> employeeCityMap = new HashMap<>();
+
     /**
      * Creates new form companyRegistration
      */
@@ -33,8 +39,9 @@ public class EmployeeAddress extends javax.swing.JDialog {
         initComponents();
         loardCompany();
         init();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
+        loadCity();
     }
 
     private void init() {
@@ -47,20 +54,32 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
 
     }
+
+    public int empNumber;
+
+    public int getEMPNUM() {
+        return empNumber;
+    }
+
+    public void setEMPNUM(int tprice) {
+        this.empNumber = tprice;
+    }
     
+   
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Address Line 01");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Address Line 02");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Add City");
         }
-        
 
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,8 +95,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
@@ -187,38 +204,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 45));
-
-        jButton4.setBackground(new java.awt.Color(0, 65, 112));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Print");
-        jButton4.setBorderPainted(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(263, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        getContentPane().add(jPanel3, java.awt.BorderLayout.PAGE_END);
-
         jPanel4.setPreferredSize(new java.awt.Dimension(20, 438));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -229,7 +214,7 @@ public class EmployeeAddress extends javax.swing.JDialog {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.LINE_START);
@@ -245,7 +230,7 @@ public class EmployeeAddress extends javax.swing.JDialog {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel5, java.awt.BorderLayout.LINE_END);
@@ -314,6 +299,11 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/icons8-plus-20.png"))); // NOI18N
         jButton5.setBorderPainted(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel12.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 40, 30));
 
         jPanel24.add(jPanel12, java.awt.BorderLayout.CENTER);
@@ -347,6 +337,11 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Add");
         jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel28.add(jButton1);
 
         jButton2.setBackground(new java.awt.Color(24, 119, 242));
@@ -439,23 +434,73 @@ public class EmployeeAddress extends javax.swing.JDialog {
         jTextField2.grabFocus();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String city = jTextField3.getText();
+
+        if (city.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Add City", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            try {
+
+                java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT * FROM  `city` WHERE `name`='" + city + "'");
+
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "Alredy Added!", "Warning", JOptionPane.WARNING_MESSAGE);
+
+                } else {
+                    mySQL.executeIUD("INSERT INTO `city`(`name`)"
+                            + "VALUES('" + city + "') ");
+
+                    JOptionPane.showMessageDialog(this, "City successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+
+                loadCity();
+                jTextField3.setText("");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-            
-            JasperPrint report = JasperFillManager.fillReport("src/reports/CompanyNew.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-             
-            connection.close();
-            
+
+            String Line1 = jTextField1.getText();
+            String Line2 = jTextField2.getText();
+            String City = String.valueOf(jComboBox2.getSelectedItem());
+
+            if (Line1.isEmpty() && Line2.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter Address", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (City.equals("Select")) {
+                JOptionPane.showMessageDialog(this, "Please select City", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `emp_address` WHERE `employee_mobile` = '" + empNumber + "'");
+
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "This employee Address Already registered !", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+
+//                    mySQL.executeIUD("INSERT INTO `emp_address`(`line_1`,`line_2`,`city_id`,`employee_mobile`)"
+//                            + "VALUES('" + Line1 + "','" + Line2 + "','" + City + "','" + empNumber + "')");
+
+                    loardCompany();
+                    reaset();
+
+                    this.dispose();
+                    JOptionPane.showMessageDialog(this, "Employee Address successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println(empNumber);
+                }
+            }
+
+            //System.out.println("OK");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loardCompany() {
 
@@ -477,6 +522,27 @@ public class EmployeeAddress extends javax.swing.JDialog {
             e.printStackTrace();
         }
 
+    }
+
+    private void loadCity() {
+        try {
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch("SELECT* FROM `city`");
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                employeeCityMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(vector);
+            jComboBox2.setModel(defaultComboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -506,7 +572,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -532,7 +597,6 @@ public class EmployeeAddress extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel4;
@@ -549,13 +613,12 @@ public class EmployeeAddress extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void reaset() {
-        jTextField1.setEnabled(false);
         jTextField2.setText(" ");
         jTextField2.grabFocus();
         jComboBox2.setSelectedIndex(0);
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
 
     }

@@ -29,15 +29,13 @@ public class AddJobRoles extends javax.swing.JDialog {
         loadJobs();
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Job Role");
         }
-        
 
     }
-
 
     private void loadJobs() {
         try {
@@ -387,6 +385,8 @@ public class AddJobRoles extends javax.swing.JDialog {
                             + "VALUES ('" + job + "')");
                     loadJobs();
                     reset();
+                    JOptionPane.showMessageDialog(this, "Job Role successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
             }
 
