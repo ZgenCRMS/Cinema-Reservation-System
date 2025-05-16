@@ -47,39 +47,34 @@ public class CreateQRCode1 extends javax.swing.JFrame {
         hint();
         jButton1.grabFocus();
     }
-    
+
     private void hint() {
         if (jTextField4 != null) {
             jTextField4.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter NIC");
-        }      
+        }
     }
 
+    public void qrEmployee() {
 
-    
-    public void qrEmployee(){
-        
-        try{
-        ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `emp_qr` INNER JOIN `employee` ON `employee`.`mobile`=`emp_qr`.`employee_mobile`");
-        DefaultTableModel modal = (DefaultTableModel) jTable1.getModel();
-        modal.setRowCount(0);
+        try {
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `emp_qr` INNER JOIN `employee` ON `employee`.`mobile`=`emp_qr`.`employee_mobile`");
+            DefaultTableModel modal = (DefaultTableModel) jTable1.getModel();
+            modal.setRowCount(0);
             while (resultSet.next()) {
-                 
-        Vector<String> vector = new Vector<>();
-        vector.add(resultSet.getString("emp_nic"));
-        vector.add(resultSet.getString("emp_type"));
-        vector.add(resultSet.getString("employee.mobile"));
-        vector.add(resultSet.getString("qr_number"));
-        modal.addRow(vector);
-                
+
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("emp_nic"));
+                vector.add(resultSet.getString("emp_type"));
+                vector.add(resultSet.getString("employee.mobile"));
+                vector.add(resultSet.getString("qr_number"));
+                modal.addRow(vector);
+
             }
-      
-        
-        }catch(Exception e){
-        e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        
-        
+
     }
 
     public JTextField getjTextField1() {
@@ -556,37 +551,40 @@ public class CreateQRCode1 extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-try {
-    if (jTextField1.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please Select Employee", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        return; // Validation fails, so exit the method.
-    } else if (jTextField4.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter NIC", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        return; // Validation fails, so exit the method.
-    }
+        try {
+            if (jTextField1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Select Employee", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return; // Validation fails, so exit the method.
+            } else if (jTextField4.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter NIC", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return; // Validation fails, so exit the method.
+            }
 
-    LocalTime myObj = LocalTime.now();
-    String empQR = jTextField4.getText();
-    Date date = new Date();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    LocalTime nowtime = LocalTime.now();
+            LocalTime myObj = LocalTime.now();
+            String empQR = jTextField4.getText();
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            LocalTime nowtime = LocalTime.now();
 
-    generateQRcode("'" + empQR + "'", 1250, 1250, "C:\\QRCode\\'" + sdf.format(date) + "'" + empQR + "'.png");
-    mySQL.executeIUD("INSERT INTO `emp_qr`(`qr_number`,`employee_mobile`,`emp_nic`,`emp_type`) "
-            + "VALUES ('" + jTextField4.getText() + "','" + jTextField3.getText() + "','" + jTextField1.getText() + "','" + jTextField2.getText() + "')");
+            generateQRcode("'" + empQR + "'", 1250, 1250, "C:\\QRCode\\'" + sdf.format(date) + "'" + empQR + "'.png");
+            mySQL.executeIUD("INSERT INTO `emp_qr`(`qr_number`,`employee_mobile`,`emp_nic`,`emp_type`) "
+                    + "VALUES ('" + jTextField4.getText() + "','" + jTextField3.getText() + "','" + jTextField1.getText() + "','" + jTextField2.getText() + "')");
 
-    qrEmployee();
-    jTextField4.setText("");
-    jTextField3.setText("");
-    jTextField2.setText("");
-    jTextField1.setText("");
-} catch (WriterException ex) {
-    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-} catch (IOException ex) {
-    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-} catch (Exception ex) {
-    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-}
+            qrEmployee();
+            jTextField4.setText("");
+            jTextField3.setText("");
+            jTextField2.setText("");
+            jTextField1.setText("");
+            
+            
+            
+        } catch (WriterException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
