@@ -588,6 +588,7 @@ public class AddEmployee extends javax.swing.JDialog {
                     reset();
 
                     this.dispose();
+                    JOptionPane.showMessageDialog(this, "Customer successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }
             }
