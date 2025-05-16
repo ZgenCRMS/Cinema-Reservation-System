@@ -30,13 +30,12 @@ public class AddMovieDimension extends javax.swing.JDialog {
         jButton2.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Movie Dimension");
         }
     }
-
 
     private void loadDimensionable() {
 
@@ -384,10 +383,14 @@ public class AddMovieDimension extends javax.swing.JDialog {
                 } else {
                     mySQL.executeIUD("INSERT INTO `movie_dimension`(`type`)"
                             + "VALUES('" + dimension + "') ");
+
+                    JOptionPane.showMessageDialog(this, "Successfully added Movie Dimension", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
 
                 loadDimensionable();
                 reset();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -416,6 +419,8 @@ public class AddMovieDimension extends javax.swing.JDialog {
 
                 loadDimensionable();
                 reset();
+                JOptionPane.showMessageDialog(this, "Successfully updated Movie Dimension", "Success", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
