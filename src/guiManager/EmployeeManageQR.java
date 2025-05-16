@@ -43,13 +43,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
 
      private void init() {
 
-        jButton4.putClientProperty("JButton.buttonType", "roundRect");
-        jButton6.putClientProperty("JButton.buttonType", "roundRect");
-        jButton9.putClientProperty("JButton.buttonType", "roundRect");
-        jButton10.putClientProperty("JButton.buttonType", "roundRect");
-        jButton1.putClientProperty("JButton.buttonType", "roundRect");
-        jButton11.putClientProperty("JButton.buttonType", "roundRect");
-
     }
      
 //     private void reload(){
@@ -129,19 +122,9 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        jPanel10 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
-        jPanel18 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jPanel19 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -216,6 +199,7 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         jPanel6.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/manager (2).png"))); // NOI18N
         jLabel1.setText("Manage Employee");
@@ -243,61 +227,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
 
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jPanel10.setPreferredSize(new java.awt.Dimension(973, 45));
-        jPanel10.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
-
-        jButton4.setBackground(new java.awt.Color(31, 117, 254));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton4.setText("Add Employee");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jButton4);
-
-        jButton6.setBackground(new java.awt.Color(31, 117, 254));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton6.setText("Update Employee");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jButton6);
-
-        jButton9.setBackground(new java.awt.Color(31, 117, 254));
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton9.setText("Add Job Roles");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jButton9);
-
-        jButton10.setBackground(new java.awt.Color(31, 117, 254));
-        jButton10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton10.setText("Update Job Roles");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jButton10);
-
-        jButton11.setBackground(new java.awt.Color(31, 117, 254));
-        jButton11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton11.setText("Create QR");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jButton11);
-
-        jPanel9.add(jPanel10, java.awt.BorderLayout.PAGE_START);
-
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jPanel12.setPreferredSize(new java.awt.Dimension(973, 5));
@@ -316,60 +245,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
 
         jPanel13.setLayout(new java.awt.BorderLayout());
-
-        jPanel14.setPreferredSize(new java.awt.Dimension(973, 45));
-        jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jPanel18.setPreferredSize(new java.awt.Dimension(300, 45));
-
-        jButton1.setBackground(new java.awt.Color(0, 65, 112));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/print-32.png"))); // NOI18N
-        jButton1.setText("Print");
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel18Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 45, Short.MAX_VALUE)
-            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel18Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
-        jPanel14.add(jPanel18, java.awt.BorderLayout.LINE_END);
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 620, Short.MAX_VALUE)
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 45, Short.MAX_VALUE)
-        );
-
-        jPanel14.add(jPanel19, java.awt.BorderLayout.CENTER);
-
-        jPanel13.add(jPanel14, java.awt.BorderLayout.PAGE_END);
 
         jPanel15.setLayout(new java.awt.BorderLayout());
 
@@ -434,39 +309,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        AddEmployee addEmployee = new AddEmployee(null, true);
-        addEmployee.setVisible(true);
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
-        //        UpdateEmployee updateEmployee = new UpdateEmployee(this, true);
-        //        updateEmployee.setVisible(true);
-        new UpdateEmployee(null, true).show();
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        //        AddJobRoles addJobRoles = new AddJobRoles(this, true);
-        //        addJobRoles.setVisible(true);
-        new AddJobRoles(null, true).show();
-    }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        //        UpdateJobRoles updateJobRoles = new UpdateJobRoles(this, true);
-        //        updateJobRoles.setVisible(true);
-        new UpdateJobRoles(null, true).show();
-    }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-
-        CreateQRCode1 createQRCode = new CreateQRCode1();
-        createQRCode.setVisible(true);
-
-    }//GEN-LAST:event_jButton11ActionPerformed
-
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
 //        if (evt.getClickCount() == 2) {
 //
@@ -513,28 +355,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        try {
-
-            //            JREmptyDataSource dataSource = new JREmptyDataSource();
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployeeNew.jasper",null, connection);
-            JasperViewer.viewReport(report,false);
-
-            //            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployee.jasper", null, connection);
-            //            JasperViewer.viewReport(report, false);
-
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -558,24 +378,14 @@ public class EmployeeManageQR extends javax.swing.JDialog {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
