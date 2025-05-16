@@ -576,8 +576,10 @@ public class CreateQRCode1 extends javax.swing.JFrame {
             jTextField2.setText("");
             jTextField1.setText("");
             
-            
-            
+            this.dispose();
+
+            JOptionPane.showMessageDialog(this, "Successfully Create QR Code", "Success", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (WriterException ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
