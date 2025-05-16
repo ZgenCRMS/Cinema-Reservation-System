@@ -33,12 +33,12 @@ public class UpdateJobRoles extends javax.swing.JDialog {
         jTextField1.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Job Role");
         }
-    }    
+    }
 
     private void loadJobs() {
         try {
@@ -437,6 +437,8 @@ public class UpdateJobRoles extends javax.swing.JDialog {
 
                         loadJobs();
                         reset();
+                        this.dispose();
+                        JOptionPane.showMessageDialog(this, "Job Role successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                     }
 
