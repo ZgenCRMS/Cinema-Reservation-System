@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,23 +48,55 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         hint();
         jTextField3.grabFocus();
     }
-    
+
     private void hint() {
         if (jTextField6 != null) {
             jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Mobile");
-        }if (jTextField8 != null) {
+        }
+        if (jTextField8 != null) {
             jTextField8.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter First Name");
-        }if (jTextField9 != null) {
+        }
+        if (jTextField9 != null) {
             jTextField9.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Last Name");
-        }if (jTextField11 != null) {
+        }
+        if (jTextField11 != null) {
             jTextField11.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Email");
         }
-        
 
     }
 
+    private void supplierSearch() {
+    try {
+        String mobile = jTextField6.getText().trim();
+        String query = "SELECT * FROM movie_supplier INNER JOIN `movie_company` ON `movie_supplier`.`movie_company_id`=`movie_company`.`id`";
+
+        if (!mobile.isEmpty()) {
+            query += " WHERE supplier_mobile LIKE '" + mobile + "%'";
+        }
+
+        java.sql.ResultSet rs = mySQL.executeSearch(query);
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        dtm.setRowCount(0); // clear existing rows
+
+        while (rs.next()) {
+            Vector<String> vector = new Vector<>();
+            vector.add(rs.getString("supplier_mobile"));
+            vector.add(rs.getString("fname"));
+            vector.add(rs.getString("lname"));
+            vector.add(rs.getString("email"));
+            vector.add(rs.getString("movie_company.company_name")); // optional: join with company table for name
+
+            dtm.addRow(vector);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     private void init() {
 
@@ -126,9 +159,9 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }
-    
-    private void reload(){
-    
+
+    private void reload() {
+
         java.lang.Runnable runnable = new java.lang.Runnable() {
             @Override
             public void run() {
@@ -150,7 +183,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
 
         java.lang.Thread thread = new java.lang.Thread(runnable);
         thread.start();
-    
+
     }
 
     @SuppressWarnings("unchecked")
@@ -524,6 +557,11 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         jPanel20.setLayout(new java.awt.BorderLayout());
 
         jTextField6.setPreferredSize(new java.awt.Dimension(76, 26));
+        jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTextField6MouseReleased(evt);
+            }
+        });
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
@@ -532,6 +570,9 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField6KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
             }
         });
         jPanel20.add(jTextField6, java.awt.BorderLayout.CENTER);
@@ -894,7 +935,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
-        search();
+        supplierSearch();
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -1040,29 +1081,34 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
 
-            
-               Class.forName("com.mysql.cj.jdbc.Driver");
-               Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db","root","Geeth@200104");
-               
-               JasperPrint report = JasperFillManager.fillReport("src/reports/supplierNew.jasper", null,connection);
-               JasperViewer.viewReport(report,false);
-      
-               
-               connection.close();
-  
-               
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+
+            JasperPrint report = JasperFillManager.fillReport("src/reports/supplierNew.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            connection.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
-       char c = evt.getKeyChar();
+        char c = evt.getKeyChar();
 
         if (Character.isLetter(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        supplierSearch();
+    }//GEN-LAST:event_jTextField6KeyTyped
+
+    private void jTextField6MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseReleased
+        supplierSearch();
+    }//GEN-LAST:event_jTextField6MouseReleased
 
     /**
      * @param args the command line arguments
