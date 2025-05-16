@@ -320,7 +320,7 @@ public class snack_GRN extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setPreferredSize(new java.awt.Dimension(1129, 45));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -1900,7 +1900,7 @@ public class snack_GRN extends javax.swing.JFrame {
                     mySQL.executeIUD("INSERT INTO `grn_item`(`snack_stock_id`,`qty`,`buying_price`,`snack_grn_id`) "
                             + "VALUES('" + stockId + "','" + grnItem.getQty() + "','" + grnItem.getBuyingPrice() + "','" + grnNumber + "')");
 
-                    JOptionPane.showMessageDialog(this, "Please Select a Supplier", "Successfull", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Successfull", "Successfull", JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

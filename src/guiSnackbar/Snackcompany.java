@@ -582,7 +582,7 @@ public class Snackcompany extends javax.swing.JPanel {
 
 
     private void reaset() {
-        jTextField1.setEnabled(false);
+        jTextField1.setEnabled(true);
         jTextField2.setText(" ");
         jTextField2.grabFocus();
         jTextField3.setText(" ");
