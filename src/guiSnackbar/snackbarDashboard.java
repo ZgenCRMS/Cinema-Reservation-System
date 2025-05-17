@@ -65,11 +65,11 @@ public class snackbarDashboard extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1224, 800));
 
         jPanel1.setBackground(new java.awt.Color(31, 35, 51));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -329,6 +329,17 @@ public class snackbarDashboard extends javax.swing.JFrame {
         });
         jPanel17.add(jButton6);
 
+        jButton7.setBackground(new java.awt.Color(31, 35, 51));
+        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton7.setText("iNVOICE");
+        jButton7.setBorderPainted(false);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(jButton7);
+
         jPanel15.add(jPanel17, java.awt.BorderLayout.CENTER);
 
         jPanel13.add(jPanel15, java.awt.BorderLayout.CENTER);
@@ -347,14 +358,14 @@ public class snackbarDashboard extends javax.swing.JFrame {
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
+            .addGap(0, 973, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 700, Short.MAX_VALUE)
         );
 
-        jPanel3.add(jPanel18, java.awt.BorderLayout.CENTER);
+        jPanel3.add(jPanel18, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -379,21 +390,21 @@ public class snackbarDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-           try {
-
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/zgen.jasper", null, connection);
-            JasperViewer.viewReport(report, true);
-            
-            connection.close();
-            
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//           try {
+//
+//
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "pHRE@9184");
+//
+//            JasperPrint report = JasperFillManager.fillReport("src/reports/zgen.jasper", null, connection);
+//            JasperViewer.viewReport(report, true);
+//            
+//            connection.close();
+//            
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -408,6 +419,10 @@ public class snackbarDashboard extends javax.swing.JFrame {
         jPanel3.add(sc, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(jPanel3); 
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,6 +445,7 @@ public class snackbarDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
