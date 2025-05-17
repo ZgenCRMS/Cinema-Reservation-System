@@ -10,12 +10,12 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
  *
  * @author User
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class TestStart extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    public NewJFrame() {
+    public TestStart() {
         initComponents();
     }
 
@@ -74,7 +74,7 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewJFrame().setVisible(true);
+                new TestStart().setVisible(true);
             }
         });
     }
