@@ -437,29 +437,24 @@ public class AddMovieSheet extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            String sheet = jTextField1.getText();
-            String hallnmbr = String.valueOf(jComboBox1.getSelectedItem());
+            String newSheetNumber = jTextField1.getText().trim();
+            String hallNumber = String.valueOf(jComboBox1.getSelectedItem()).trim();
 
-            java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `sheet`  "
-                    + "WHERE `hall`.`hall_number`='" + hallnmbr + "' AND `number`='" + sheet + "'");
-
-            if (result.next()) {
-
-                JOptionPane.showMessageDialog(this, "haven't a sheet ", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else {
-                if (hallnmbr.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Please enter sheetnmbr ", "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    mySQL.executeIUD("UPDATE `sheet` SET `number`= '" + sheet + "' WHERE `hall.hall_number`= '" + hallnmbr + "' AND `number`='" + sheet + "'");
-                    JOptionPane.showMessageDialog(this, "hall number '" + hallnmbr + "' added. ", "Warning", JOptionPane.WARNING_MESSAGE);
-
-                }
-
+            if (newSheetNumber.isEmpty() || hallNumber.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter sheet number and select hall number.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+            mySQL.executeIUD(
+                    "UPDATE sheet "
+                    + "SET number = '" + newSheetNumber + "' "
+                    + "WHERE hall_id = (SELECT id FROM hall WHERE hall_number = '" + hallNumber + "')"
+            );
+
+            JOptionPane.showMessageDialog(this, "Invalid hall number selected.", "Warning", JOptionPane.WARNING_MESSAGE);
 
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
