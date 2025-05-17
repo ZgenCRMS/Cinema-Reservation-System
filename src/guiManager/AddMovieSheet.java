@@ -34,14 +34,14 @@ public class AddMovieSheet extends javax.swing.JDialog {
         initComponents();
         loardCompany();
         init();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
         loadhnmbr();
     }
 
     private void hint() {
         if (jTextField1 != null) {
-            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Hall Number");
+            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Sheet Number");
 
         }
     }
@@ -417,6 +417,8 @@ public class AddMovieSheet extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, "Please select a Hall ", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else if (sheetnmbr.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please Enter Sheet No ", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else if (!sheetnmbr.matches("^\\d{1,3}[A-Z]$")) {
+                    JOptionPane.showMessageDialog(this, "Please Enter Valid Sheet No (e.g., 1A, 10B, 100C)", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else {
                     mySQL.executeIUD("INSERT INTO `sheet`(`number`,`hall_id`) VALUES('" + sheetnmbr + "','" + hallnmbr + "')");
                     loardCompany();
@@ -437,6 +439,7 @@ public class AddMovieSheet extends javax.swing.JDialog {
         try {
             String sheet = jTextField1.getText();
             String hallnmbr = String.valueOf(jComboBox1.getSelectedItem());
+
             java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `sheet`  "
                     + "WHERE `hall`.`hall_number`='" + hallnmbr + "' AND `number`='" + sheet + "'");
 
@@ -463,9 +466,14 @@ public class AddMovieSheet extends javax.swing.JDialog {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int row = jTable2.getSelectedRow();
         String nhall = String.valueOf(jTable2.getValueAt(row, 1));
-
-        jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
+        jButton2.setEnabled(true);
+        jButton1.setEnabled(false);
+        jComboBox1.setEnabled(false);
+        jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 2)));
         String hallnmbr = jTextField1.getText();
+
+        String hallNum = String.valueOf(jTable2.getValueAt(row, 1));
+        jComboBox1.setSelectedItem(hallNum);
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -575,10 +583,13 @@ public class AddMovieSheet extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
-
     private void reset() {
         jComboBox1.setSelectedIndex(0);
         jTextField1.setText("");
+        jButton2.setEnabled(false);
+        jButton1.setEnabled(true);
+        jComboBox1.setEnabled(true);
+
     }
 
 }
