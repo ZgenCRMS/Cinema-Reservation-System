@@ -47,6 +47,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         reload();
         hint();
         jTextField3.grabFocus();
+        jButton5.setEnabled(false);
     }
 
     private void hint() {
@@ -69,34 +70,34 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
     }
 
     private void supplierSearch() {
-    try {
-        String mobile = jTextField6.getText().trim();
-        String query = "SELECT * FROM movie_supplier INNER JOIN `movie_company` ON `movie_supplier`.`movie_company_id`=`movie_company`.`id`";
+        try {
+            String mobile = jTextField6.getText().trim();
+            String query = "SELECT * FROM movie_supplier INNER JOIN `movie_company` ON `movie_supplier`.`movie_company_id`=`movie_company`.`id`";
 
-        if (!mobile.isEmpty()) {
-            query += " WHERE supplier_mobile LIKE '" + mobile + "%'";
+            if (!mobile.isEmpty()) {
+                query += " WHERE supplier_mobile LIKE '" + mobile + "%'";
+            }
+
+            java.sql.ResultSet rs = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (rs.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(rs.getString("supplier_mobile"));
+                vector.add(rs.getString("fname"));
+                vector.add(rs.getString("lname"));
+                vector.add(rs.getString("email"));
+                vector.add(rs.getString("movie_company.company_name")); // optional: join with company table for name
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        java.sql.ResultSet rs = mySQL.executeSearch(query);
-
-        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        dtm.setRowCount(0); // clear existing rows
-
-        while (rs.next()) {
-            Vector<String> vector = new Vector<>();
-            vector.add(rs.getString("supplier_mobile"));
-            vector.add(rs.getString("fname"));
-            vector.add(rs.getString("lname"));
-            vector.add(rs.getString("email"));
-            vector.add(rs.getString("movie_company.company_name")); // optional: join with company table for name
-
-            dtm.addRow(vector);
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
 
     private void init() {
 
@@ -940,6 +941,8 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
+        jButton5.setEnabled(true);
+
         int row = jTable1.getSelectedRow();
         if (evt.getClickCount() == 1) {
 
@@ -1013,6 +1016,8 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
                             + ",`movie_company_id`='" + movie_company.get(company) + "' WHERE `supplier_mobile`='" + mobile + "'");
                     search();
                     reset();
+                    JOptionPane.showMessageDialog(this, "Supplier successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1061,6 +1066,8 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
 //                    JOptionPane.showMessageDialog(this, "Successfull", "Inform", JOptionPane.INFORMATION_MESSAGE);
                     reset();
                     search();
+                    JOptionPane.showMessageDialog(this, "Supplier successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
 
             } catch (Exception e) {
@@ -1222,6 +1229,8 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         jTextField11.setText("");
         jComboBox2.setSelectedIndex(0);
         jButton4.setEnabled(true);
+        jButton5.setEnabled(false);
+        jTextField3.setEnabled(true);
 
     }
 
