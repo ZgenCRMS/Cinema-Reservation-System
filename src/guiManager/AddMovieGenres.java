@@ -27,10 +27,10 @@ public class AddMovieGenres extends javax.swing.JDialog {
         initComponents();
         init();
         loadGenereTable();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Movie Genres");
@@ -382,11 +382,14 @@ public class AddMovieGenres extends javax.swing.JDialog {
                 } else {
                     mySQL.executeIUD("INSERT INTO `movie_category`(`name`)"
                             + "VALUES('" + generes + "') ");
+
                 }
 
                 loadGenereTable();
                 reset();
                 jTextField1.grabFocus();
+                JOptionPane.showMessageDialog(this, "Movie Genres successfully Added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -400,6 +403,7 @@ public class AddMovieGenres extends javax.swing.JDialog {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int row = jTable2.getSelectedRow();
+        jButton2.setEnabled(true);
 
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
         jButton1.setEnabled(false);
@@ -430,11 +434,13 @@ public class AddMovieGenres extends javax.swing.JDialog {
                     } else {
                         mySQL.executeIUD("UPDATE `movie_category` SET "
                                 + "`name`='" + generes + "' WHERE `id`='" + id + "'");
+                        JOptionPane.showMessageDialog(this, "Movie Genres successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                     }
 
                     loadGenereTable();
                     reset();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -506,7 +512,7 @@ public class AddMovieGenres extends javax.swing.JDialog {
     private void reset() {
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
     }
 }

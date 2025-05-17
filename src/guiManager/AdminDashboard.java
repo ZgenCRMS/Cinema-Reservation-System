@@ -35,11 +35,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         initComponents();
         progressChart();
         setLiveDateTime(jLabel8);
-        
 
 //        Frame();
     }
-    
+
     public void setLiveDateTime(javax.swing.JLabel jLabel8) {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override

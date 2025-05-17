@@ -300,6 +300,7 @@ public class MovieManage extends javax.swing.JPanel {
 
         jButton4.setBackground(new java.awt.Color(31, 117, 254));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Add Movie Hall");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,6 +311,7 @@ public class MovieManage extends javax.swing.JPanel {
 
         jButton6.setBackground(new java.awt.Color(31, 117, 254));
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Add Movie Sheet");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

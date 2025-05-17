@@ -33,16 +33,18 @@ public class CompanyRegistration extends javax.swing.JDialog {
         initComponents();
         loardCompany();
         init();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Hotline");
-        }if (jTextField2 != null) {
+        }
+        if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Company Name");
-        }if (jTextField3 != null) {
+        }
+        if (jTextField3 != null) {
             jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Email");
         }
     }
@@ -454,6 +456,7 @@ public class CompanyRegistration extends javax.swing.JDialog {
                     loardCompany();
                     reaset();
                     jTextField1.grabFocus();
+                    JOptionPane.showMessageDialog(this, "Company successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }
 
@@ -513,6 +516,8 @@ public class CompanyRegistration extends javax.swing.JDialog {
                         mySQL.executeIUD("UPDATE `movie_company` SET `company_name` = '" + name + "' ,`company_email`='" + email + "' WHERE `hotline` = '" + hotline + "'");
                         loardCompany();
                         reaset();
+                        JOptionPane.showMessageDialog(this, "Company successfully Updates!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                     }
 
                 } catch (Exception e) {
@@ -524,6 +529,8 @@ public class CompanyRegistration extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        jButton2.setEnabled(true);
+        jTextField3.setEditable(false);
         int row = jTable2.getSelectedRow();
 
         String hotline = String.valueOf(jTable2.getValueAt(row, 0));
@@ -662,14 +669,15 @@ public class CompanyRegistration extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void reaset() {
-        jTextField1.setEnabled(false);
+        jTextField1.setEnabled(true);
         jTextField2.setText(" ");
         jTextField2.grabFocus();
         jTextField3.setText(" ");
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
+        jTextField3.setEditable(true);
 
     }
 
