@@ -530,7 +530,7 @@ public class CompanyRegistration extends javax.swing.JDialog {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         jButton2.setEnabled(true);
-
+        jTextField3.setEditable(false);
         int row = jTable2.getSelectedRow();
 
         String hotline = String.valueOf(jTable2.getValueAt(row, 0));
@@ -677,6 +677,7 @@ public class CompanyRegistration extends javax.swing.JDialog {
         jButton1.setEnabled(true);
         jButton2.setEnabled(false);
         jTextField1.grabFocus();
+        jTextField3.setEditable(true);
 
     }
 
