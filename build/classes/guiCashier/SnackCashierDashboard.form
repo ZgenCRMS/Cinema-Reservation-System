@@ -856,6 +856,12 @@
                                                             <Property name="columns" type="int" value="0"/>
                                                             <Property name="rows" type="int" value="1"/>
                                                           </Layout>
+                                                          <SubComponents>
+                                                            <Component class="javax.swing.JTextField" name="jTextField4">
+                                                            </Component>
+                                                            <Component class="javax.swing.JTextField" name="jTextField6">
+                                                            </Component>
+                                                          </SubComponents>
                                                         </Container>
                                                       </SubComponents>
                                                     </Container>
@@ -928,6 +934,10 @@
                                                         <Property name="columns" type="int" value="0"/>
                                                         <Property name="rows" type="int" value="1"/>
                                                       </Layout>
+                                                      <SubComponents>
+                                                        <Component class="javax.swing.JTextField" name="jTextField7">
+                                                        </Component>
+                                                      </SubComponents>
                                                     </Container>
                                                   </SubComponents>
                                                 </Container>

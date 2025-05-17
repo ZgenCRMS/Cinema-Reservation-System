@@ -32,11 +32,19 @@ public class SnackCashierDashboard extends javax.swing.JFrame {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Cutomer Number");
         }
         if (jTextField3 != null) {
-            jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Snack Name");
+            jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Snack ID");
         }
-
         if (jTextField5 != null) {
-            jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "qty");
+            jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Snack Name");
+        }
+        if (jTextField4 != null) {
+            jTextField4.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Avalible Qty");
+        }
+        if (jTextField6 != null) {
+            jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Price");
+        }
+        if (jTextField7 != null) {
+            jTextField7.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Qty");
         }
 
     }
@@ -100,12 +108,15 @@ public class SnackCashierDashboard extends javax.swing.JFrame {
         jPanel40 = new javax.swing.JPanel();
         jPanel43 = new javax.swing.JPanel();
         jPanel44 = new javax.swing.JPanel();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
         jPanel30 = new javax.swing.JPanel();
         jPanel45 = new javax.swing.JPanel();
         jPanel46 = new javax.swing.JPanel();
         jPanel47 = new javax.swing.JPanel();
         jPanel50 = new javax.swing.JPanel();
         jPanel51 = new javax.swing.JPanel();
+        jTextField7 = new javax.swing.JTextField();
         jPanel48 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
         jPanel53 = new javax.swing.JPanel();
@@ -487,6 +498,9 @@ public class SnackCashierDashboard extends javax.swing.JFrame {
         jPanel40.add(jPanel43, java.awt.BorderLayout.PAGE_START);
 
         jPanel44.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel44.add(jTextField4);
+        jPanel44.add(jTextField6);
+
         jPanel40.add(jPanel44, java.awt.BorderLayout.CENTER);
 
         jPanel38.add(jPanel40, java.awt.BorderLayout.CENTER);
@@ -512,6 +526,8 @@ public class SnackCashierDashboard extends javax.swing.JFrame {
         jPanel50.setLayout(new java.awt.BorderLayout());
 
         jPanel51.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel51.add(jTextField7);
+
         jPanel50.add(jPanel51, java.awt.BorderLayout.CENTER);
 
         jPanel47.add(jPanel50, java.awt.BorderLayout.CENTER);
@@ -868,7 +884,10 @@ public class SnackCashierDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }
