@@ -33,45 +33,45 @@ public class AddMovieHall extends javax.swing.JDialog {
         initComponents();
         loardCompany();
         init();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Hall Number");
-            
+
         }
     }
-    
+
     private void loardCompany() {
-        
+
         try {
             java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `hall`");
-            
+
             DefaultTableModel hall = (DefaultTableModel) jTable2.getModel();
             hall.setRowCount(0);
-            
+
             while (result.next()) {
                 Vector<String> vector = new Vector<>();
                 vector.add(result.getString("id"));
                 vector.add(result.getString("hall_number"));
-                
+
                 hall.addRow(vector);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
-    
+
     private void init() {
-        
+
         jTextField1.putClientProperty("JComponent.roundRect", true);
         jButton1.putClientProperty("JButton.buttonType", "roundRect");
         jButton2.putClientProperty("JButton.buttonType", "roundRect");
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
-        
+
     }
 
     /**
@@ -382,7 +382,7 @@ public class AddMovieHall extends javax.swing.JDialog {
 
             //jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
             String hallnmbr = jTextField1.getText();
-            
+
             java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `hall`  "
                     + "WHERE `hall`.`hall_number`='" + hallnmbr + "'");
 //            if (hallnmbr.isEmpty()) {
@@ -391,40 +391,39 @@ public class AddMovieHall extends javax.swing.JDialog {
 //            } else {
 
             if (result.next()) {
-                
+
                 JOptionPane.showMessageDialog(this, "Hall Number Already Exist", "Warning", JOptionPane.WARNING_MESSAGE);
-                
+
             } else {
                 if (hallnmbr.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please enter Hall Number ", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else {
                     mySQL.executeIUD("INSERT INTO `hall`(`hall_number`) VALUES('" + hallnmbr + "')");
                     loardCompany();
-                    JOptionPane.showMessageDialog(this, "Hall number added Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     jTextField1.setText("");
-                }
-                
-            }
+                    JOptionPane.showMessageDialog(this, "Movie Hall successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
+                }
+            }
 //            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             String hallnmbr = jTextField1.getText();
-            
+
             java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `hall`  "
                     + "WHERE `hall`.`hall_number`='" + hallnmbr + "'");
-            
+
             if (result.next()) {
-                
+
                 JOptionPane.showMessageDialog(this, "It's not a Update", "Warning", JOptionPane.WARNING_MESSAGE);
-                
+
             } else {
                 if (hallnmbr.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please Select Hall", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -433,13 +432,14 @@ public class AddMovieHall extends javax.swing.JDialog {
                     String HallNo = String.valueOf(jTable2.getValueAt(row, 0));
                     mySQL.executeIUD("UPDATE `hall` SET `hall_number`= '" + hallnmbr + "' WHERE `id`= '" + HallNo + "'");
                     loardCompany();
-                    JOptionPane.showMessageDialog(this, "Hall number update Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     jTextField1.setText("");
                     jButton1.setEnabled(true);
+                    JOptionPane.showMessageDialog(this, "Movie Hall successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
-                
+
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -448,10 +448,11 @@ public class AddMovieHall extends javax.swing.JDialog {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int row = jTable2.getSelectedRow();
         String nhall = String.valueOf(jTable2.getValueAt(row, 1));
-        
+
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
         String hallnmbr = jTextField1.getText();
-        
+        jButton2.setEnabled(true);
+
         jButton1.setEnabled(false);
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -465,7 +466,7 @@ public class AddMovieHall extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         FlatMacDarkLaf.setup();
         //</editor-fold>
 
@@ -520,9 +521,9 @@ public class AddMovieHall extends javax.swing.JDialog {
         jTextField1.setEnabled(false);
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
-        
+
     }
-    
+
 }
