@@ -33,7 +33,6 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class supplierManagement extends javax.swing.JPanel {
 
-   
     private static HashMap<String, String> movie_company = new HashMap<>();
 
     /**
@@ -47,6 +46,8 @@ public class supplierManagement extends javax.swing.JPanel {
         init();
 
         reload();
+        jButton5.setEnabled(false);
+
     }
 
     private void init() {
@@ -785,11 +786,10 @@ public class supplierManagement extends javax.swing.JPanel {
             jTextField9.setText(lname);
             jTextField11.setText(email);
             jButton4.setEnabled(false);
+            jButton5.setEnabled(true);
             jComboBox2.setSelectedItem(company);
 
         }
-
-      
 
         if (evt.getClickCount() == 2) {
 
@@ -808,6 +808,7 @@ public class supplierManagement extends javax.swing.JPanel {
         String lname = jTextField9.getText();
         String company = String.valueOf(jComboBox2.getSelectedItem());
         String email = jTextField11.getText();
+        jButton5.setEnabled(false);
 
         if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -853,6 +854,7 @@ public class supplierManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
         String mobile = jTextField3.getText();
         String fname = jTextField8.getText();
         String lname = jTextField9.getText();
@@ -900,6 +902,8 @@ public class supplierManagement extends javax.swing.JPanel {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         reset();
+        jButton5.setEnabled(false);
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1010,6 +1014,7 @@ private void search() {
     private void reset() {
 
         jTextField3.setText("");
+        jTextField3.setEnabled(true);
         jTextField3.grabFocus();
         jTextField8.setText("");
         jTextField9.setText("");
