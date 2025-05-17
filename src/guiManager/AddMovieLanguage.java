@@ -22,15 +22,15 @@ public class AddMovieLanguage extends javax.swing.JDialog {
      * Creates new form AddEmployee
      */
     public AddMovieLanguage(java.awt.Frame parent, boolean view) {
-        
+
         super(parent, view);
         initComponents();
         init();
         loadLanguageTable();
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         hint();
     }
-    
+
     private void hint() {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Movie Language");
@@ -45,40 +45,31 @@ public class AddMovieLanguage extends javax.swing.JDialog {
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
 
     }
-    
-     
-    private void   loadLanguageTable(){
-    
-                       try {
-                    
-                    ResultSet resultSet =   mySQL.executeSearch("SELECT * FROM `language` ");
-                       
-                       
-                       DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
-                       dtm.setRowCount(0);
-                       
-                       while (resultSet.next()) {
-                          
-                           Vector<String> vector = new Vector<>();
-                           vector.add(resultSet.getString("id"));
-                           vector.add(resultSet.getString("name"));
-                         
-                           
-                           dtm.addRow(vector);
-                           
-                           
-                           
-                       }
-                       
-                       
-                       
-                   } catch (Exception e) {
-                   
-e.printStackTrace();                   }
-               
-               
-               
-    
+
+    private void loadLanguageTable() {
+
+        try {
+
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `language` ");
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0);
+
+            while (resultSet.next()) {
+
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("name"));
+
+                dtm.addRow(vector);
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -375,17 +366,16 @@ e.printStackTrace();                   }
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         String language = jTextField1.getText();
-        
-        if(language.isEmpty()){
-          JOptionPane.showMessageDialog(this, "Please Add Movie Language", "Warning", JOptionPane.WARNING_MESSAGE);
+        String language = jTextField1.getText();
 
-        }else{
+        if (language.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Add Movie Language", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else {
             try {
-                
+
                 ResultSet resultSet = mySQL.executeSearch("SELECT * FROM  `language` WHERE `name`='" + language + "'");
-                
-                
+
                 if (resultSet.next()) {
                     JOptionPane.showMessageDialog(this, "Alredy Registered", "Warning", JOptionPane.WARNING_MESSAGE);
 
@@ -393,63 +383,63 @@ e.printStackTrace();                   }
                     mySQL.executeIUD("INSERT INTO `language`(`name`)"
                             + "VALUES('" + language + "') ");
                 }
-                
+
                 loadLanguageTable();
                 reset();
                 jTextField1.grabFocus();
+                JOptionPane.showMessageDialog(this, "Movie Language successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
-        
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         int row = jTable2.getSelectedRow();
-        
-     
-        
-          
-          if(row == -1){
-            
-                      JOptionPane.showMessageDialog(this, "Please Select Row To Update", "Warning", JOptionPane.WARNING_MESSAGE);
-     
-        }else{
-          
-               String language = jTextField1.getText();
-          String id = String.valueOf(jTable2.getValueAt(row, 0));
-         if(language.isEmpty()){
-          JOptionPane.showMessageDialog(this, "Please Add Movie Language", "Warning", JOptionPane.WARNING_MESSAGE);
-          }else{
-              
-            try {
-                
-                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM  `language` WHERE `name` ='" + language + "'");
-                
-                
-                if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Alredy Registered", "Warning", JOptionPane.WARNING_MESSAGE);
+        int row = jTable2.getSelectedRow();
 
-                } else {
-                    mySQL.executeIUD("UPDATE `language` SET "
-                    + "`name`='"+language+"' WHERE `id`='"+id+"'");
-            
+        if (row == -1) {
+
+            JOptionPane.showMessageDialog(this, "Please Select Row To Update", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+
+            String language = jTextField1.getText();
+            String id = String.valueOf(jTable2.getValueAt(row, 0));
+            if (language.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Add Movie Language", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+
+                try {
+
+                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM  `language` WHERE `name` ='" + language + "'");
+
+                    if (resultSet.next()) {
+                        JOptionPane.showMessageDialog(this, "Alredy Registered", "Warning", JOptionPane.WARNING_MESSAGE);
+
+                    } else {
+                        mySQL.executeIUD("UPDATE `language` SET "
+                                + "`name`='" + language + "' WHERE `id`='" + id + "'");
+                        JOptionPane.showMessageDialog(this, "Movie Language successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    }
+
+                    loadLanguageTable();
+                    reset();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                
-                loadLanguageTable();
-                reset();
-            } catch (Exception e) {
-            e.printStackTrace();
             }
+
         }
-          
-          }
-          
-        
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int row = jTable2.getSelectedRow();
+        jButton2.setEnabled(true);
 
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
         jButton1.setEnabled(false);
@@ -457,7 +447,7 @@ e.printStackTrace();                   }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       reset();
+        reset();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -523,7 +513,7 @@ e.printStackTrace();                   }
     private void reset() {
         jTextField1.setText("");
         jButton1.setEnabled(true);
-        //jButton2.setEnabled(false);
+        jButton2.setEnabled(false);
         jTextField1.grabFocus();
     }
 }
