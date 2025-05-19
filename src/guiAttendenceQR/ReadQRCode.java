@@ -216,9 +216,73 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+//        String Qrcode = jTextField1.getText().trim();
+//
+//// Remove leading/trailing quotes if any
+//        if (Qrcode.startsWith("'")) {
+//            Qrcode = Qrcode.substring(1);
+//        }
+//        if (Qrcode.endsWith("'")) {
+//            Qrcode = Qrcode.substring(0, Qrcode.length() - 1);
+//        }
+//
+//        Date now = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+//
+//        String currentDate = dateFormat.format(now);
+//        String currentTime = timeFormat.format(now);
+//
+//        try {
+//            ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
+//
+//            if (resultSet1.next()) {
+//                // Check if attendance already marked for today
+//                ResultSet resultSet2 = mySQL.executeSearch(
+//                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND `date` LIKE '" + currentDate.substring(0, 10) + "%'"
+//                );
+//
+//                if (resultSet2.next()) {
+//                    JOptionPane.showMessageDialog(this,
+//                            "⚠️ Attendance Already Marked for Today!",
+//                            "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
+//                } else {
+//                    // Determine attendance type
+//                    int attendanceTypeId = (currentTime.compareTo("08:00:00") <= 0) ? 1 : 2;
+//
+//                    // Insert attendance with type
+//                    mySQL.executeIUD("INSERT INTO `employye_attendce` (`emp_qr_qr_number`, `date`, `attendce_type_id`) "
+//                            + "VALUES ('" + Qrcode + "', '" + currentDate + "', '" + attendanceTypeId + "')");
+//
+//                    // Insert salary with type
+//                    mySQL.executeIUD("");
+//
+//                    viewEmployee();
+//                    reload();
+//                    jTextField1.setText("");
+//
+//                    if (attendanceTypeId == 1) {
+//                        JOptionPane.showMessageDialog(this,
+//                                "✅ Attendance Marked Successfully!\n🕒 Time: " + currentTime,
+//                                "Success", JOptionPane.INFORMATION_MESSAGE);
+//                    } else {
+//                        JOptionPane.showMessageDialog(this,
+//                                "✅ Late Attendance Recorded!\n🕒 Time: " + currentTime + "\n⚠️ Marked as Late",
+//                                "Late Attendance", JOptionPane.WARNING_MESSAGE);
+//                    }
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(this, "❌ Invalid QR Code!", "Warning", JOptionPane.WARNING_MESSAGE);
+//                viewEmployee();
+//                reload();
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         String Qrcode = jTextField1.getText().trim();
 
-// Remove leading/trailing quotes if any
+        // Remove leading/trailing quotes
         if (Qrcode.startsWith("'")) {
             Qrcode = Qrcode.substring(1);
         }
@@ -228,18 +292,20 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
 
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat onlyDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-        String currentDate = dateFormat.format(now);
+        String currentDateTime = dateFormat.format(now);
+        String currentDate = onlyDateFormat.format(now);
         String currentTime = timeFormat.format(now);
 
         try {
             ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
 
             if (resultSet1.next()) {
-                // Check if attendance already marked for today
+                // Check for existing attendance
                 ResultSet resultSet2 = mySQL.executeSearch(
-                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND `date` LIKE '" + currentDate.substring(0, 10) + "%'"
+                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND `date` LIKE '" + currentDate + "%'"
                 );
 
                 if (resultSet2.next()) {
@@ -250,10 +316,36 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                     // Determine attendance type
                     int attendanceTypeId = (currentTime.compareTo("08:00:00") <= 0) ? 1 : 2;
 
-                    // Insert attendance with type
+                    // Insert attendance
                     mySQL.executeIUD("INSERT INTO `employye_attendce` (`emp_qr_qr_number`, `date`, `attendce_type_id`) "
-                            + "VALUES ('" + Qrcode + "', '" + currentDate + "', '" + attendanceTypeId + "')");
+                            + "VALUES ('" + Qrcode + "', '" + currentDateTime + "', '" + attendanceTypeId + "')");
 
+                    // Get the last inserted attendce ID
+                    ResultSet rsAttend = mySQL.executeSearch("SELECT LAST_INSERT_ID() AS last_id");
+                    int attendanceId = 0;
+                    if (rsAttend.next()) {
+                        attendanceId = rsAttend.getInt("last_id");
+                    }
+
+                    // Fetch daySalary
+                    ResultSet rsSalary = mySQL.executeSearch(
+                            "SELECT emp_type.daySalary "
+                            + "FROM emp_qr "
+                            + "INNER JOIN employee ON emp_qr.employee_mobile = employee.mobile "
+                            + "INNER JOIN emp_type ON employee.emp_type_id = emp_type.id "
+                            + "WHERE emp_qr.qr_number = '" + Qrcode + "'"
+                    );
+
+                    double finalSalary = 0;
+                    if (rsSalary.next()) {
+                        double daySalary = rsSalary.getDouble("daySalary");
+                        finalSalary = (attendanceTypeId == 1) ? daySalary : daySalary / 2.0;
+                    }
+
+                    // Insert salary record
+                    mySQL.executeIUD("INSERT INTO `employee_salary` (`salary`, `date`, `employye_attendce_id`) "
+                            + "VALUES ('" + finalSalary + "', '" + currentDate + "', '" + attendanceId + "')");
+                    System.out.println(attendanceId);
                     viewEmployee();
                     reload();
                     jTextField1.setText("");
@@ -277,6 +369,7 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

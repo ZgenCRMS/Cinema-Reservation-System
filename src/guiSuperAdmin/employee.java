@@ -34,21 +34,21 @@ public class employee extends javax.swing.JPanel {
         reload();
         hint();
         AttendanceEmployee();
+        SalaryEmployee();
     }
-    
+
     private void hint() {
         if (jTextField4 != null) {
             jTextField4.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField5 != null) {
+        }
+        if (jTextField5 != null) {
             jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField6 != null) {
+        }
+        if (jTextField6 != null) {
             jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
         }
-        
 
     }
-
-
 
     private void reload() {
 
@@ -59,6 +59,8 @@ public class employee extends javax.swing.JPanel {
                 while (true) {
 
                     viewEmployee();
+                    SalaryEmployee();
+                    AttendanceEmployee();
 
                     try {
                         Thread.sleep(3000);
@@ -105,8 +107,7 @@ public class employee extends javax.swing.JPanel {
         }
 
     }
-    
-    
+
     private void AttendanceEmployee() {
 
         try {
@@ -125,7 +126,6 @@ public class employee extends javax.swing.JPanel {
                 vector.add(resultSet.getString("emp_type.emp_type"));
                 vector.add(resultSet.getString("attendce_type.name"));
                 vector.add(resultSet.getString("employye_attendce.date"));
-                
 
                 dtm.addRow(vector);
 
@@ -136,7 +136,37 @@ public class employee extends javax.swing.JPanel {
         }
 
     }
-    
+
+    private void SalaryEmployee() {
+
+        try {
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM employee_salary "
+                    + "INNER JOIN employye_attendce ON employee_salary.employye_attendce_id=employye_attendce.id "
+                    + "INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number "
+                    + "INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile "
+                    + "INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id");
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+            dtm.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("employee.fname"));
+                vector.add(resultSet.getString("employee.lname"));
+                vector.add(resultSet.getString("salary"));
+                vector.add(resultSet.getString("date"));
+                vector.add(resultSet.getString("attendce_type.name"));
+
+                dtm.addRow(vector);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -216,10 +246,7 @@ public class employee extends javax.swing.JPanel {
         jComboBox6 = new javax.swing.JComboBox<>();
         jPanel54 = new javax.swing.JPanel();
         jPanel55 = new javax.swing.JPanel();
-        jPanel57 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
         jPanel58 = new javax.swing.JPanel();
-        jPanel59 = new javax.swing.JPanel();
         jPanel60 = new javax.swing.JPanel();
         jButton6 = new javax.swing.JButton();
         jPanel56 = new javax.swing.JPanel();
@@ -798,41 +825,14 @@ public class employee extends javax.swing.JPanel {
         jPanel55.setPreferredSize(new java.awt.Dimension(195, 35));
         jPanel55.setLayout(new java.awt.BorderLayout());
 
-        jPanel57.setPreferredSize(new java.awt.Dimension(50, 35));
-        jPanel57.setLayout(new java.awt.GridLayout(1, 0, 2, 2));
-
-        jButton5.setBackground(new java.awt.Color(31, 117, 254));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/reload (2).png"))); // NOI18N
-        jButton5.setBorderPainted(false);
-        jPanel57.add(jButton5);
-
-        jPanel55.add(jPanel57, java.awt.BorderLayout.LINE_END);
-
         jPanel58.setLayout(new java.awt.BorderLayout());
-
-        jPanel59.setPreferredSize(new java.awt.Dimension(4, 35));
-
-        javax.swing.GroupLayout jPanel59Layout = new javax.swing.GroupLayout(jPanel59);
-        jPanel59.setLayout(jPanel59Layout);
-        jPanel59Layout.setHorizontalGroup(
-            jPanel59Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-        jPanel59Layout.setVerticalGroup(
-            jPanel59Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
-        );
-
-        jPanel58.add(jPanel59, java.awt.BorderLayout.LINE_END);
 
         jPanel60.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton6.setBackground(new java.awt.Color(0, 204, 0));
+        jButton6.setBackground(new java.awt.Color(51, 51, 51));
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Calculate Salary");
+        jButton6.setText("Clear");
         jButton6.setBorderPainted(false);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -931,32 +931,28 @@ public class employee extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
-           try {
+
+        try {
 
 //            JREmptyDataSource dataSource = new JREmptyDataSource();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AEReport.jasper",null, connection);
-            JasperViewer.viewReport(report,false);
-            
-             JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/cinema/employee.pdf");
-            
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AEReport.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/cinema/employee.pdf");
+
             connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        
-        
-        
-        
-        
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
 
@@ -964,7 +960,6 @@ public class employee extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
@@ -1024,9 +1019,7 @@ public class employee extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel54;
     private javax.swing.JPanel jPanel55;
     private javax.swing.JPanel jPanel56;
-    private javax.swing.JPanel jPanel57;
     private javax.swing.JPanel jPanel58;
-    private javax.swing.JPanel jPanel59;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel60;
     private javax.swing.JPanel jPanel7;
