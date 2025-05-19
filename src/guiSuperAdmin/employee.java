@@ -138,9 +138,18 @@ public class employee extends javax.swing.JPanel {
     }
 
     private void SalaryEmployee() {
-
         try {
-            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM employee_salary INNER JOIN employye_attendce ON employee_salary.employye_attendce_id=employye_attendce.id INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id INNER JOIN emp_type ON employee.emp_type_id=emp_type.id");
+            ResultSet resultSet = mySQL.executeSearch(
+                    "SELECT e.mobile,e.fname,e.lname,et.daySalary,es.salary, "
+                            + "SUM(CASE WHEN at.name = 'On Time' THEN 1 ELSE 0 END) AS onTimeCount,"
+                            + "SUM(CASE WHEN at.name = 'Late' THEN 1 ELSE 0 END) AS lateCount FROM employye_attendce ea "
+                            + "INNER JOIN emp_qr eq ON ea.emp_qr_qr_number = eq.qr_number "
+                            + "INNER JOIN employee e ON eq.employee_mobile = e.mobile "
+                            + "INNER JOIN emp_type et ON e.emp_type_id = et.id "
+                            + "INNER JOIN employee_salary es ON e.mobile = es.employee_mobile "
+                            + "INNER JOIN attendce_type at ON ea.attendce_type_id = at.id "
+                            + "GROUP BY e.mobile, e.fname, e.lname, et.daySalary, es.salary;"
+            );
 
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
@@ -148,23 +157,48 @@ public class employee extends javax.swing.JPanel {
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
 
-                vector.add(resultSet.getString("employee.mobile"));
-                vector.add(resultSet.getString("employee.fname") + " " + resultSet.getString("employee.lname"));
-                vector.add(resultSet.getString("")); //On Time Count
-                vector.add(resultSet.getString("")); //Late Count
-                vector.add(resultSet.getString("emp_type.daySalary"));
+                vector.add(resultSet.getString("mobile"));
+                vector.add(resultSet.getString("fname") + " " + resultSet.getString("lname"));
+                vector.add(resultSet.getString("onTimeCount")); // On Time Count
+                vector.add(resultSet.getString("lateCount"));   // Late Count
+                vector.add(resultSet.getString("daySalary"));
                 vector.add(resultSet.getString("salary"));
 
                 dtm.addRow(vector);
-
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+//    private void SalaryEmployee() {
+//
+//        try {
+//            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM employee_salary INNER JOIN employye_attendce ON employee_salary.employye_attendce_id=employye_attendce.id INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id INNER JOIN emp_type ON employee.emp_type_id=emp_type.id");
+//
+//            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+//            dtm.setRowCount(0);
+//
+//            while (resultSet.next()) {
+//                Vector<String> vector = new Vector<>();
+//
+//                vector.add(resultSet.getString("employee.mobile"));
+//                vector.add(resultSet.getString("employee.fname") + " " + resultSet.getString("employee.lname"));
+//                vector.add(resultSet.getString("")); //On Time Count
+//                vector.add(resultSet.getString("")); //Late Count
+//                vector.add(resultSet.getString("emp_type.daySalary"));
+//                vector.add(resultSet.getString("salary"));
+//
+//                dtm.addRow(vector);
+//
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
