@@ -140,23 +140,20 @@ public class employee extends javax.swing.JPanel {
     private void SalaryEmployee() {
 
         try {
-            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM employee_salary "
-                    + "INNER JOIN employye_attendce ON employee_salary.employye_attendce_id=employye_attendce.id "
-                    + "INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number "
-                    + "INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile "
-                    + "INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id");
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM employee_salary INNER JOIN employye_attendce ON employee_salary.employye_attendce_id=employye_attendce.id INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id INNER JOIN emp_type ON employee.emp_type_id=emp_type.id");
 
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
-                vector.add(resultSet.getString("id"));
-                vector.add(resultSet.getString("employee.fname"));
-                vector.add(resultSet.getString("employee.lname"));
+
+                vector.add(resultSet.getString("employee.mobile"));
+                vector.add(resultSet.getString("employee.fname") + " " + resultSet.getString("employee.lname"));
+                vector.add(resultSet.getString("")); //On Time Count
+                vector.add(resultSet.getString("")); //Late Count
+                vector.add(resultSet.getString("emp_type.daySalary"));
                 vector.add(resultSet.getString("salary"));
-                vector.add(resultSet.getString("date"));
-                vector.add(resultSet.getString("attendce_type.name"));
 
                 dtm.addRow(vector);
 
@@ -891,7 +888,7 @@ public class employee extends javax.swing.JPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Emp First Name", "Emp Last Name", "Emp Salary", "Date", "Attendance Status"
+                "Mobile", "Name", "On Time", "Late", "Day Salary", "Total Salary"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -903,6 +900,13 @@ public class employee extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
+            jTable3.getColumnModel().getColumn(2).setResizable(false);
+            jTable3.getColumnModel().getColumn(3).setResizable(false);
+            jTable3.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         jPanel52.add(jScrollPane3);
 
