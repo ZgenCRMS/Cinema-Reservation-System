@@ -4,8 +4,6 @@
  */
 package guiManager;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,9 +13,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -591,11 +586,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jButton1.setText("Print");
         jButton1.setBorderPainted(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
         jPanel32.add(jButton1);
 
         jPanel21.add(jPanel32, java.awt.BorderLayout.LINE_END);
@@ -764,7 +754,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         String moviehall = String.valueOf(jTable1.getValueAt(row, 2));
         jComboBox2.setSelectedItem(moviehall);
 
-        String timeslot = String.valueOf(jTable1.getValueAt(row, 4));
+        String timeslot = String.valueOf(jTable1.getValueAt(row, 5));
         jComboBox3.setSelectedItem(timeslot);
 
         String scheduleDate = String.valueOf(jTable1.getValueAt(row, 3));
@@ -773,7 +763,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         String Startdate = String.valueOf(jTable1.getValueAt(row, 6));
 
         String EndDate = String.valueOf(jTable1.getValueAt(row, 7));
-
+ 
         try {
             Date date = dateFormat.parse(scheduleDate);
             jDateChooser1.setDate(date);
@@ -837,7 +827,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
 
                 try {
 
-                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE `schedule_date` = '" + sdf.format(ScheduleDate) + "' AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
+                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE  `end_date` = '" + sdf.format(EndDate) + "' AND `start_date` = '" + sdf.format(StartDate) + "' AND `schedule_date` = '" + sdf.format(ScheduleDate) + "' AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
 
                     if (resultSet.next()) {
                         JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -872,7 +862,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        jDateChooser1.grabFocus();
+       jDateChooser1.grabFocus();
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
@@ -890,24 +880,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     private void jDateChooser4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser4MouseClicked
         jButton4.grabFocus();
     }//GEN-LAST:event_jDateChooser4MouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASMReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -28,14 +28,15 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
         loadTimeSlotTable();
         jTextField1.grabFocus();
         hint();
+        jButton2.setEnabled(false);
     }
 
     private void hint() {
         if (jTextField1 != null) {
-            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Start Time");
+            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "00:00:00");
         }
         if (jTextField2 != null) {
-            jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter End Time");
+            jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "00:00:00");
         }
     }
 
@@ -68,7 +69,8 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
 
     private void init() {
 
-//        jTextField1.putClientProperty("JComponent.roundRect", true);
+        jTextField1.putClientProperty("JComponent.roundRect", true);
+        jTextField2.putClientProperty("JComponent.roundRect", true);
         jButton1.putClientProperty("JButton.buttonType", "roundRect");
         jButton2.putClientProperty("JButton.buttonType", "roundRect");
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
@@ -215,11 +217,6 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
         jPanel11.setPreferredSize(new java.awt.Dimension(340, 35));
         jPanel11.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField1KeyTyped(evt);
@@ -227,11 +224,6 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
         });
         jPanel11.add(jTextField1);
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField2KeyTyped(evt);
@@ -402,11 +394,22 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
 
         if (starttime.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter Start Time", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (endtime.isEmpty()) {
-
             JOptionPane.showMessageDialog(this, "Please Enter End Time", "Warning", JOptionPane.WARNING_MESSAGE);
-
+        } else if (!starttime.matches("^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$") || !endtime.matches("^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$")) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter time in the correct format (HH:mm:ss), e.g., 14:30:00",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else if (java.time.LocalTime.parse(endtime).isBefore(java.time.LocalTime.parse(starttime).plusHours(1))) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "End time must be at least 1 hour after the start time.",
+                    "Time Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
         } else {
             try {
 
@@ -418,10 +421,13 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
                 } else {
                     mySQL.executeIUD("INSERT INTO `time_slot`(`start_time`,`end_time`)"
                             + "VALUES('" + starttime + "','" + endtime + "') ");
+
+                    loadTimeSlotTable();
+                    reset();
+                    JOptionPane.showMessageDialog(this, "Time Slot successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 }
 
-                loadTimeSlotTable();
-                reset();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -439,6 +445,7 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
         jTextField2.setText(String.valueOf(jTable2.getValueAt(row, 2)));
         jButton1.setEnabled(false);
+        jButton2.setEnabled(true);
 
 
     }//GEN-LAST:event_jTable2MouseClicked
@@ -461,6 +468,20 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
 
                 JOptionPane.showMessageDialog(this, "Please Enter End Time", "Warning", JOptionPane.WARNING_MESSAGE);
 
+            } else if (!starttime.matches("^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$") || !endtime.matches("^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$")) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please enter time in the correct format (HH:mm:ss), e.g., 14:30:00",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            } else if (java.time.LocalTime.parse(endtime).isBefore(java.time.LocalTime.parse(starttime).plusHours(1))) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "End time must be at least 1 hour after the start time.",
+                        "Time Error",
+                        JOptionPane.WARNING_MESSAGE
+                );
             } else {
                 try {
 
@@ -472,6 +493,7 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
                     } else {
                         mySQL.executeIUD("UPDATE `time_slot` SET "
                                 + "`start_time`='" + starttime + "',`end_time`='" + endtime + "' WHERE `id`='" + id + "'");
+                        JOptionPane.showMessageDialog(this, "Time Slot successfully Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                     }
 
@@ -491,28 +513,22 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jTable2KeyPressed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        jTextField2.grabFocus();
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        jButton1.grabFocus();
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         char c = evt.getKeyChar();
 
         if (Character.isLetter(c)) {
             evt.consume();
         }
+
     }//GEN-LAST:event_jTextField1KeyTyped
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
-       char c = evt.getKeyChar();
+        char c = evt.getKeyChar();
 
         if (Character.isLetter(c)) {
             evt.consume();
         }
+
     }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
@@ -577,5 +593,7 @@ public class AddScheduleTimeSlot extends javax.swing.JDialog {
         jTextField1.setText("");
         jTextField2.setText("");
         jButton1.setEnabled(true);
+        jButton2.setEnabled(false);
+
     }
 }
