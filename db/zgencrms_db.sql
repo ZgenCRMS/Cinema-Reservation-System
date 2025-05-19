@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `attendce_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.attendce_type: ~2 rows (approximately)
+-- Dumping data for table zgencrms_db.attendce_type: ~0 rows (approximately)
 INSERT INTO `attendce_type` (`id`, `name`) VALUES
 	(1, 'On Time'),
 	(2, 'Late');
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `city` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.city: ~12 rows (approximately)
+-- Dumping data for table zgencrms_db.city: ~10 rows (approximately)
 INSERT INTO `city` (`id`, `name`) VALUES
 	(1, 'Colombo'),
 	(2, 'Kandy'),
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   CONSTRAINT `fk_employee_emp_type` FOREIGN KEY (`emp_type_id`) REFERENCES `emp_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.employee: ~11 rows (approximately)
+-- Dumping data for table zgencrms_db.employee: ~9 rows (approximately)
 INSERT INTO `employee` (`email`, `fname`, `lname`, `nic`, `mobile`, `emp_reg_date`, `emp_type_id`, `emp_status_id`) VALUES
 	('kamal.perera@gmail.com', 'Kamal', 'Perera', '123456789V', '0711234567', '2025-01-01', 1, 1),
 	('nimal.silva@gmail.com', 'Nimal', 'yjtyj', '987654371V', '0712345678', '2025-01-02', 1, 1),
@@ -188,14 +188,17 @@ INSERT INTO `employee` (`email`, `fname`, `lname`, `nic`, `mobile`, `emp_reg_dat
 CREATE TABLE IF NOT EXISTS `employee_salary` (
   `id` int NOT NULL AUTO_INCREMENT,
   `salary` double NOT NULL,
-  `date` date NOT NULL,
-  `employye_attendce_id` int NOT NULL,
+  `employee_mobile` varchar(10) NOT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_employee_salary_employye_attendce1_idx` (`employye_attendce_id`),
-  CONSTRAINT `fk_employee_salary_employye_attendce1` FOREIGN KEY (`employye_attendce_id`) REFERENCES `employye_attendce` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `fk_employee_salary_employee1_idx` (`employee_mobile`),
+  CONSTRAINT `fk_employee_salary_employee1` FOREIGN KEY (`employee_mobile`) REFERENCES `employee` (`mobile`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.employee_salary: ~0 rows (approximately)
+INSERT INTO `employee_salary` (`id`, `salary`, `employee_mobile`, `date`) VALUES
+	(5, 1500, '0711234567', '2025-05-19 17:00:35'),
+	(6, 1500, '0712345678', '2025-05-19 17:09:09');
 
 -- Dumping structure for table zgencrms_db.employye_attendce
 CREATE TABLE IF NOT EXISTS `employye_attendce` (
@@ -208,11 +211,12 @@ CREATE TABLE IF NOT EXISTS `employye_attendce` (
   KEY `fk_employye_attendce_attendce_type1_idx` (`attendce_type_id`),
   CONSTRAINT `fk_employye_attendce_attendce_type1` FOREIGN KEY (`attendce_type_id`) REFERENCES `attendce_type` (`id`),
   CONSTRAINT `fk_employye_attendce_emp_qr1` FOREIGN KEY (`emp_qr_qr_number`) REFERENCES `emp_qr` (`qr_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.employye_attendce: ~1 rows (approximately)
+-- Dumping data for table zgencrms_db.employye_attendce: ~0 rows (approximately)
 INSERT INTO `employye_attendce` (`id`, `emp_qr_qr_number`, `date`, `attendce_type_id`) VALUES
-	(10, '123456789V', '2025-05-18 22:13:48', 2);
+	(18, '123456789V', '2025-05-19 17:00:35', 2),
+	(19, '987654371V', '2025-05-19 17:09:09', 2);
 
 -- Dumping structure for table zgencrms_db.emp_address
 CREATE TABLE IF NOT EXISTS `emp_address` (
@@ -248,9 +252,10 @@ CREATE TABLE IF NOT EXISTS `emp_qr` (
   CONSTRAINT `fk_emp_qr_employee1` FOREIGN KEY (`employee_mobile`) REFERENCES `employee` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.emp_qr: ~1 rows (approximately)
+-- Dumping data for table zgencrms_db.emp_qr: ~8 rows (approximately)
 INSERT INTO `emp_qr` (`qr_number`, `employee_mobile`) VALUES
-	('123456789V', '0711234567');
+	('123456789V', '0711234567'),
+	('987654371V', '0712345678');
 
 -- Dumping structure for table zgencrms_db.emp_status
 CREATE TABLE IF NOT EXISTS `emp_status` (
@@ -273,9 +278,9 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
   `emp_type` varchar(45) NOT NULL,
   `daySalary` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.emp_type: ~14 rows (approximately)
+-- Dumping data for table zgencrms_db.emp_type: ~17 rows (approximately)
 INSERT INTO `emp_type` (`id`, `emp_type`, `daySalary`) VALUES
 	(1, 'Full Time', 3000),
 	(2, 'Manager', 7000),
@@ -306,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `grn_item` (
   CONSTRAINT `fk_grn_item_snack_stock1` FOREIGN KEY (`snack_stock_id`) REFERENCES `snack_stock` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.grn_item: ~1 rows (approximately)
+-- Dumping data for table zgencrms_db.grn_item: ~0 rows (approximately)
 INSERT INTO `grn_item` (`id`, `qty`, `buying_price`, `snack_stock_id`, `snack_grn_id`) VALUES
 	(1, 100, 150000, 1, 2);
 
@@ -383,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
   CONSTRAINT `fk_invoice_item_snack_stock1` FOREIGN KEY (`snack_stock_id`) REFERENCES `snack_stock` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.invoice_item: ~1 rows (approximately)
+-- Dumping data for table zgencrms_db.invoice_item: ~0 rows (approximately)
 INSERT INTO `invoice_item` (`id`, `qty`, `snack_invoice_id`, `snack_stock_id`) VALUES
 	(1, 5, 1, 1);
 
