@@ -31,7 +31,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         loadMovieName();
         loadStartEndTime();
         loadMovieTimeSchedule();
-        //jButton5.setEnabled(false);
+        jButton5.setEnabled(false);
     }
 
     private void loadMovieName() {
@@ -146,10 +146,8 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jPanel29 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -341,10 +339,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Schedule Date");
-
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,12 +349,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Movie Hall No.");
-
-        jDateChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jDateChooser1MouseClicked(evt);
-            }
-        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -439,10 +427,8 @@ public class MovieScheduleTime extends javax.swing.JPanel {
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox2, 0, 208, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox3, 0, 208, Short.MAX_VALUE)
@@ -468,10 +454,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -483,13 +465,13 @@ public class MovieScheduleTime extends javax.swing.JPanel {
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jDateChooser4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(118, 118, 118)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel28.add(jPanel29, java.awt.BorderLayout.CENTER);
@@ -683,63 +665,64 @@ public class MovieScheduleTime extends javax.swing.JPanel {
 
         String MovieName = String.valueOf(jComboBox1.getSelectedItem());
         String MovieHall = String.valueOf(jComboBox2.getSelectedItem());
-        Date ScheduleDate = jDateChooser1.getDate();
-        String TimeSlot = String.valueOf(jComboBox3.getSelectedIndex());
+        String TimeSlot = String.valueOf(jComboBox3.getSelectedItem());
         Date StartDate = jDateChooser2.getDate();
         Date EndDate = jDateChooser4.getDate();
 
-        if (MovieName.equals("Select")) {
-
+        // Input validation
+        if (MovieName.equals("select")) {
             JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else if (MovieHall.equals("Select")) {
-
-            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else if (ScheduleDate == null) {
-
-            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else if (TimeSlot.equals("Select")) {
-
-            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else if (StartDate == null) {
-
-            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else if (EndDate == null) {
-
-            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-
-            try {
-
-                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` INNER JOIN `hall` ON `schedule`.`hall_id`=`hall`.`id` WHERE `hall_id` = '" + MovieHall + "' ");
-
-                if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-
-                    mySQL.executeIUD("INSERT INTO `schedule`(`schedule_date`,`movie_movie_id`,`hall_id`,`time_slot_id`,`start_date`,`end_date`)"
-                            + "VALUES ('" + sdf.format(ScheduleDate) + "','" + LoadsMovieMap.get(MovieName) + "','" + LoadMovieHallMap.get(MovieHall) + "','" + TimeSlot + "','" + sdf.format(StartDate) + "','" + sdf.format(EndDate) + "')");
-//                    reset();
-                    JOptionPane.showMessageDialog(this, "Successfull", "Inform", JOptionPane.INFORMATION_MESSAGE);
-
-                    loadMovieTimeSchedule();
-                    jButton5.setEnabled(false);
-                    reset();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-
+            return;
         }
 
+        if (MovieHall.equals("select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
+        if (TimeSlot.equals("select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Time Slot", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (StartDate == null) {
+            JOptionPane.showMessageDialog(this, "Please Enter Start Date", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (EndDate == null) {
+            JOptionPane.showMessageDialog(this, "Please Select End Date", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!EndDate.after(StartDate)) {
+            JOptionPane.showMessageDialog(this, "End date must be after the start date.", "Date Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Only now it's safe to proceed
+        try {
+            ResultSet resultSet = mySQL.executeSearch(
+                    "SELECT * FROM `schedule` WHERE `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "'"
+            );
+
+            if (resultSet.next()) {
+                JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                mySQL.executeIUD("INSERT INTO `schedule`(`schedule_date`,`movie_movie_id`,`hall_id`,`time_slot_id`,`start_date`,`end_date`) "
+                        + "VALUES ('" + sdf.format(date) + "','" + LoadsMovieMap.get(MovieName) + "','" + LoadMovieHallMap.get(MovieHall) + "','" + jComboBox3.getSelectedIndex() + "','" + sdf.format(StartDate) + "','" + sdf.format(EndDate) + "')");
+
+                loadMovieTimeSchedule();
+                jButton5.setEnabled(false);
+                reset();
+                JOptionPane.showMessageDialog(this, "Movie Schedule Time successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -763,10 +746,8 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         String Startdate = String.valueOf(jTable1.getValueAt(row, 6));
 
         String EndDate = String.valueOf(jTable1.getValueAt(row, 7));
- 
+
         try {
-            Date date = dateFormat.parse(scheduleDate);
-            jDateChooser1.setDate(date);
 
             Date date2 = dateFormat.parse(Startdate);
             jDateChooser2.setDate(date2);
@@ -793,54 +774,62 @@ public class MovieScheduleTime extends javax.swing.JPanel {
 
             String MovieName = String.valueOf(jComboBox1.getSelectedItem());
             String MovieHall = String.valueOf(jComboBox2.getSelectedItem());
-            Date ScheduleDate = jDateChooser1.getDate();
             String TimeSlot = String.valueOf(jComboBox3.getSelectedIndex());
             Date StartDate = jDateChooser2.getDate();
             Date EndDate = jDateChooser4.getDate();
 
-            if (MovieName.equals("Select")) {
+            if (MovieName.equals("select")) {
 
                 JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
 
-            } else if (MovieHall.equals("Select")) {
+            } else if (MovieHall.equals("select")) {
 
                 JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
 
-            } else if (ScheduleDate == null) {
+            } else if (TimeSlot.equals("select")) {
 
-                JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (TimeSlot.equals("Select")) {
-
-                JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Select Time Slot", "Warning", JOptionPane.WARNING_MESSAGE);
 
             } else if (StartDate == null) {
 
-                JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Enter Start Date", "Warning", JOptionPane.WARNING_MESSAGE);
 
             } else if (EndDate == null) {
 
-                JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Select End Date", "Warning", JOptionPane.WARNING_MESSAGE);
 
+            } else if (StartDate != null && EndDate != null) {
+                if (!EndDate.after(StartDate)) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "End date must be after the start date.",
+                            "Date Error",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                }
             } else {
+                Date date = new Date();
+
                 SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 
                 try {
 
-                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE  `end_date` = '" + sdf.format(EndDate) + "' AND `start_date` = '" + sdf.format(StartDate) + "' AND `schedule_date` = '" + sdf.format(ScheduleDate) + "' AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
+                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE  `end_date` = '" + sdf.format(EndDate) + "' AND `start_date` = '" + sdf.format(StartDate) + "'  AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
 
                     if (resultSet.next()) {
                         JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
                     } else {
 
-                        mySQL.executeIUD("UPDATE `schedule` SET `schedule_date` = '" + sdf.format(ScheduleDate) + "', `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "', `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "',"
+                        mySQL.executeIUD("UPDATE `schedule` SET `schedule_date` = '" + sdf.format(date) + "', `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "', `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "',"
                                 + "`time_slot_id` = '1', `start_date` = '" + sdf.format(StartDate) + "', `end_date` = '" + sdf.format(EndDate) + "'"
                                 + "WHERE `id` = '" + movieID + "'");
                         //                    reset();
-                        JOptionPane.showMessageDialog(this, "Successfull", "Inform", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Movie Shedule Time successfully Updated!", "Inform", JOptionPane.INFORMATION_MESSAGE);
 
                         loadMovieTimeSchedule();
                         reset();
+                        JOptionPane.showMessageDialog(this, "Movie Shedule Time successfully Updated!", "Inform", JOptionPane.INFORMATION_MESSAGE);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -862,12 +851,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-       jDateChooser1.grabFocus();
     }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
-        jComboBox3.grabFocus();
-    }//GEN-LAST:event_jDateChooser1MouseClicked
 
     private void jComboBox3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox3MouseClicked
         jDateChooser2.grabFocus();
@@ -891,12 +875,10 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private com.toedter.calendar.JDateChooser jDateChooser4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -942,11 +924,10 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
         jComboBox3.setSelectedIndex(0);
-        jDateChooser1.setDate(null);
         jDateChooser2.setDate(null);
         jDateChooser4.setDate(null);
         jButton4.setEnabled(true);
         jTable1.clearSelection();
-
+        jButton5.setEnabled(false);
     }
 }

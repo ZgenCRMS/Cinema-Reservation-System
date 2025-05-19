@@ -340,10 +340,8 @@
                                               <Group type="102" attributes="0">
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="jDateChooser1" max="32767" attributes="0"/>
                                                       <Component id="jLabel2" max="32767" attributes="0"/>
                                                       <Component id="jComboBox1" max="32767" attributes="0"/>
-                                                      <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
                                                       <Component id="jComboBox2" alignment="0" pref="208" max="32767" attributes="0"/>
                                                       <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
                                                       <Component id="jComboBox3" alignment="0" pref="208" max="32767" attributes="0"/>
@@ -371,11 +369,7 @@
                                                   <Component id="jLabel4" min="-2" pref="24" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="jComboBox2" min="-2" pref="32" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jLabel3" min="-2" pref="24" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jDateChooser1" min="-2" pref="30" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" max="-2" attributes="0"/>
                                                   <Component id="jLabel5" min="-2" pref="24" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="jComboBox3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -387,13 +381,13 @@
                                                   <Component id="jLabel7" min="-2" pref="24" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="jDateChooser4" min="-2" pref="30" max="-2" attributes="0"/>
-                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="jButton4" min="-2" pref="30" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
+                                                  <Component id="jButton4" min="-2" pref="35" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jButton5" min="-2" pref="30" max="-2" attributes="0"/>
+                                                  <Component id="jButton5" min="-2" pref="35" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jButton6" min="-2" pref="30" max="-2" attributes="0"/>
-                                                  <EmptySpace pref="14" max="32767" attributes="0"/>
+                                                  <Component id="jButton6" min="-2" pref="35" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -428,17 +422,6 @@
                                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                                           </AuxValues>
                                         </Component>
-                                        <Component class="javax.swing.JLabel" name="jLabel3">
-                                          <Properties>
-                                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                              <Font name="Segoe UI" size="14" style="1"/>
-                                            </Property>
-                                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                                            </Property>
-                                            <Property name="text" type="java.lang.String" value="Schedule Date"/>
-                                          </Properties>
-                                        </Component>
                                         <Component class="javax.swing.JComboBox" name="jComboBox2">
                                           <Properties>
                                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -467,11 +450,6 @@
                                             </Property>
                                             <Property name="text" type="java.lang.String" value="Movie Hall No."/>
                                           </Properties>
-                                        </Component>
-                                        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
-                                          <Events>
-                                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jDateChooser1MouseClicked"/>
-                                          </Events>
                                         </Component>
                                         <Component class="javax.swing.JLabel" name="jLabel5">
                                           <Properties>
@@ -818,9 +796,6 @@
                                                     <Property name="borderPainted" type="boolean" value="false"/>
                                                     <Property name="horizontalTextPosition" type="int" value="4"/>
                                                   </Properties>
-                                                  <Events>
-                                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-                                                  </Events>
                                                 </Component>
                                               </SubComponents>
                                             </Container>
