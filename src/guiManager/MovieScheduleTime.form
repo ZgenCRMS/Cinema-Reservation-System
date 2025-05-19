@@ -492,6 +492,11 @@
                                           </Properties>
                                         </Component>
                                         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser2">
+                                          <Properties>
+                                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                            </Property>
+                                          </Properties>
                                           <Events>
                                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jDateChooser2MouseClicked"/>
                                           </Events>
@@ -574,6 +579,11 @@
                                           </Events>
                                         </Component>
                                         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser4">
+                                          <Properties>
+                                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                            </Property>
+                                          </Properties>
                                           <Events>
                                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jDateChooser4MouseClicked"/>
                                           </Events>

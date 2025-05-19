@@ -365,6 +365,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Start Date");
 
+        jDateChooser2.setForeground(new java.awt.Color(255, 255, 255));
         jDateChooser2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jDateChooser2MouseClicked(evt);
@@ -414,6 +415,7 @@ public class MovieScheduleTime extends javax.swing.JPanel {
             }
         });
 
+        jDateChooser4.setForeground(new java.awt.Color(255, 255, 255));
         jDateChooser4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jDateChooser4MouseClicked(evt);
@@ -700,28 +702,43 @@ public class MovieScheduleTime extends javax.swing.JPanel {
             return;
         }
 
-        // Only now it's safe to proceed
         try {
-            ResultSet resultSet = mySQL.executeSearch(
-                    "SELECT * FROM `schedule` WHERE `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "'"
-            );
+            // Validate if a conflicting schedule already exists
+            int hallId = Integer.parseInt(LoadMovieHallMap.get(MovieHall));
+            int timeSlotId = jComboBox3.getSelectedIndex(); // or LoadTimeSlotMap.get(TimeSlot) if you have one
+            java.sql.Date sqlStart = new java.sql.Date(StartDate.getTime());
+            java.sql.Date sqlEnd = new java.sql.Date(EndDate.getTime());
 
-            if (resultSet.next()) {
-                JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
-            } else {
-                Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String query = "SELECT * FROM `schedule` WHERE `hall_id` = '" + hallId + "' AND `time_slot_id` = '" + timeSlotId + "' "
+                    + "AND ((`start_date` <= '" + sqlEnd + "' AND `end_date` >= '" + sqlStart + "'))";
 
-                mySQL.executeIUD("INSERT INTO `schedule`(`schedule_date`,`movie_movie_id`,`hall_id`,`time_slot_id`,`start_date`,`end_date`) "
-                        + "VALUES ('" + sdf.format(date) + "','" + LoadsMovieMap.get(MovieName) + "','" + LoadMovieHallMap.get(MovieHall) + "','" + jComboBox3.getSelectedIndex() + "','" + sdf.format(StartDate) + "','" + sdf.format(EndDate) + "')");
+            ResultSet rs = mySQL.executeSearch(query);
 
-                loadMovieTimeSchedule();
-                jButton5.setEnabled(false);
-                reset();
-                JOptionPane.showMessageDialog(this, "Movie Schedule Time successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Schedule conflict detected! This time slot is already in use in the selected hall during that date range.", "Conflict Detected", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+
+            // Proceed with inserting the schedule
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            mySQL.executeIUD("INSERT INTO `schedule`(`schedule_date`, `movie_movie_id`, `hall_id`, `time_slot_id`, `start_date`, `end_date`) VALUES ("
+                    + "'" + sdf.format(today) + "', "
+                    + "'" + LoadsMovieMap.get(MovieName) + "', "
+                    + "'" + hallId + "', "
+                    + "'" + timeSlotId + "', "
+                    + "'" + sdf.format(StartDate) + "', "
+                    + "'" + sdf.format(EndDate) + "')");
+
+            loadMovieTimeSchedule();
+            jButton5.setEnabled(false);
+            reset();
+            JOptionPane.showMessageDialog(this, "Movie Schedule Time successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred while processing the schedule. Please check your inputs and try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
