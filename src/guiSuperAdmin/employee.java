@@ -33,6 +33,7 @@ public class employee extends javax.swing.JPanel {
         viewEmployee();
         reload();
         hint();
+        AttendanceEmployee();
     }
     
     private void hint() {
@@ -94,6 +95,37 @@ public class employee extends javax.swing.JPanel {
                 vector.add(resultSet.getString("email"));
                 vector.add(resultSet.getString("emp_type"));
                 vector.add(resultSet.getString("emp_status"));
+
+                dtm.addRow(vector);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    
+    private void AttendanceEmployee() {
+
+        try {
+            ResultSet resultSet = mySQL.executeSearch("SELECT  * FROM `employye_attendce` INNER JOIN `emp_qr` ON `employye_attendce`.`emp_qr_qr_number` = `emp_qr`.`qr_number` "
+                    + "INNER JOIN `attendce_type` ON `employye_attendce`.`attendce_type_id` = `attendce_type`.`id`"
+                    + "INNER JOIN `employee` ON `emp_qr`.`employee_mobile` = `employee`.`mobile` INNER JOIN `emp_type` ON `employee`.`emp_type_id` = `emp_type`.`id`");
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("emp_qr.qr_number"));
+                vector.add(resultSet.getString("employee.fname"));
+                vector.add(resultSet.getString("employee.lname"));
+                vector.add(resultSet.getString("emp_type.emp_type"));
+                vector.add(resultSet.getString("attendce_type.name"));
+                vector.add(resultSet.getString("employye_attendce.date"));
+                
 
                 dtm.addRow(vector);
 
@@ -183,6 +215,14 @@ public class employee extends javax.swing.JPanel {
         jTextField6 = new javax.swing.JTextField();
         jComboBox6 = new javax.swing.JComboBox<>();
         jPanel54 = new javax.swing.JPanel();
+        jPanel55 = new javax.swing.JPanel();
+        jPanel57 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jPanel58 = new javax.swing.JPanel();
+        jPanel59 = new javax.swing.JPanel();
+        jPanel60 = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
+        jPanel56 = new javax.swing.JPanel();
         jPanel51 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
@@ -540,7 +580,7 @@ public class employee extends javax.swing.JPanel {
         jPanel46.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
         jPanel46.add(jTextField5);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "On Time", "Late" }));
         jPanel46.add(jComboBox5);
 
         jPanel11.add(jPanel46, java.awt.BorderLayout.LINE_START);
@@ -581,15 +621,23 @@ public class employee extends javax.swing.JPanel {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "QR Number", "First Name", "Last Name", "Job Role", "Attendance Status", "Date Time"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         jPanel14.add(jScrollPane2);
@@ -689,8 +737,7 @@ public class employee extends javax.swing.JPanel {
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
         );
         jPanel33Layout.setVerticalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -746,16 +793,72 @@ public class employee extends javax.swing.JPanel {
 
         jPanel50.add(jPanel53, java.awt.BorderLayout.LINE_START);
 
-        javax.swing.GroupLayout jPanel54Layout = new javax.swing.GroupLayout(jPanel54);
-        jPanel54.setLayout(jPanel54Layout);
-        jPanel54Layout.setHorizontalGroup(
-            jPanel54Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+        jPanel54.setLayout(new java.awt.BorderLayout());
+
+        jPanel55.setPreferredSize(new java.awt.Dimension(195, 35));
+        jPanel55.setLayout(new java.awt.BorderLayout());
+
+        jPanel57.setPreferredSize(new java.awt.Dimension(50, 35));
+        jPanel57.setLayout(new java.awt.GridLayout(1, 0, 2, 2));
+
+        jButton5.setBackground(new java.awt.Color(31, 117, 254));
+        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/reload (2).png"))); // NOI18N
+        jButton5.setBorderPainted(false);
+        jPanel57.add(jButton5);
+
+        jPanel55.add(jPanel57, java.awt.BorderLayout.LINE_END);
+
+        jPanel58.setLayout(new java.awt.BorderLayout());
+
+        jPanel59.setPreferredSize(new java.awt.Dimension(4, 35));
+
+        javax.swing.GroupLayout jPanel59Layout = new javax.swing.GroupLayout(jPanel59);
+        jPanel59.setLayout(jPanel59Layout);
+        jPanel59Layout.setHorizontalGroup(
+            jPanel59Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 4, Short.MAX_VALUE)
         );
-        jPanel54Layout.setVerticalGroup(
-            jPanel54Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel59Layout.setVerticalGroup(
+            jPanel59Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 35, Short.MAX_VALUE)
         );
+
+        jPanel58.add(jPanel59, java.awt.BorderLayout.LINE_END);
+
+        jPanel60.setLayout(new java.awt.GridLayout(1, 0));
+
+        jButton6.setBackground(new java.awt.Color(0, 204, 0));
+        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("Calculate Salary");
+        jButton6.setBorderPainted(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel60.add(jButton6);
+
+        jPanel58.add(jPanel60, java.awt.BorderLayout.CENTER);
+
+        jPanel55.add(jPanel58, java.awt.BorderLayout.CENTER);
+
+        jPanel54.add(jPanel55, java.awt.BorderLayout.LINE_END);
+
+        javax.swing.GroupLayout jPanel56Layout = new javax.swing.GroupLayout(jPanel56);
+        jPanel56.setLayout(jPanel56Layout);
+        jPanel56Layout.setHorizontalGroup(
+            jPanel56Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 553, Short.MAX_VALUE)
+        );
+        jPanel56Layout.setVerticalGroup(
+            jPanel56Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 35, Short.MAX_VALUE)
+        );
+
+        jPanel54.add(jPanel56, java.awt.BorderLayout.CENTER);
 
         jPanel50.add(jPanel54, java.awt.BorderLayout.CENTER);
 
@@ -782,15 +885,23 @@ public class employee extends javax.swing.JPanel {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Emp First Name", "Emp Last Name", "Emp Salary", "Date", "Attendance Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
 
         jPanel52.add(jScrollPane3);
@@ -840,11 +951,21 @@ public class employee extends javax.swing.JPanel {
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JComboBox<String> jComboBox6;
@@ -901,7 +1022,13 @@ public class employee extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel52;
     private javax.swing.JPanel jPanel53;
     private javax.swing.JPanel jPanel54;
+    private javax.swing.JPanel jPanel55;
+    private javax.swing.JPanel jPanel56;
+    private javax.swing.JPanel jPanel57;
+    private javax.swing.JPanel jPanel58;
+    private javax.swing.JPanel jPanel59;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel60;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
