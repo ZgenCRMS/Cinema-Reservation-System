@@ -32,11 +32,16 @@ public class UpdateJobRoles extends javax.swing.JDialog {
         loadJobs();
         jTextField1.setEnabled(false);
         hint();
+        jButton2.setEnabled(false);
+
     }
 
     private void hint() {
         if (jTextField2 != null) {
             jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Job Role");
+        }
+        if (jTextField3 != null) {
+            jTextField3.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Day Salary");
         }
     }
 
@@ -52,6 +57,8 @@ public class UpdateJobRoles extends javax.swing.JDialog {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("emp_type"));
+                vector.add(resultSet.getString("daySalary"));
+
 //                jobPositionMap.put(resultSet.getString("emp_type"), resultSet.getString("id"));
                 model.addRow(vector);
 
@@ -65,6 +72,7 @@ public class UpdateJobRoles extends javax.swing.JDialog {
     private void init() {
 
         jTextField2.putClientProperty("JComponent.roundRect", true);
+        jTextField3.putClientProperty("JComponent.roundRect", true);
 
         jButton2.putClientProperty("JButton.buttonType", "roundRect");
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
@@ -98,6 +106,7 @@ public class UpdateJobRoles extends javax.swing.JDialog {
         jPanel23 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -250,6 +259,13 @@ public class UpdateJobRoles extends javax.swing.JDialog {
         });
         jPanel25.add(jTextField2);
 
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
+        jPanel25.add(jTextField3);
+
         jPanel21.add(jPanel25, java.awt.BorderLayout.CENTER);
 
         jPanel11.add(jPanel21, java.awt.BorderLayout.CENTER);
@@ -314,11 +330,11 @@ public class UpdateJobRoles extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Job Role"
+                "ID", "Job Role", "Day Salary"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -331,6 +347,11 @@ public class UpdateJobRoles extends javax.swing.JDialog {
             }
         });
         jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         jPanel17.add(jScrollPane2);
 
@@ -405,9 +426,12 @@ public class UpdateJobRoles extends javax.swing.JDialog {
 
             String jobRole = jTextField2.getText();
             String id = jTextField1.getText();
+            String salary = jTextField3.getText();
 
             if (jobRole.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Job Role !", "Warning", JOptionPane.WARNING_MESSAGE);
+            }else if (salary.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter day salary !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
 
                 try {
@@ -433,7 +457,7 @@ public class UpdateJobRoles extends javax.swing.JDialog {
                     }
 
                     if (canUpdate) {
-                        mySQL.executeIUD("UPDATE `emp_type` SET `emp_type` = '" + jobRole + "' WHERE `id` = '" + id + "'");
+                        mySQL.executeIUD("UPDATE `emp_type` SET `emp_type` = '" + jobRole + "' , `daySalary`='" + salary + "' WHERE `id` = '" + id + "'");
 
                         loadJobs();
                         reset();
@@ -451,13 +475,14 @@ public class UpdateJobRoles extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        jButton2.setEnabled(true);
 
         int row = jTable2.getSelectedRow();
         jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 0)));
         jTextField2.setText(String.valueOf(jTable2.getValueAt(row, 1)));
+        jTextField3.setText(String.valueOf(jTable2.getValueAt(row, 2)));
 
         jTextField2.grabFocus();
-        jButton2.setEnabled(false);
 
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -474,6 +499,14 @@ public class UpdateJobRoles extends javax.swing.JDialog {
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
         jButton2.setEnabled(true);
     }//GEN-LAST:event_jTextField2KeyReleased
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+       char c = evt.getKeyChar();
+
+        if (Character.isLetter(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
 
     /**
      * @param args the command line arguments
@@ -533,14 +566,16 @@ public class UpdateJobRoles extends javax.swing.JDialog {
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 
     private void reset() {
         jTextField2.setText("");
+        jTextField3.setText("");
         jTable2.clearSelection();
-        jButton2.setEnabled(true);
         jTextField1.setText("");
         jTextField2.grabFocus();
+        jButton2.setEnabled(false);
 
     }
 

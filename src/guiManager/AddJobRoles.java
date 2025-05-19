@@ -34,6 +34,9 @@ public class AddJobRoles extends javax.swing.JDialog {
         if (jTextField1 != null) {
             jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Job Role");
         }
+        if (jTextField2 != null) {
+            jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Day Salary");
+        }
 
     }
 
@@ -50,6 +53,7 @@ public class AddJobRoles extends javax.swing.JDialog {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("emp_type"));
+                vector.add(resultSet.getString("daySalary"));
 
                 defaultTableModel.addRow(vector);
 
@@ -63,6 +67,7 @@ public class AddJobRoles extends javax.swing.JDialog {
     private void init() {
 
         jTextField1.putClientProperty("JComponent.roundRect", true);
+        jTextField2.putClientProperty("JComponent.roundRect", true);
         jButton1.putClientProperty("JButton.buttonType", "roundRect");
 
         jButton3.putClientProperty("JButton.buttonType", "roundRect");
@@ -91,6 +96,7 @@ public class AddJobRoles extends javax.swing.JDialog {
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -214,6 +220,13 @@ public class AddJobRoles extends javax.swing.JDialog {
         });
         jPanel11.add(jTextField1);
 
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
+            }
+        });
+        jPanel11.add(jTextField2);
+
         jPanel10.add(jPanel11, java.awt.BorderLayout.PAGE_START);
 
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -274,11 +287,11 @@ public class AddJobRoles extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Job Role"
+                "ID", "Job Role", "Day Salary"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -291,6 +304,10 @@ public class AddJobRoles extends javax.swing.JDialog {
             }
         });
         jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         jPanel17.add(jScrollPane2);
 
@@ -364,9 +381,12 @@ public class AddJobRoles extends javax.swing.JDialog {
         try {
 
             String job = jTextField1.getText();
+            String salary = jTextField2.getText();
 
             if (job.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Job Role !", "Warning", JOptionPane.WARNING_MESSAGE);
+            }else if (salary.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter day salary !", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
 
                 boolean isFound = false;
@@ -381,8 +401,8 @@ public class AddJobRoles extends javax.swing.JDialog {
                 }
 
                 if (!isFound) {
-                    mySQL.executeIUD("INSERT INTO `emp_type`(`emp_type`)"
-                            + "VALUES ('" + job + "')");
+                    mySQL.executeIUD("INSERT INTO `emp_type`(`emp_type`,`daySalary`)"
+                            + "VALUES ('" + job + "','"+salary+"')");
                     loadJobs();
                     reset();
                     JOptionPane.showMessageDialog(this, "Job Role successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -422,11 +442,6 @@ public class AddJobRoles extends javax.swing.JDialog {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
 
-        int row = jTable2.getSelectedRow();
-
-        jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 1)));
-        jButton1.setEnabled(false);
-
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
@@ -440,6 +455,14 @@ public class AddJobRoles extends javax.swing.JDialog {
     private void jButton1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1KeyReleased
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        char c = evt.getKeyChar();
+
+        if (Character.isLetter(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
      * @param args the command line arguments
@@ -494,10 +517,12 @@ public class AddJobRoles extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
     private void reset() {
         jTextField1.setText("");
+        jTextField2.setText("");
         jTextField1.grabFocus();
         jTable2.clearSelection();
         jButton1.setEnabled(true);

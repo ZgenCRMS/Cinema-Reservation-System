@@ -315,6 +315,11 @@
                                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField2KeyReleased"/>
                               </Events>
                             </Component>
+                            <Component class="javax.swing.JTextField" name="jTextField3">
+                              <Events>
+                                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyTyped"/>
+                              </Events>
+                            </Component>
                           </SubComponents>
                         </Container>
                       </SubComponents>
@@ -487,19 +492,25 @@
                                                                   <Font name="Segoe UI" size="14" style="0"/>
                                                                 </Property>
                                                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                                                  <Table columnCount="2" rowCount="0">
+                                                                  <Table columnCount="3" rowCount="0">
                                                                     <Column editable="false" title="ID" type="java.lang.Object"/>
                                                                     <Column editable="false" title="Job Role" type="java.lang.Object"/>
+                                                                    <Column editable="false" title="Day Salary" type="java.lang.Object"/>
                                                                   </Table>
                                                                 </Property>
                                                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                                                                   <TableColumnModel selectionModel="0">
-                                                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                                                                       <Title/>
                                                                       <Editor/>
                                                                       <Renderer/>
                                                                     </Column>
-                                                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                                                                      <Title/>
+                                                                      <Editor/>
+                                                                      <Renderer/>
+                                                                    </Column>
+                                                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                                                                       <Title/>
                                                                       <Editor/>
                                                                       <Renderer/>
