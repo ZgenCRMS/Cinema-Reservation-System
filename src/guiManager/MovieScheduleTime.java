@@ -743,121 +743,73 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int selectedTimeSlotId = -1;
 
+        jComboBox3.setEnabled(false);
         jButton5.setEnabled(true);
+        jButton4.setEnabled(false);
+        jComboBox1.setEnabled(false);
 
         int row = jTable1.getSelectedRow();
-        jButton4.setEnabled(false);
+
+        // Movie & Hall
         String moviename = String.valueOf(jTable1.getValueAt(row, 1));
         jComboBox1.setSelectedItem(moviename);
 
         String moviehall = String.valueOf(jTable1.getValueAt(row, 2));
         jComboBox2.setSelectedItem(moviehall);
 
-        String timeslot = String.valueOf(jTable1.getValueAt(row, 5));
-        jComboBox3.setSelectedItem(timeslot);
+        // 🕒 Get start_time and end_time from table (Column 4 & 5)
+        String startTime = String.valueOf(jTable1.getValueAt(row, 4));
+        String endTime = String.valueOf(jTable1.getValueAt(row, 5));
 
-        String scheduleDate = String.valueOf(jTable1.getValueAt(row, 3));
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        String Startdate = String.valueOf(jTable1.getValueAt(row, 6));
-
-        String EndDate = String.valueOf(jTable1.getValueAt(row, 7));
-
+// 🔎 Search for matching time_slot ID
         try {
+            String timeSlotQuery = "SELECT id FROM time_slot WHERE start_time = '" + startTime + "' AND end_time = '" + endTime + "'";
+            ResultSet resultSet = mySQL.executeSearch(timeSlotQuery);
 
-            Date date2 = dateFormat.parse(Startdate);
-            jDateChooser2.setDate(date2);
+            if (resultSet.next()) {
+                selectedTimeSlotId = resultSet.getInt("id");
+                System.out.println(selectedTimeSlotId);
+            }
 
-            Date date3 = dateFormat.parse(EndDate);
-            jDateChooser4.setDate(date3);
-
+            resultSet.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Time Slot Matching (🔥 FIXED VERSION)
+        boolean found = false;
 
+        for (int i = 0; i < jComboBox3.getItemCount(); i++) {
+            String item = jComboBox3.getItemAt(i).toString().trim();
 
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
-        int row = jTable1.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        } else {
-
-            String movieID = String.valueOf(jTable1.getValueAt(row, 0));
-
-            String MovieName = String.valueOf(jComboBox1.getSelectedItem());
-            String MovieHall = String.valueOf(jComboBox2.getSelectedItem());
-            String TimeSlot = String.valueOf(jComboBox3.getSelectedIndex());
-            Date StartDate = jDateChooser2.getDate();
-            Date EndDate = jDateChooser4.getDate();
-
-            if (MovieName.equals("select")) {
-
-                JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (MovieHall.equals("select")) {
-
-                JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (TimeSlot.equals("select")) {
-
-                JOptionPane.showMessageDialog(this, "Please Select Time Slot", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (StartDate == null) {
-
-                JOptionPane.showMessageDialog(this, "Please Enter Start Date", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (EndDate == null) {
-
-                JOptionPane.showMessageDialog(this, "Please Select End Date", "Warning", JOptionPane.WARNING_MESSAGE);
-
-            } else if (StartDate != null && EndDate != null) {
-                if (!EndDate.after(StartDate)) {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "End date must be after the start date.",
-                            "Date Error",
-                            JOptionPane.WARNING_MESSAGE
-                    );
-                }
-            } else {
-                Date date = new Date();
-
-                SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-
-                try {
-
-                    ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE  `end_date` = '" + sdf.format(EndDate) + "' AND `start_date` = '" + sdf.format(StartDate) + "'  AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
-
-                    if (resultSet.next()) {
-                        JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
-                    } else {
-
-                        mySQL.executeIUD("UPDATE `schedule` SET `schedule_date` = '" + sdf.format(date) + "', `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "', `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "',"
-                                + "`time_slot_id` = '1', `start_date` = '" + sdf.format(StartDate) + "', `end_date` = '" + sdf.format(EndDate) + "'"
-                                + "WHERE `id` = '" + movieID + "'");
-                        //                    reset();
-                        JOptionPane.showMessageDialog(this, "Movie Shedule Time successfully Updated!", "Inform", JOptionPane.INFORMATION_MESSAGE);
-
-                        loadMovieTimeSchedule();
-                        reset();
-                        JOptionPane.showMessageDialog(this, "Movie Shedule Time successfully Updated!", "Inform", JOptionPane.INFORMATION_MESSAGE);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
-
+            // Split combo box time slot like "10:00:00 12:00:00"
+            if (item.startsWith(startTime)) {
+                jComboBox3.setSelectedIndex(i); // 💯 set by index — avoids string compare bugs
+                found = true;
+                break;
             }
         }
 
+        if (!found) {
+            jComboBox3.setSelectedIndex(0); // Or -1, or show error
+        }
 
-    }//GEN-LAST:event_jButton5ActionPerformed
+        // Start & End Dates (working before, keep as-is)
+        String startDate = String.valueOf(jTable1.getValueAt(row, 6));
+        String endDate = String.valueOf(jTable1.getValueAt(row, 7));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date date2 = dateFormat.parse(startDate);
+            jDateChooser2.setDate(date2);
+
+            Date date3 = dateFormat.parse(endDate);
+            jDateChooser4.setDate(date3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         reset();
@@ -881,6 +833,71 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     private void jDateChooser4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser4MouseClicked
         jButton4.grabFocus();
     }//GEN-LAST:event_jDateChooser4MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String movieID = String.valueOf(jTable1.getValueAt(row, 0));
+        String MovieName = String.valueOf(jComboBox1.getSelectedItem());
+        String MovieHall = String.valueOf(jComboBox2.getSelectedItem());
+        String TimeSlot = String.valueOf(jComboBox3.getSelectedItem()); // not index!
+        Date StartDate = jDateChooser2.getDate();
+        Date EndDate = jDateChooser4.getDate();
+
+// Validation
+        if (MovieName.equals("select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Movie", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (MovieHall.equals("select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Movie Hall", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (TimeSlot.equals("select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Time Slot", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (StartDate == null) {
+            JOptionPane.showMessageDialog(this, "Please Enter Start Date", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (EndDate == null) {
+            JOptionPane.showMessageDialog(this, "Please Select End Date", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (!EndDate.after(StartDate)) {
+            JOptionPane.showMessageDialog(this, "End date must be after the start date.", "Date Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+// All good — go ahead and update the DB
+        try {
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Use lowercase 'yyyy'
+
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` WHERE  `end_date` = '" + sdf.format(EndDate) + "' AND `start_date` = '" + sdf.format(StartDate) + "'  AND `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "' ");
+
+            if (resultSet.next()) {
+                JOptionPane.showMessageDialog(this, "Movie Schedule already registered", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                mySQL.executeIUD("UPDATE `schedule` SET `schedule_date` = '" + sdf.format(date) + "', `movie_movie_id` = '" + LoadsMovieMap.get(MovieName) + "', `hall_id` = '" + LoadMovieHallMap.get(MovieHall) + "', `time_slot_id` = '" + selectedTimeSlotId + "',"
+                        + " `start_date` = '" + sdf.format(StartDate) + "', `end_date` = '" + sdf.format(EndDate) + "'"
+                        + " WHERE `id` = '" + movieID + "'");
+
+                loadMovieTimeSchedule();
+                reset();
+                JOptionPane.showMessageDialog(this, "Movie Schedule Time successfully Updated!", "Inform", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -946,5 +963,8 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jButton4.setEnabled(true);
         jTable1.clearSelection();
         jButton5.setEnabled(false);
+        jComboBox3.setEnabled(true);
+        jComboBox1.setEnabled(true);
+
     }
 }
