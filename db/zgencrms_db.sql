@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `attendce_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.attendce_type: ~0 rows (approximately)
+-- Dumping data for table zgencrms_db.attendce_type: ~2 rows (approximately)
 INSERT INTO `attendce_type` (`id`, `name`) VALUES
 	(1, 'On Time'),
 	(2, 'Late');
@@ -107,39 +107,13 @@ CREATE TABLE IF NOT EXISTS `customer` (
   CONSTRAINT `fk_customer_customer_type1` FOREIGN KEY (`customer_type_id`) REFERENCES `customer_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.customer: ~31 rows (approximately)
+-- Dumping data for table zgencrms_db.customer: ~29 rows (approximately)
 INSERT INTO `customer` (`mobile`, `customer_type_id`) VALUES
-	('', 1),
-	('0712546778', 1),
-	('0712654115', 1),
-	('0712654116', 1),
 	('0712654117', 1),
-	('0712654118', 1),
-	('0712654119', 1),
-	('0712654334', 1),
-	('0712654667', 1),
-	('0712654778', 1),
-	('0712657889', 1),
-	('0712765667', 1),
-	('0712765778', 1),
-	('0712876556', 1),
-	('0712890998', 1),
-	('0716543224', 1),
-	('0716577892', 1),
 	('0719876543', 1),
 	('0726578990', 1),
 	('0754322148', 1),
-	('0757734567', 1),
-	('0765432334', 1),
-	('0765433412', 1),
-	('0765433445', 1),
-	('0765433489', 1),
-	('0771234567', 1),
-	('0775432116', 1),
-	('0875432116', 1),
-	('0754567890', 2),
-	('0766543210', 2),
-	('0781122334', 2);
+	('0757734567', 1);
 
 -- Dumping structure for table zgencrms_db.customer_type
 CREATE TABLE IF NOT EXISTS `customer_type` (
@@ -193,12 +167,12 @@ CREATE TABLE IF NOT EXISTS `employee_salary` (
   PRIMARY KEY (`id`),
   KEY `fk_employee_salary_employee1_idx` (`employee_mobile`),
   CONSTRAINT `fk_employee_salary_employee1` FOREIGN KEY (`employee_mobile`) REFERENCES `employee` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.employee_salary: ~0 rows (approximately)
+-- Dumping data for table zgencrms_db.employee_salary: ~2 rows (approximately)
 INSERT INTO `employee_salary` (`id`, `salary`, `employee_mobile`, `date`) VALUES
-	(5, 1500, '0711234567', '2025-05-19 17:00:35'),
-	(6, 1500, '0712345678', '2025-05-19 17:09:09');
+	(9, 1500, '0711234567', '2025-05-20 15:41:03'),
+	(10, 1500, '0712345678', '2025-05-20 15:41:10');
 
 -- Dumping structure for table zgencrms_db.employye_attendce
 CREATE TABLE IF NOT EXISTS `employye_attendce` (
@@ -211,12 +185,12 @@ CREATE TABLE IF NOT EXISTS `employye_attendce` (
   KEY `fk_employye_attendce_attendce_type1_idx` (`attendce_type_id`),
   CONSTRAINT `fk_employye_attendce_attendce_type1` FOREIGN KEY (`attendce_type_id`) REFERENCES `attendce_type` (`id`),
   CONSTRAINT `fk_employye_attendce_emp_qr1` FOREIGN KEY (`emp_qr_qr_number`) REFERENCES `emp_qr` (`qr_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.employye_attendce: ~0 rows (approximately)
+-- Dumping data for table zgencrms_db.employye_attendce: ~2 rows (approximately)
 INSERT INTO `employye_attendce` (`id`, `emp_qr_qr_number`, `date`, `attendce_type_id`) VALUES
-	(18, '123456789V', '2025-05-19 17:00:35', 2),
-	(19, '987654371V', '2025-05-19 17:09:09', 2);
+	(22, '123456789V', '2025-05-20 15:41:03', 2),
+	(23, '987654371V', '2025-05-20 15:41:10', 2);
 
 -- Dumping structure for table zgencrms_db.emp_address
 CREATE TABLE IF NOT EXISTS `emp_address` (
@@ -252,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `emp_qr` (
   CONSTRAINT `fk_emp_qr_employee1` FOREIGN KEY (`employee_mobile`) REFERENCES `employee` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.emp_qr: ~8 rows (approximately)
+-- Dumping data for table zgencrms_db.emp_qr: ~2 rows (approximately)
 INSERT INTO `emp_qr` (`qr_number`, `employee_mobile`) VALUES
 	('123456789V', '0711234567'),
 	('987654371V', '0712345678');
@@ -280,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.emp_type: ~17 rows (approximately)
+-- Dumping data for table zgencrms_db.emp_type: ~14 rows (approximately)
 INSERT INTO `emp_type` (`id`, `emp_type`, `daySalary`) VALUES
 	(1, 'Full Time', 3000),
 	(2, 'Manager', 7000),
@@ -322,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `hall` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table zgencrms_db.hall: ~3 rows (approximately)
+-- Dumping data for table zgencrms_db.hall: ~4 rows (approximately)
 INSERT INTO `hall` (`id`, `hall_number`) VALUES
 	(1, 1),
 	(2, 2),
@@ -344,36 +318,6 @@ CREATE TABLE IF NOT EXISTS `invoice` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.invoice: ~29 rows (approximately)
-INSERT INTO `invoice` (`id`, `date`, `paid_amount`, `qty`, `payment_method_id`, `user_email`) VALUES
-	(1, '2025-01-11', 600, '1', 3, 'amali@gmail.com'),
-	(2, '2025-01-11', 600, '1', 3, 'amali@gmail.com'),
-	(3, '2025-01-11', 600, '1', 3, 'amali@gmail.com'),
-	(1747399058070, '2025-05-16', 1200, '1', 1, 'amali@gmail.com'),
-	(1747401324311, '2025-05-16', 1200, '1', 1, 'amali@gmail.com'),
-	(1747411032374, '2025-05-16', 1800, '3', 1, 'amali@gmail.com'),
-	(1747511145451, '2025-05-18', 67998, '1', 1, 'amali@gmail.com'),
-	(1747511445415, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747511549465, '2025-05-18', 67998, '1', 1, 'amali@gmail.com'),
-	(1747511627561, '2025-05-18', 67998, '1', 1, 'amali@gmail.com'),
-	(1747511748926, '2025-05-18', 67998, '1', 1, 'amali@gmail.com'),
-	(1747514854501, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747514907753, '2025-05-18', 67998, '1', 1, 'amali@gmail.com'),
-	(1747514964881, '2025-05-18', 1500, '1', 3, 'amali@gmail.com'),
-	(1747515715794, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747516294918, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747516313934, '2025-05-18', 600, '1', 2, 'amali@gmail.com'),
-	(1747516588723, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747516930019, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747517117700, '2025-05-18', 1500, '1', 1, 'amali@gmail.com'),
-	(1747517147020, '2025-05-18', 1500, '1', 3, 'amali@gmail.com'),
-	(1747517307985, '2025-05-18', 1500, '1', 2, 'amali@gmail.com'),
-	(1747517340345, '2025-05-18', 1800, '3', 1, 'amali@gmail.com'),
-	(1747517403970, '2025-05-18', 2100, '2', 3, 'amali@gmail.com'),
-	(1747517479917, '2025-05-18', 1200, '2', 1, 'amali@gmail.com'),
-	(1747518634972, '2025-05-18', 1200, '2', 1, 'amali@gmail.com'),
-	(1747518807720, '2025-05-18', 1200, '2', 1, 'amali@gmail.com'),
-	(1747519179389, '2025-05-18', 600, '1', 1, 'amali@gmail.com'),
-	(1747570115705, '2025-05-18', 1200, '2', 1, 'amali@gmail.com');
 
 -- Dumping structure for table zgencrms_db.invoice_item
 CREATE TABLE IF NOT EXISTS `invoice_item` (
@@ -429,9 +373,7 @@ CREATE TABLE IF NOT EXISTS `movie` (
 INSERT INTO `movie` (`movie_id`, `name`, `duration`, `relased_date`, `movie_category_id`, `movie_dimension_id`, `language_id`) VALUES
 	(1, 'KJF', '02:00:00', '2022-01-09', 2, 1, 4),
 	(2, 'PK', '02:30:00', '2009-01-09', 4, 1, 4),
-	(12, 'Doc', '2', '2025-05-06', 3, 2, 3),
-	(13, ' sdvf', ' 2', '2025-05-01', 6, 2, 2),
-	(14, 'ff', '2', '2025-05-10', 2, 2, 1);
+	(12, 'Doctor', '2', '2025-05-06', 3, 2, 3);
 
 -- Dumping structure for table zgencrms_db.movie_category
 CREATE TABLE IF NOT EXISTS `movie_category` (
@@ -451,11 +393,7 @@ INSERT INTO `movie_category` (`id`, `name`) VALUES
 	(7, 'Thriller'),
 	(8, 'Romance'),
 	(9, 'Fantasy'),
-	(10, 'Science Fiction (Sci-Fi) '),
-	(14, 'y4hbtgreg'),
-	(15, 'fsdgbhn'),
-	(16, 'gdfgfhdh'),
-	(17, 'dfgh');
+	(10, 'Science Fiction (Sci-Fi) ');
 
 -- Dumping structure for table zgencrms_db.movie_company
 CREATE TABLE IF NOT EXISTS `movie_company` (
@@ -507,23 +445,7 @@ INSERT INTO `movie_dimension` (`id`, `type`) VALUES
 	(2, '3D'),
 	(3, 'IMAX'),
 	(4, '4DX'),
-	(5, 'VR (Virtual Reality)'),
-	(33, 'Tets'),
-	(34, 'Test'),
-	(35, 'Test1'),
-	(36, 'gr'),
-	(37, 'Tets111'),
-	(38, 'ge'),
-	(39, 'scsdafcfv'),
-	(40, 'vvv'),
-	(41, 'ffedfew'),
-	(42, 'Tets111fedfwef'),
-	(43, 'Tets111edfde'),
-	(44, 'gdfg'),
-	(45, 'gfdsg'),
-	(46, 'gdfgbhh'),
-	(47, 'sgvsdg'),
-	(48, 'grfewf');
+	(5, 'VR (Virtual Reality)');
 
 -- Dumping structure for table zgencrms_db.movie_grn
 CREATE TABLE IF NOT EXISTS `movie_grn` (
@@ -541,11 +463,8 @@ CREATE TABLE IF NOT EXISTS `movie_grn` (
 
 -- Dumping data for table zgencrms_db.movie_grn: ~6 rows (approximately)
 INSERT INTO `movie_grn` (`id`, `date`, `payed_amount`, `movie_movie_id`, `movie_supplier_supplier_mobile`) VALUES
-	(1, '2025-01-01', 18000000, 1, '0765432198'),
 	(1747409100596, '2025-05-16', 1000, 12, '0765432198'),
-	(1747507210582, '2025-05-18', 5555, 13, '0702454543'),
 	(1747508360573, '2025-05-18', 5000, 1, '0702454543'),
-	(1747508682843, '2025-05-18', 654, 13, '0701545854'),
 	(1747508699699, '2025-05-18', 700, 1, '0719876343');
 
 -- Dumping structure for table zgencrms_db.movie_invoiceitem
@@ -567,27 +486,9 @@ CREATE TABLE IF NOT EXISTS `movie_invoiceitem` (
   CONSTRAINT `fk_movie_invoiceItem_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`id`),
   CONSTRAINT `fk_movie_invoiceItem_sheet1` FOREIGN KEY (`sheet_number`) REFERENCES `sheet` (`number`),
   CONSTRAINT `fk_movie_invoiceItem_ticket1` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.movie_invoiceitem: ~17 rows (approximately)
-INSERT INTO `movie_invoiceitem` (`id`, `sheet_number`, `invoice_id`, `ticket_id`, `customer_mobile`, `schedule_id`) VALUES
-	(9, '10B', 1747514854501, 2, '0765433412', 10),
-	(10, '16A', 1747514907753, 4, '0765433445', 1),
-	(11, '9B', 1747514964881, 2, '0716577892', 10),
-	(12, '2A', 1747515715794, 2, '0712765667', 1),
-	(13, '3A', 1747516294918, 2, '0712654117', 1),
-	(14, '4A', 1747516313934, 1, '0712765778', 1),
-	(15, '9A', 1747516588723, 2, '0712654667', 1),
-	(16, '2B', 1747516930019, 3, '0712654117', 10),
-	(17, '4B', 1747517117700, 3, '0712546778', 10),
-	(18, '11B', 1747517147020, 3, '0712876556', 10),
-	(19, '8A', 1747517307985, 2, '0712654118', 1),
-	(20, '7B', 1747517340345, 1, '0712654778', 10),
-	(22, '7A', 1747517479917, 1, '0712654118', 1),
-	(23, '20A', 1747518634972, 1, '0712654117', 1),
-	(24, '24A', 1747518807720, 1, '0712654117', 1),
-	(25, '23A', 1747519179389, 1, '0712654117', 1),
-	(26, '17B', 1747570115705, 1, '0712654116', 10);
 
 -- Dumping structure for table zgencrms_db.movie_supplier
 CREATE TABLE IF NOT EXISTS `movie_supplier` (
@@ -645,12 +546,12 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   CONSTRAINT `fk_schedule_hall1` FOREIGN KEY (`hall_id`) REFERENCES `hall` (`id`),
   CONSTRAINT `fk_schedule_movie1` FOREIGN KEY (`movie_movie_id`) REFERENCES `movie` (`movie_id`),
   CONSTRAINT `fk_schedule_time_slot1` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.schedule: ~2 rows (approximately)
 INSERT INTO `schedule` (`id`, `schedule_date`, `movie_movie_id`, `hall_id`, `time_slot_id`, `start_date`, `end_date`) VALUES
 	(1, '2025-01-01', 1, 1, 1, '2025-01-01', '2025-02-01'),
-	(10, '2025-01-01', 2, 2, 1, '2025-01-01', '2024-12-01');
+	(10, '2025-01-01', 2, 2, 6, '2025-01-01', '2024-12-01');
 
 -- Dumping structure for table zgencrms_db.sheet
 CREATE TABLE IF NOT EXISTS `sheet` (
@@ -855,8 +756,7 @@ CREATE TABLE IF NOT EXISTS `ticket` (
 INSERT INTO `ticket` (`id`, `ticket_price`, `movie_customer_type_id`, `movie_dimension_id`) VALUES
 	(1, 600, 1, 1),
 	(2, 1500, 1, 1),
-	(3, 1500, 2, 38),
-	(4, 67998, 1, 33);
+	(3, 1500, 2, 1);
 
 -- Dumping structure for table zgencrms_db.time_slot
 CREATE TABLE IF NOT EXISTS `time_slot` (
@@ -864,14 +764,16 @@ CREATE TABLE IF NOT EXISTS `time_slot` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.time_slot: ~4 rows (approximately)
 INSERT INTO `time_slot` (`id`, `start_time`, `end_time`) VALUES
 	(1, '10:00:00', '12:00:00'),
 	(2, '12:30:00', '02:30:00'),
 	(3, '03:00:00', '05:00:00'),
-	(4, '06:30:00', '08:30:00');
+	(4, '06:30:00', '08:30:00'),
+	(6, '08:30:00', '11:30:00'),
+	(7, '12:00:00', '15:00:00');
 
 -- Dumping structure for table zgencrms_db.user
 CREATE TABLE IF NOT EXISTS `user` (

@@ -32,26 +32,29 @@ public class snackbar extends javax.swing.JPanel {
         loadProduct();
         hint();
     }
-    
+
     private void hint() {
         if (jTextField14 != null) {
             jTextField14.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField19 != null) {
+        }
+        if (jTextField19 != null) {
             jTextField19.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField15 != null) {
+        }
+        if (jTextField15 != null) {
             jTextField15.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField16 != null) {
+        }
+        if (jTextField16 != null) {
             jTextField16.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField17 != null) {
+        }
+        if (jTextField17 != null) {
             jTextField17.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
-        }if (jTextField18 != null) {
+        }
+        if (jTextField18 != null) {
             jTextField18.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
         }
-        
 
     }
 
-    
     private void loadProduct() {
         try {
             ResultSet resultSet = mySQL.executeSearch("SELECT * FROM snack_product "
@@ -74,38 +77,37 @@ public class snackbar extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
-     private void loadCompanies() {
+
+    private void loadCompanies() {
         try {
-            
+
             ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `company`");
-            
+
             DefaultTableModel defaultTableModel = (DefaultTableModel) jTable3.getModel();
             defaultTableModel.setRowCount(0);
-            
+
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("name"));
                 vector.add(resultSet.getString("hotline"));
-                
+
                 defaultTableModel.addRow(vector);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
-    
     private void loadSuppliers() {
         try {
             ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `snack_supplier` INNER JOIN `company` ON `company`.`id` = `snack_supplier`.`company_id`");
-                    
-            DefaultTableModel defaultTableModel =  (DefaultTableModel) jTable1.getModel();
+
+            DefaultTableModel defaultTableModel = (DefaultTableModel) jTable1.getModel();
             defaultTableModel.setRowCount(0);
-            
+
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("mobile"));
@@ -113,83 +115,20 @@ public class snackbar extends javax.swing.JPanel {
                 vector.add(resultSet.getString("lname"));
                 vector.add(resultSet.getString("email"));
                 vector.add(resultSet.getString("company.name"));
-                
-              defaultTableModel.addRow(vector);
-                
+
+                defaultTableModel.addRow(vector);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private void loadStock() {
         try {
 
             String query = "SELECT * FROM `snack_stock` INNER JOIN `snack_product` "
                     + "ON `snack_stock`.`snack_product_id` = `snack_product`.`id` INNER JOIN `brand` ON `brand`.`id` = `snack_product`.`brand_id` ";
-
-//            int row = jTable1.getSelectedRow();
-//
-//            if (row != -1) {
-//                String pid = String.valueOf(jTable1.getValueAt(row, 0));
-//                query += "WHERE `snack_stock`.`snack_product_id` = '" + pid + "'";
-//            }
-//
-//            if (query.contains("WHERE")) {
-//                query += "AND ";
-//            } else {
-//                query += "WHERE ";
-//            }
-//
-//            
-//            //Exp Date
-//            Date start = null;
-//            Date end = null;
-//
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-//            if (jDateChooser2.getDate() != null) {
-//                start = jDateChooser2.getDate();
-//                query += "`snack_stock`.`exp` > '" + format.format(start) + "' AND ";
-//            }
-//
-//            if (jDateChooser1.getDate() != null) {
-//                end = jDateChooser1.getDate();
-//                query += "`snack_stock`.`exp` < '" + format.format(end) + "' ";
-//            }
-
-//            String sort = String.valueOf(jComboBox2.getSelectedItem());
-
-//            query += "ORDER BY ";
-//
-//            query = query.replace("WHERE ORDER BY ", "ORDER BY ");
-//            query = query.replace("AND ORDER BY ", "ORDER BY ");
-//
-//            if (sort.equals("Stock ID ASC")) {
-//                query += "`snack_stock`.`id` ASC ";
-//            } else if (sort.equals("Stock ID DESC")) {
-//                query += "`snack_stock`.`id` DESC ";
-//            } else if (sort.equals("Product ID ASC")) {
-//                query += "`snack_product`.`id` ASC ";
-//            } else if (sort.equals("Product ID DESC")) {
-//                query += "`snack_product`.`id` DESC ";
-//            } else if (sort.equals("Brand ASC")) {
-//                query += "`brand`.`id` ASC ";
-//            } else if (sort.equals("Brand DESC")) {
-//                query += "`brand`.`id` DESC ";
-//            } else if (sort.equals("Name ASC")) {
-//                query += "`brand`.`name` ASC ";
-//            } else if (sort.equals("Name DESC")) {
-//                query += "`brand`.`name` DESC ";
-//            } else if (sort.equals("Selling Price ASC")) {
-//                query += "`snack_stock`.`buying_price` ASC ";
-//            } else if (sort.equals("Selling Price DESC")) {
-//                query += "`snack_stock`.`buying_price` DESC ";
-//            } else if (sort.equals("Quantity ASC")) {
-//                query += "`snack_stock`.`qty` ASC ";
-//            } else if (sort.equals("Quantity DESC")) {
-//                query += "`snack_stock`.`qty` DESC ";
-//            }
 
             ResultSet resultSet = mySQL.executeSearch(query);
 
@@ -215,8 +154,7 @@ public class snackbar extends javax.swing.JPanel {
         }
 
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1650,15 +1588,21 @@ public class snackbar extends javax.swing.JPanel {
     }//GEN-LAST:event_jTable3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       try {
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "products_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASReport.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-            
-             JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/snack bar/products.pdf");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/ASReport.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
@@ -1668,55 +1612,73 @@ public class snackbar extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
-          try {
+
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "stocks_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllStocksReports.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-            
-             JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/snack bar/stocks.pdf");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AllStocksReports.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       
-         try {
+
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "snackComapnies_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllCompaniesReports.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-            
-             JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/snack bar/snackComapnies.pdf");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AllCompaniesReports.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       try {
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "snackSuppliers_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllSnackSuppliers.jasper",null,connection);
-            JasperViewer.viewReport(report,false);
-            
-            JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/snack bar/snackSuppliers.pdf");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AllSnackSuppliers.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 

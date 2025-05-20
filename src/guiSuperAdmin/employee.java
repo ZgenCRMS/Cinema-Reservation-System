@@ -9,6 +9,8 @@ import guiManager.AdminDashboard;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,14 +143,14 @@ public class employee extends javax.swing.JPanel {
         try {
             ResultSet resultSet = mySQL.executeSearch(
                     "SELECT e.mobile,e.fname,e.lname,et.daySalary,es.salary, "
-                            + "SUM(CASE WHEN at.name = 'On Time' THEN 1 ELSE 0 END) AS onTimeCount,"
-                            + "SUM(CASE WHEN at.name = 'Late' THEN 1 ELSE 0 END) AS lateCount FROM employye_attendce ea "
-                            + "INNER JOIN emp_qr eq ON ea.emp_qr_qr_number = eq.qr_number "
-                            + "INNER JOIN employee e ON eq.employee_mobile = e.mobile "
-                            + "INNER JOIN emp_type et ON e.emp_type_id = et.id "
-                            + "INNER JOIN employee_salary es ON e.mobile = es.employee_mobile "
-                            + "INNER JOIN attendce_type at ON ea.attendce_type_id = at.id "
-                            + "GROUP BY e.mobile, e.fname, e.lname, et.daySalary, es.salary;"
+                    + "SUM(CASE WHEN at.name = 'On Time' THEN 1 ELSE 0 END) AS onTimeCount,"
+                    + "SUM(CASE WHEN at.name = 'Late' THEN 1 ELSE 0 END) AS lateCount FROM employye_attendce ea "
+                    + "INNER JOIN emp_qr eq ON ea.emp_qr_qr_number = eq.qr_number "
+                    + "INNER JOIN employee e ON eq.employee_mobile = e.mobile "
+                    + "INNER JOIN emp_type et ON e.emp_type_id = et.id "
+                    + "INNER JOIN employee_salary es ON e.mobile = es.employee_mobile "
+                    + "INNER JOIN attendce_type at ON ea.attendce_type_id = at.id "
+                    + "GROUP BY e.mobile, e.fname, e.lname, et.daySalary, es.salary;"
             );
 
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
@@ -579,6 +581,11 @@ public class employee extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Print Report");
         jButton2.setBorderPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
@@ -972,14 +979,19 @@ public class employee extends javax.swing.JPanel {
 
         try {
 
-//            JREmptyDataSource dataSource = new JREmptyDataSource();
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/cinema/";
+
+            String fileName = path + "employee_" + time + ".pdf";
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
 
             JasperPrint report = JasperFillManager.fillReport("src/reports/AEReport.jasper", null, connection);
             JasperViewer.viewReport(report, false);
 
-            JasperExportManager.exportReportToPdfFile(report, "print report/super admin reports/cinema/employee.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
@@ -992,6 +1004,32 @@ public class employee extends javax.swing.JPanel {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/cinema/";
+
+            String fileName = path + "Attendance_" + time + ".pdf";
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+
+            JasperPrint report = JasperFillManager.fillReport("src/reports/AEAttendance.jasper", null, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
+
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
