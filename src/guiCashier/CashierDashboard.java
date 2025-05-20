@@ -1194,12 +1194,21 @@ public class CashierDashboard extends javax.swing.JFrame {
             String giveA = jTextField9.getText();
             String PayM = String.valueOf(jComboBox1.getSelectedItem());
 
+            double priceValue = Double.parseDouble(priceT);
+            double enteredValue = Double.parseDouble(painPrice);
+
             if (priceT.equals("0")) {
                 JOptionPane.showMessageDialog(this, "Please Select Movie & Other", "Movie", JOptionPane.WARNING_MESSAGE);
             } else if (PayM.equals("Select")) {
                 JOptionPane.showMessageDialog(this, "Please Select Payment Type", "Movie", JOptionPane.WARNING_MESSAGE);
             } else if (painPrice.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Payid Amount", "Movie", JOptionPane.WARNING_MESSAGE);
+            } else if (enteredValue < priceValue) {
+                JOptionPane.showMessageDialog(null,
+                        "The entered price must be greater than or equal to " + priceValue + ".",
+                        "Invalid Price",
+                        JOptionPane.WARNING_MESSAGE);
+
             } else {
 
                 // Customer Register or not register
@@ -1222,9 +1231,8 @@ public class CashierDashboard extends javax.swing.JFrame {
                 for (InvoiceItem invoiceItem : InvoiceItemMap.values()) {
                     try {
                         String sheetNumber = invoiceItem.getsheetNo();
-
-                        mySQL.executeIUD("INSERT INTO `movie_invoiceitem` (`sheet_number`, `invoice_id`, `ticket_id`, `customer_mobile`,"
-                                + "`schedule_id`)"
+                        mySQL.executeIUD("INSERT INTO movie_invoiceitem (sheet_number, invoice_id, ticket_id, customer_mobile,"
+                                + "schedule_id)"
                                 + "VALUES ('" + sheetNumber + "', '" + invoiceItem.getTicketID() + "','" + laky + "',"
                                 + "'" + invoiceItem.getCustomerNum() + "','" + sheduleID + "')");
 
@@ -1234,10 +1242,10 @@ public class CashierDashboard extends javax.swing.JFrame {
                                 "Success",
                                 JOptionPane.INFORMATION_MESSAGE
                         );
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 }
             }
 
@@ -1285,6 +1293,119 @@ public class CashierDashboard extends javax.swing.JFrame {
         }
 
         reset();
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//        try {
+//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//
+//            String customerMobile = jTextField2.getText();
+//            String dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+//            String paymentMethodID = paymentMethod.get(String.valueOf(jComboBox1.getSelectedItem()));
+//            String priceT = jLabel7.getText();
+//            String painPrice = jTextField7.getText();
+//            int rowCount = jTable1.getRowCount();
+//            String user = jLabel2.getText();
+//            String giveA = jTextField9.getText();
+//            String payM = String.valueOf(jComboBox1.getSelectedItem());
+//
+//            // === Validation ===
+//            if (priceT.equals("0")) {
+//                JOptionPane.showMessageDialog(this, "Please Select Movie & Other", "Movie", JOptionPane.WARNING_MESSAGE);
+//                return;
+//            } else if (payM.equals("Select")) {
+//                JOptionPane.showMessageDialog(this, "Please Select Payment Type", "Movie", JOptionPane.WARNING_MESSAGE);
+//                return;
+//            } else if (painPrice.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, "Please Enter Paid Amount", "Movie", JOptionPane.WARNING_MESSAGE);
+//                return;
+//            }
+//
+//            // === Customer Registration ===
+//            ResultSet rs = mySQL.executeSearch("SELECT * FROM `customer` WHERE `mobile` = '" + customerMobile + "'");
+//            if (!rs.next()) {
+//                mySQL.executeIUD("INSERT INTO `customer` (`mobile`, `customer_type_id`) VALUES('" + customerMobile + "', '1')");
+//            }
+//
+//            // === Insert into Invoice Table ===
+//            for (InvoiceItem invoiceItem : InvoiceItemMap.values()) {
+//                String invoiceID = invoiceItem.getTicketID();
+//                mySQL.executeIUD("INSERT INTO `invoice` (`invoice_id`, `date_time`, `total_price`, `total_items`, `payment_method_id`, `user_id`) VALUES ("
+//                        + "'" + invoiceID + "', "
+//                        + "'" + dateTime + "', "
+//                        + "'" + priceT + "', "
+//                        + "'" + rowCount + "', "
+//                        + "'" + paymentMethodID + "', "
+//                        + "'" + user + "')");
+//            }
+//
+//            // === Insert into movie_invoiceitem Table ===
+//            for (InvoiceItem invoiceItem : InvoiceItemMap.values()) {
+//                try {
+//                    String invoiceID = invoiceItem.getTicketID();
+//                    String sheetNumber = invoiceItem.getsheetNo();
+//                    String ticketID = invoiceItem.getTicketID();
+//                    String customerMobileNum = invoiceItem.getCustomerNum();
+//
+//                    mySQL.executeIUD("INSERT INTO `movie_invoiceitem` (`sheet_number`, `invoice_id`, `ticket_id`, `customer_mobile`, `schedule_id`) VALUES ("
+//                            + "'" + sheetNumber + "', "
+//                            + "'" + invoiceID + "', "
+//                            + "'" + ticketID + "', "
+//                            + "'" + customerMobileNum + "', "
+//                            + "'" + scheduleID + "')"); // <-- back to your original
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            // === Success Message ===
+//            JOptionPane.showMessageDialog(
+//                    this,
+//                    "Successfully Printed Invoice!\nGiven Amount: " + giveA,
+//                    "Success",
+//                    JOptionPane.INFORMATION_MESSAGE
+//            );
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // === Generate QR Code & PDF Report ===
+//        try {
+//            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//            String path = "print report/tickets/";
+//            String fileName = path + "ticket_" + time + ".pdf";
+//
+//            String qrText = "Invoice No: " + jTextField1.getText() + "\n"
+//                    + "Customer: " + jTextField2.getText() + "\n"
+//                    + "Movie: " + jTextField3.getText() + "\n"
+//                    + "Hall: " + jTextField4.getText() + "\n"
+//                    + "Sheet: " + jTextField5.getText();
+//
+//            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 160, 160);
+//            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//
+//            HashMap<String, Object> params = new HashMap<>();
+//            params.put("Parameter1", jTextField2.getText());
+//            params.put("Parameter2", jTextField3.getText());
+//            params.put("Parameter3", jTextField4.getText());
+//            params.put("Parameter4", jLabel7.getText());
+//            params.put("Parameter5", jTextField1.getText());
+//            params.put("Parameter6", qrImage);
+//
+//            JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/QRFTMZGen5.jasper", params, dataSource);
+//
+//            JasperViewer.viewReport(jasperPrint, false);
+//            JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // === Reset Form ===
+//        reset();
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
