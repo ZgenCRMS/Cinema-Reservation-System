@@ -11,6 +11,8 @@ import guiManager.AdminDashboard;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1710,6 +1712,12 @@ public class movie extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         try {
+            
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            
+            String path = "print report/cinema manger reports/";
+            
+            String fileName = path + "movies_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
@@ -1717,18 +1725,26 @@ public class movie extends javax.swing.JPanel {
             JasperPrint report = JasperFillManager.fillReport("src/reports/AMReport2.jasper", null, connection);
             JasperViewer.viewReport(report, false);
             
-            JasperExportManager.exportReportToPdfFile(report, "print report/cinema manger reports/movies.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
+            
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            
+            String path = "print report/cinema manger reports/";
+            
+            String fileName = path + "movieSchedule_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
@@ -1736,7 +1752,7 @@ public class movie extends javax.swing.JPanel {
             JasperPrint report = JasperFillManager.fillReport("src/reports/ASMReport.jasper", null, connection);
             JasperViewer.viewReport(report, false);
             
-            JasperExportManager.exportReportToPdfFile(report, "print report/cinema manger reports/movieSchedule.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
@@ -1747,6 +1763,12 @@ public class movie extends javax.swing.JPanel {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
+            
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            
+            String path = "print report/cinema manger reports/";
+            
+            String fileName = path + "cinemaSuppliers_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
@@ -1754,7 +1776,7 @@ public class movie extends javax.swing.JPanel {
             JasperPrint report = JasperFillManager.fillReport("src/reports/ASupReport.jasper", null, connection);
             JasperViewer.viewReport(report, false);
             
-            JasperExportManager.exportReportToPdfFile(report, "print report/cinema manger reports/cinemaSuppliers.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
@@ -1766,6 +1788,12 @@ public class movie extends javax.swing.JPanel {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
         try {
+            
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            
+            String path = "print report/cinema manger reports/";
+            
+            String fileName = path + "cinemaCompanies_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
@@ -1773,7 +1801,7 @@ public class movie extends javax.swing.JPanel {
             JasperPrint report = JasperFillManager.fillReport("src/reports/ACReport.jasper", null, connection);
             JasperViewer.viewReport(report, false);
             
-            JasperExportManager.exportReportToPdfFile(report, "print report/cinema manger reports/cinemaCompanies.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
 
             connection.close();
 
@@ -1786,6 +1814,12 @@ public class movie extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         try {
+            
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            
+            String path = "print report/cinema manger reports/";
+            
+            String fileName = path + "invoices_" + time + ".pdf";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
@@ -1793,7 +1827,7 @@ public class movie extends javax.swing.JPanel {
             JasperPrint report = JasperFillManager.fillReport("src/reports/AInvoices.jasper", null, connection);
             JasperViewer.viewReport(report, false);
             
-            JasperExportManager.exportReportToPdfFile(report, "print report/cinema manger reports/invoices.pdf");
+            JasperExportManager.exportReportToPdfFile(report, fileName);
             
             connection.close();
 
