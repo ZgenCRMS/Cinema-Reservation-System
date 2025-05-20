@@ -80,28 +80,34 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
     }
 
     private void viewEmployee() {
-
         try {
-            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `employye_attendce`INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number=emp_qr.qr_number INNER JOIN employee ON emp_qr.employee_mobile=employee.mobile INNER JOIN attendce_type ON employye_attendce.attendce_type_id=attendce_type.id");
+            String today = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+
+            ResultSet resultSet = mySQL.executeSearch(
+                    "SELECT employee.fname, emp_qr.qr_number, attendce_type.name AS type_name, employye_attendce.date "
+                    + "FROM employye_attendce "
+                    + "INNER JOIN emp_qr ON employye_attendce.emp_qr_qr_number = emp_qr.qr_number "
+                    + "INNER JOIN employee ON emp_qr.employee_mobile = employee.mobile "
+                    + "INNER JOIN attendce_type ON employye_attendce.attendce_type_id = attendce_type.id "
+                    + "WHERE DATE(employye_attendce.date) = '" + today + "'"
+            );
 
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
-                vector.add(resultSet.getString("employee.fname"));
-                vector.add(resultSet.getString("emp_qr_qr_number"));
-                vector.add(resultSet.getString("attendce_type.name"));
-                vector.add(resultSet.getString("date"));
+                vector.add(resultSet.getString("fname")); // from employee.fname
+                vector.add(resultSet.getString("qr_number")); // from emp_qr.qr_number
+                vector.add(resultSet.getString("type_name")); // from attendce_type.name AS type_name
+                vector.add(resultSet.getString("date")); // from employye_attendce.date
 
                 dtm.addRow(vector);
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading employee attendance: " + e.getMessage());
         }
-
     }
 
     /**
@@ -215,101 +221,6 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-//        String Qrcode = jTextField1.getText().trim();
-//
-//        // Remove leading/trailing quotes
-//        if (Qrcode.startsWith("'")) {
-//            Qrcode = Qrcode.substring(1);
-//        }
-//        if (Qrcode.endsWith("'")) {
-//            Qrcode = Qrcode.substring(0, Qrcode.length() - 1);
-//        }
-//
-//        Date now = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        SimpleDateFormat onlyDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-//
-//        String currentDateTime = dateFormat.format(now);
-//        String currentDate = onlyDateFormat.format(now);
-//        String currentTime = timeFormat.format(now);
-//
-//        try {
-//            ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
-//
-//            if (resultSet1.next()) {
-//                // Check for existing attendance
-//                ResultSet resultSet2 = mySQL.executeSearch(
-//                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND `date` LIKE '" + currentDate + "%'"
-//                );
-//
-//                if (resultSet2.next()) {
-//                    JOptionPane.showMessageDialog(this,
-//                            "⚠️ Attendance Already Marked for Today!",
-//                            "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
-//                } else {
-//                    // Determine attendance type
-//                    int attendanceTypeId = (currentTime.compareTo("08:00:00") <= 0) ? 1 : 2;
-//
-//                    // Insert attendance
-//                    mySQL.executeIUD("INSERT INTO `employye_attendce` (`emp_qr_qr_number`, `date`, `attendce_type_id`) "
-//                            + "VALUES ('" + Qrcode + "', '" + currentDateTime + "', '" + attendanceTypeId + "')");
-//
-//                    // Fetch employee_mobile from emp_qr
-//                    ResultSet rsMobile = mySQL.executeSearch(
-//                            "SELECT employee_mobile FROM emp_qr WHERE qr_number = '" + Qrcode + "'"
-//                    );
-//
-//                    String employeeMobile = null;
-//                    if (rsMobile.next()) {
-//                        employeeMobile = rsMobile.getString("employee_mobile");
-//                    }
-//
-//                    // Fetch daySalary
-//                    ResultSet rsSalary = mySQL.executeSearch(
-//                            "SELECT emp_type.daySalary "
-//                            + "FROM emp_qr "
-//                            + "INNER JOIN employee ON emp_qr.employee_mobile = employee.mobile "
-//                            + "INNER JOIN emp_type ON employee.emp_type_id = emp_type.id "
-//                            + "WHERE emp_qr.qr_number = '" + Qrcode + "'"
-//                    );
-//
-//                    double finalSalary = 0;
-//                    if (rsSalary.next()) {
-//                        double daySalary = rsSalary.getDouble("daySalary");
-//                        finalSalary = (attendanceTypeId == 1) ? daySalary : daySalary / 2.0;
-//                    }
-//
-//                    // Insert salary record with employee_mobile (not attendance ID)
-//                    if (employeeMobile != null) {
-//                        mySQL.executeIUD("INSERT INTO `employee_salary` (`salary`, `employee_mobile`) "
-//                                + "VALUES ('" + finalSalary + "', '" + employeeMobile + "')");
-//                    }
-//
-//                    viewEmployee();
-//                    reload();
-//                    jTextField1.setText("");
-//
-//                    if (attendanceTypeId == 1) {
-//                        JOptionPane.showMessageDialog(this,
-//                                "✅ Attendance Marked Successfully!\n🕒 Time: " + currentTime,
-//                                "Success", JOptionPane.INFORMATION_MESSAGE);
-//                    } else {
-//                        JOptionPane.showMessageDialog(this,
-//                                "✅ Late Attendance Recorded!\n🕒 Time: " + currentTime + "\n⚠️ Marked as Late",
-//                                "Late Attendance", JOptionPane.WARNING_MESSAGE);
-//                    }
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(this, "❌ Invalid QR Code!", "Warning", JOptionPane.WARNING_MESSAGE);
-//                viewEmployee();
-//                reload();
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         String Qrcode = jTextField1.getText().trim();
 
         // Remove leading/trailing quotes
@@ -328,6 +239,13 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         String currentDateTime = dateFormat.format(now);
         String currentDate = onlyDateFormat.format(now);
         String currentTime = timeFormat.format(now);
+        
+        if (currentTime.compareTo("17:00:00") > 0) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ Attendance cannot be marked after 5:00 PM!",
+                    "Time Expired", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         try {
             ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
@@ -473,8 +391,10 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         do {
             try {
                 Thread.sleep(100);
+
             } catch (InterruptedException ex) {
-                Logger.getLogger(ReadQRCode.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ReadQRCode.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
             Result result = null;
             BufferedImage image = null;
@@ -490,8 +410,10 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
 
             try {
                 result = new MultiFormatReader().decode(bitmap);
+
             } catch (NotFoundException ex) {
-                Logger.getLogger(ReadQRCode.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ReadQRCode.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
 
             if (result != null) {
