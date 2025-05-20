@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import net.sf.jasperreports.engine.JasperExportManager;
 
 /**
  *
@@ -1240,6 +1241,34 @@ public class CashierDashboard extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/cinema manger reports/";
+
+            String fileName = path + "ticket_" + time + ".pdf";
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", jTextField2.getText());
+            params.put("Parameter2", jTextField3.getText());
+            params.put("Parameter3", jTextField4.getText());
+            params.put("Parameter4", jLabel7.getText());
+            params.put("Parameter5", jTextField1.getText());
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+            JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/ZMT.jasper", params, dataSource);
+            JasperViewer.viewReport(jasperPrint, false);
+
+            JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        reset();
+
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
