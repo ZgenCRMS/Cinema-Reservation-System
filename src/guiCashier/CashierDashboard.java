@@ -6,6 +6,10 @@ package guiCashier;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.lowagie.text.pdf.TextField;
 import com.sun.jdi.Value;
 import guiLogin.LogingOption;
@@ -18,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -1223,8 +1228,6 @@ public class CashierDashboard extends javax.swing.JFrame {
                                 + "VALUES ('" + sheetNumber + "', '" + invoiceItem.getTicketID() + "','" + laky + "',"
                                 + "'" + invoiceItem.getCustomerNum() + "','" + sheduleID + "')");
 
-//                        reset();
-
                         JOptionPane.showMessageDialog(
                                 this,
                                 "Successfully Printed Invoice!\nGiven Amount: " + giveA,
@@ -1243,24 +1246,38 @@ public class CashierDashboard extends javax.swing.JFrame {
         }
 
         try {
-
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-            String path = "print report/cinema manger reports/";
-
+            String path = "print report/tickets/";
             String fileName = path + "ticket_" + time + ".pdf";
 
+            // QR Code text (you can customize this as needed)
+            String qrText = "Invoice No: " + jTextField1.getText() + "\n"
+                    + "Customer: " + jTextField2.getText() + "\n"
+                    + "Movie: " + jTextField3.getText() + "\n"
+                    + "Hall: " + jTextField4.getText() + "\n"
+                    + "Sheet: " + jTextField5.getText();
+
+            // Generate QR Code image
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 160, 160);
+            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+            // Parameters map
             HashMap<String, Object> params = new HashMap<>();
             params.put("Parameter1", jTextField2.getText());
             params.put("Parameter2", jTextField3.getText());
             params.put("Parameter3", jTextField4.getText());
             params.put("Parameter4", jLabel7.getText());
             params.put("Parameter5", jTextField1.getText());
+            params.put("Parameter6", qrImage); // Pass QR code image 
 
+            // Load data
             JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
-            JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/ZMT.jasper", params, dataSource);
+
+            // Fill report
+            JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/QRFTMZGen5.jasper", params, dataSource);
             JasperViewer.viewReport(jasperPrint, false);
 
+            // Export PDF
             JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
 
         } catch (Exception e) {
@@ -1268,7 +1285,6 @@ public class CashierDashboard extends javax.swing.JFrame {
         }
 
         reset();
-
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
