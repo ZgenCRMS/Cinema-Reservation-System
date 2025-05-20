@@ -239,7 +239,7 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         String currentDateTime = dateFormat.format(now);
         String currentDate = onlyDateFormat.format(now);
         String currentTime = timeFormat.format(now);
-        
+
         if (currentTime.compareTo("17:00:00") > 0) {
             JOptionPane.showMessageDialog(this,
                     "❌ Attendance cannot be marked after 5:00 PM!",
@@ -287,6 +287,7 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                             + "WHERE emp_qr.qr_number = '" + Qrcode + "'"
                     );
 
+                    
                     double finalSalary = 0;
                     if (rsSalary.next()) {
                         double daySalary = rsSalary.getDouble("daySalary");
@@ -296,24 +297,37 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                     // Insert or update salary record
                     if (employeeMobile != null) {
                         // Check if salary record exists for today
-                        ResultSet rsExistingSalary = mySQL.executeSearch(
-                                "SELECT * FROM employee_salary "
-                                + "WHERE employee_mobile = '" + employeeMobile + "' AND date LIKE '" + currentDate + "%'"
+                        // 1. Get employee_mobile from emp_qr
+                        ResultSet rsEmp = mySQL.executeSearch(
+                                "SELECT employee_mobile FROM emp_qr WHERE qr_number = '" + Qrcode + "'"
                         );
+                        
+                        if (rsEmp.next()) {
+                            String employeeMobileS = rsEmp.getString("employee_mobile");
 
-                        if (rsExistingSalary.next()) {
-                            // Update existing salary
-                            mySQL.executeIUD(
-                                    "UPDATE employee_salary SET salary = '" + finalSalary + "' "
-                                    + "WHERE employee_mobile = '" + employeeMobile + "' AND date LIKE '" + currentDate + "%'"
+                            // 2. Check if a salary row exists for today
+                            ResultSet RsSalary = mySQL.executeSearch(
+                                    "SELECT salary FROM employee_salary "
+                                    + "WHERE employee_mobile = '" + employeeMobile + "' AND DATE(date) = CURDATE()"
                             );
-                        } else {
-                            // Insert new salary record
-                            mySQL.executeIUD(
-                                    "INSERT INTO employee_salary (`salary`, `employee_mobile`, `date`) "
-                                    + "VALUES ('" + finalSalary + "', '" + employeeMobile + "', '" + currentDateTime + "')"
-                            );
+                            if (RsSalary.next()) {
+                                // 3. Update salary
+                                double existingSalary = RsSalary.getDouble("salary");
+                                double updatedSalary = existingSalary + finalSalary;
+
+                                mySQL.executeIUD(
+                                        "UPDATE employee_salary SET salary = '" + updatedSalary + "' "
+                                        + "WHERE employee_mobile = '" + employeeMobile + "' AND DATE(date) = CURDATE()"
+                                );
+                            } else {
+                                // 4. Insert new salary row
+                                mySQL.executeIUD(
+                                        "INSERT INTO employee_salary (`salary`, `employee_mobile`, `date`) "
+                                        + "VALUES ('" + finalSalary + "', '" + employeeMobile + "', NOW())"
+                                );
+                            }
                         }
+
                     }
 
                     viewEmployee();
