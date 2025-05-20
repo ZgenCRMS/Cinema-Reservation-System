@@ -1223,7 +1223,7 @@ public class CashierDashboard extends javax.swing.JFrame {
                                 + "VALUES ('" + sheetNumber + "', '" + invoiceItem.getTicketID() + "','" + laky + "',"
                                 + "'" + invoiceItem.getCustomerNum() + "','" + sheduleID + "')");
 
-                        reset();
+//                        reset();
 
                         JOptionPane.showMessageDialog(
                                 this,

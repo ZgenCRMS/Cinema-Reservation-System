@@ -67,7 +67,6 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -78,22 +77,11 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField1.setForeground(new java.awt.Color(0, 255, 0));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField1KeyPressed(evt);
-            }
-        });
-
-        jButton1.setBackground(new java.awt.Color(0, 204, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Checking");
-        jButton1.setBorderPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -108,8 +96,7 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,8 +106,6 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -129,43 +114,6 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        try {
-            String Qrcode = jTextField1.getText().trim();
-
-            if (Qrcode != null && !Qrcode.isEmpty()) {
-                // Check if invoice exists
-                ResultSet rs = mySQL.executeSearch("SELECT * FROM invoice WHERE id = '" + Qrcode + "'");
-
-                if (rs.next()) {
-                    // Invoice exists - Valid Ticket
-                    JOptionPane.showMessageDialog(this,
-                            "✅ Valid Ticket\n\n",
-                            "Valid Ticket",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    // Invalid ticket
-                    JOptionPane.showMessageDialog(this,
-                            "❌ Invalid Ticket!",
-                            "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "❌ Invalid QR format - Invoice No missing!",
-                        "Format Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    "❌ Error processing QR Code!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
 //        String QRcode = jTextField1.getText();
@@ -215,16 +163,16 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
         do {
             try {
                 Thread.sleep(100);
-
             } catch (InterruptedException ex) {
-                Logger.getLogger(ScanQR.class
-                        .getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ScanQR.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             Result result = null;
             BufferedImage image = null;
 
             if (webcam.isOpen()) {
-                if ((image = webcam.getImage()) == null) {
+                image = webcam.getImage();
+                if (image == null) {
                     continue;
                 }
             }
@@ -234,21 +182,35 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
 
             try {
                 result = new MultiFormatReader().decode(bitmap);
-
             } catch (NotFoundException ex) {
-                Logger.getLogger(ScanQR.class
-                        .getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ScanQR.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             if (result != null) {
                 String qrText = result.getText();
+
                 // Regex to extract the number after "Invoice No:"
                 Pattern pattern = Pattern.compile("Invoice No[:\\s]*([0-9]+)");
                 Matcher matcher = pattern.matcher(qrText);
 
                 if (matcher.find()) {
-                    String invoiceNo = matcher.group(1); // Get the captured group
-                    jTextField1.setText(invoiceNo);
+                    String invoiceID = matcher.group(1); // Extracted invoice ID
+
+                    try {
+                        // Query to check if invoice ID exists
+                        ResultSet rs = mySQL.executeSearch("SELECT * FROM invoice WHERE id = '" + invoiceID + "'");
+
+                        if (rs.next()) {
+                            // Invoice ID exists
+                            jTextField1.setText("Valid Ticket");
+                        } else {
+                            // Invoice ID not found
+                            jTextField1.setText("Invalid Ticket");
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(ScanQR.class.getName()).log(Level.SEVERE, null, ex);
+                        jTextField1.setText("DB Error");
+                    }
                 } else {
                     jTextField1.setText("Invoice No not found");
                 }
@@ -264,7 +226,6 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
         return t;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
