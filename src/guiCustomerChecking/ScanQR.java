@@ -18,6 +18,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import guiManager.AdminDashboard;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -51,7 +52,7 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
     public ScanQR() {
         initComponents();
         initWebcam();
-        jTextField1.setEnabled(false);
+        jTextField1.setEditable(false);
 
     }
 
@@ -76,9 +77,10 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 255, 0));
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setBorder(null);
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField1KeyPressed(evt);
@@ -105,7 +107,7 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -203,17 +205,22 @@ public class ScanQR extends javax.swing.JFrame implements Runnable, ThreadFactor
                         if (rs.next()) {
                             // Invoice ID exists
                             jTextField1.setText("Valid Ticket");
+                            jTextField1.setForeground(Color.GREEN); 
                         } else {
                             // Invoice ID not found
                             jTextField1.setText("Invalid Ticket");
+                            jTextField1.setForeground(Color.RED); 
                         }
                     } catch (Exception ex) {
                         Logger.getLogger(ScanQR.class.getName()).log(Level.SEVERE, null, ex);
                         jTextField1.setText("DB Error");
+                        jTextField1.setForeground(Color.ORANGE);
                     }
                 } else {
-                    jTextField1.setText("Invoice No not found");
+                    jTextField1.setText("Not found");
+                    jTextField1.setForeground(Color.ORANGE); // 
                 }
+
             }
 
         } while (true);
