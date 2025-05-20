@@ -589,6 +589,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
 
         int row = jTable2.getSelectedRow();
+        jTextField3.setEnabled(false);
 
         String fname = String.valueOf(jTable2.getValueAt(row, 0));
         jTextField1.setText(fname);
@@ -725,6 +726,7 @@ public class UpdateEmployee extends javax.swing.JDialog {
         jTextField5.setText("");
         jComboBox1.setSelectedIndex(0);
         jComboBox3.setSelectedIndex(0);
+        jTextField3.setEnabled(true);
     }
 
 }

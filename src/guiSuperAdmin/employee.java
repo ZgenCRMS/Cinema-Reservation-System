@@ -33,7 +33,7 @@ public class employee extends javax.swing.JPanel {
     public employee() {
         initComponents();
         viewEmployee();
-        reload();
+//        reload();
         hint();
         AttendanceEmployee();
         SalaryEmployee();

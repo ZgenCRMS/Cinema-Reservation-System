@@ -39,7 +39,7 @@ public class movie extends javax.swing.JPanel {
         loadMovieGRN();
         loardCompany();
         loardSuppliers("fname", "ASC", "");
-        reload();
+//        reload();
         hint();
 
     }

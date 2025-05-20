@@ -44,7 +44,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         loadcompany();
         init();
         mgr = (AddMovieGRN1) parent;
-        reload();
+//        reload();
         hint();
         jTextField3.grabFocus();
         jButton5.setEnabled(false);
@@ -961,16 +961,16 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
             jComboBox2.setSelectedItem(company);
 
         }
-
-        if (evt.getClickCount() == 2) {
-
-            String supName = String.valueOf(jTable1.getValueAt(row, 0));
-
-            mgr.getTextField().setText(supName);
-            this.dispose();
-//            mgr.getJButton().grabFocus();
-
-        }
+//
+//        if (evt.getClickCount() == 2) {
+//
+//            String supName = String.valueOf(jTable1.getValueAt(row, 0));
+//
+//            mgr.getTextField().setText(supName);
+//            this.dispose();
+////            mgr.getJButton().grabFocus();
+//
+//        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged

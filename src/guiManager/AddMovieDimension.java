@@ -122,7 +122,7 @@ public class AddMovieDimension extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Add Movie Genres");
+        jLabel7.setText("Add Dimension ");
         jPanel1.add(jLabel7);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -399,7 +399,10 @@ public class AddMovieDimension extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int row = jTable2.getSelectedRow();
+
         String dimension = jTextField1.getText();
+        String id = String.valueOf(jTable2.getValueAt(row, 0));
 
         if (dimension.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Add Movie Dimension", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -413,8 +416,8 @@ public class AddMovieDimension extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, "Alredy Registered", "Warning", JOptionPane.WARNING_MESSAGE);
 
                 } else {
-                    mySQL.executeIUD("INSERT INTO `movie_dimension`(`type`)"
-                            + "VALUES('" + dimension + "')");
+                    mySQL.executeIUD("UPDATE `movie_dimension` SET "
+                            + "`type`='" + dimension + "' WHERE `id`='" + id + "'");
                     JOptionPane.showMessageDialog(this, "Successfully updated Movie Dimension", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 }
