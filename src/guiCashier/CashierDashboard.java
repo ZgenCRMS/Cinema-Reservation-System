@@ -177,7 +177,7 @@ public class CashierDashboard extends javax.swing.JFrame {
             jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ticket Price");
         }
         if (jTextField7 != null) {
-            jTextField7.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Payid Amount");
+            jTextField7.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Paid Amount");
         }
 
     }
