@@ -961,7 +961,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
             jComboBox2.setSelectedItem(company);
 
         }
-//
+
 //        if (evt.getClickCount() == 2) {
 //
 //            String supName = String.valueOf(jTable1.getValueAt(row, 0));

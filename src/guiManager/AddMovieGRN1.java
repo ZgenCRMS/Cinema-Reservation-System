@@ -720,7 +720,7 @@ public class AddMovieGRN1 extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        new SupplierregistrationNew(this, true).show();
+        new SupplierregistrationNew1(this, true).show();
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
