@@ -221,9 +221,9 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
         String Qrcode = jTextField1.getText().trim();
 
-        // Remove leading/trailing quotes
         if (Qrcode.startsWith("'")) {
             Qrcode = Qrcode.substring(1);
         }
@@ -251,9 +251,8 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
             ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
 
             if (resultSet1.next()) {
-                // Check for existing attendance
                 ResultSet resultSet2 = mySQL.executeSearch(
-                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND `date` LIKE '" + currentDate + "%'"
+                        "SELECT * FROM `employye_attendce` WHERE `emp_qr_qr_number`='" + Qrcode + "' AND DATE(`date`) = '" + currentDate + "'"
                 );
 
                 if (resultSet2.next()) {
@@ -261,73 +260,52 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                             "⚠️ Attendance Already Marked for Today!",
                             "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    // Determine attendance type
                     int attendanceTypeId = (currentTime.compareTo("08:00:00") <= 0) ? 1 : 2;
 
-                    // Insert attendance
                     mySQL.executeIUD("INSERT INTO `employye_attendce` (`emp_qr_qr_number`, `date`, `attendce_type_id`) "
                             + "VALUES ('" + Qrcode + "', '" + currentDateTime + "', '" + attendanceTypeId + "')");
 
-                    // Fetch employee_mobile from emp_qr
                     ResultSet rsMobile = mySQL.executeSearch(
                             "SELECT employee_mobile FROM emp_qr WHERE qr_number = '" + Qrcode + "'"
                     );
+                    String employeeMobile = rsMobile.next() ? rsMobile.getString("employee_mobile") : null;
 
-                    String employeeMobile = null;
-                    if (rsMobile.next()) {
-                        employeeMobile = rsMobile.getString("employee_mobile");
-                    }
-
-                    // Fetch daySalary
-                    ResultSet rsSalary = mySQL.executeSearch(
-                            "SELECT emp_type.daySalary "
-                            + "FROM emp_qr "
-                            + "INNER JOIN employee ON emp_qr.employee_mobile = employee.mobile "
-                            + "INNER JOIN emp_type ON employee.emp_type_id = emp_type.id "
-                            + "WHERE emp_qr.qr_number = '" + Qrcode + "'"
-                    );
-
-                    
                     double finalSalary = 0;
-                    if (rsSalary.next()) {
-                        double daySalary = rsSalary.getDouble("daySalary");
-                        finalSalary = (attendanceTypeId == 1) ? daySalary : daySalary / 2.0;
+                    if (employeeMobile != null) {
+                        ResultSet rsSalary = mySQL.executeSearch(
+                                "SELECT emp_type.daySalary "
+                                + "FROM emp_qr "
+                                + "INNER JOIN employee ON emp_qr.employee_mobile = employee.mobile "
+                                + "INNER JOIN emp_type ON employee.emp_type_id = emp_type.id "
+                                + "WHERE emp_qr.qr_number = '" + Qrcode + "'"
+                        );
+                        if (rsSalary.next()) {
+                            double daySalary = rsSalary.getDouble("daySalary");
+                            finalSalary = (attendanceTypeId == 1) ? daySalary : daySalary / 2.0;
+                        }
                     }
 
-                    // Insert or update salary record
-                    if (employeeMobile != null) {
-                        // Check if salary record exists for today
-                        // 1. Get employee_mobile from emp_qr
-                        ResultSet rsEmp = mySQL.executeSearch(
-                                "SELECT employee_mobile FROM emp_qr WHERE qr_number = '" + Qrcode + "'"
+                    if (employeeMobile != null && finalSalary > 0) {
+                        ResultSet salaryCheck = mySQL.executeSearch(
+                                "SELECT * FROM employee_salary WHERE employee_mobile = '" + employeeMobile + "'"
                         );
-                        
-                        if (rsEmp.next()) {
-                            String employeeMobileS = rsEmp.getString("employee_mobile");
+                        boolean salaryExists = salaryCheck.next();
 
-                            // 2. Check if a salary row exists for today
-                            ResultSet RsSalary = mySQL.executeSearch(
-                                    "SELECT salary FROM employee_salary "
-                                    + "WHERE employee_mobile = '" + employeeMobile + "' AND DATE(date) = CURDATE()"
+
+                        if (salaryExists) {
+                            double existingSalary = salaryCheck.getDouble("salary");
+                            double updatedSalary = existingSalary + finalSalary;
+
+                            mySQL.executeIUD(
+                                    "UPDATE employee_salary SET salary = '" + updatedSalary + "', `date` = '" + currentDateTime + "' "
+                                    + "WHERE employee_mobile = '" + employeeMobile + "'"
                             );
-                            if (RsSalary.next()) {
-                                // 3. Update salary
-                                double existingSalary = RsSalary.getDouble("salary");
-                                double updatedSalary = existingSalary + finalSalary;
-
-                                mySQL.executeIUD(
-                                        "UPDATE employee_salary SET salary = '" + updatedSalary + "' "
-                                        + "WHERE employee_mobile = '" + employeeMobile + "' AND DATE(date) = CURDATE()"
-                                );
-                            } else {
-                                // 4. Insert new salary row
-                                mySQL.executeIUD(
-                                        "INSERT INTO employee_salary (`salary`, `employee_mobile`, `date`) "
-                                        + "VALUES ('" + finalSalary + "', '" + employeeMobile + "', NOW())"
-                                );
-                            }
+                        } else {
+                            mySQL.executeIUD(
+                                    "INSERT INTO employee_salary (`salary`, `employee_mobile`, `date`) "
+                                    + "VALUES ('" + finalSalary + "', '" + employeeMobile + "', '" + currentDateTime + "')"
+                            );
                         }
-
                     }
 
                     viewEmployee();
@@ -352,8 +330,10 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
 
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "❌ An error occurred: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
