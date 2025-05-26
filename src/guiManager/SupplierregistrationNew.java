@@ -106,7 +106,7 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         jTextField6.putClientProperty("JComponent.roundRect", true);
         jTextField8.putClientProperty("JComponent.roundRect", true);
         jTextField9.putClientProperty("JComponent.roundRect", true);
-        jButton3.putClientProperty("JButton.buttonType", "roundRect");
+       
         jButton4.putClientProperty("JButton.buttonType", "roundRect");
         jButton5.putClientProperty("JButton.buttonType", "roundRect");
         jButton6.putClientProperty("JButton.buttonType", "roundRect");
@@ -276,7 +276,6 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         jButton6 = new javax.swing.JButton();
         jPanel28 = new javax.swing.JPanel();
         jPanel66 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         jPanel67 = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
@@ -868,20 +867,6 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
 
         jPanel66.setPreferredSize(new java.awt.Dimension(340, 45));
         jPanel66.setLayout(new java.awt.GridLayout(1, 0));
-
-        jButton3.setBackground(new java.awt.Color(0, 65, 112));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/print-32.png"))); // NOI18N
-        jButton3.setText("Print");
-        jButton3.setBorderPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel66.add(jButton3);
-
         jPanel28.add(jPanel66, java.awt.BorderLayout.PAGE_END);
 
         jPanel67.setPreferredSize(new java.awt.Dimension(340, 100));
@@ -1085,22 +1070,6 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASupReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-     }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         char c = evt.getKeyChar();
 
@@ -1124,7 +1093,6 @@ public class SupplierregistrationNew extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;

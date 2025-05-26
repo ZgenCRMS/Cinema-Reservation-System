@@ -136,7 +136,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Add Movie Sheet"/>
+                <Property name="text" type="java.lang.String" value="Add Movie Seat"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -345,7 +345,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Sheet Number"/>
+                        <Property name="text" type="java.lang.String" value="Seat Number"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextField1">

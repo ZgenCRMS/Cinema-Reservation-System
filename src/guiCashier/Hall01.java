@@ -5,10 +5,20 @@
 package guiCashier;
 
 import guiManager.AdminDashboard;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
 
@@ -23,11 +33,36 @@ public class Hall01 extends javax.swing.JDialog {
     public Hall01(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        disableBookedButtons();
+//        disableBookedButtons();
         cd = (CashierDashboard) parent;
+
+        setDT();
     }
 
-    
+    public void setDT() {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(now);
+                int h = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+                int m = calendar.get(Calendar.MINUTE);
+
+                //Between 12:00 PM and 12:30 PM
+                if (h == 12 && m >= 00 && m < 30) {
+                    enableBookedButtons();
+                } else if (h == 14 && m >= 30 && m < 59) {
+                    enableBookedButtons();
+                } else {
+                    disableBookedButtons();
+                }
+                
+
+            }
+        });
+        timer.start();
+    }
 
     private void disableBookedButtons() {
         try {
@@ -139,6 +174,39 @@ public class Hall01 extends javax.swing.JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void enableBookedButtons() {
+        NO1.setEnabled(true);
+        NO2.setEnabled(true);
+        NO3.setEnabled(true);
+        NO4.setEnabled(true);
+        NO5.setEnabled(true);
+        NO6.setEnabled(true);
+        NO7.setEnabled(true);
+        NO8.setEnabled(true);
+        NO9.setEnabled(true);
+        NO10.setEnabled(true);
+        NO11.setEnabled(true);
+        NO12.setEnabled(true);
+        NO13.setEnabled(true);
+        NO14.setEnabled(true);
+        NO15.setEnabled(true);
+        NO16.setEnabled(true);
+        NO17.setEnabled(true);
+        NO18.setEnabled(true);
+        NO19.setEnabled(true);
+        NO20.setEnabled(true);
+        NO21.setEnabled(true);
+        NO22.setEnabled(true);
+        NO23.setEnabled(true);
+        NO24.setEnabled(true);
+        NO25.setEnabled(true);
+        NO26.setEnabled(true);
+        NO27.setEnabled(true);
+        NO28.setEnabled(true);
+        NO29.setEnabled(true);
+        NO30.setEnabled(true);
     }
 
     @SuppressWarnings("unchecked")

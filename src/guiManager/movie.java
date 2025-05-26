@@ -8,15 +8,20 @@ import guiSuperAdmin.*;
 import guiSuperAdmin.*;
 import com.formdev.flatlaf.FlatClientProperties;
 import guiManager.AdminDashboard;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import model.DB;
 import model.mySQL;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -45,28 +50,595 @@ public class movie extends javax.swing.JPanel {
 
     }
 
-    private void hint() {
+     private void hint() {
         if (jTextField9 != null) {
-            jTextField9.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+            jTextField9.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Movie Name");
         }
         if (jTextField10 != null) {
-            jTextField10.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+            jTextField10.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Movie Name");
         }
         if (jTextField11 != null) {
-            jTextField11.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+            jTextField11.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Invoice ID");
         }
         if (jTextField12 != null) {
-            jTextField12.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+            jTextField12.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Movie Name");
         }
         if (jTextField13 != null) {
-            jTextField13.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+                jTextField13.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Company Name");
         }
         if (jTextField14 != null) {
-            jTextField14.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
+            jTextField14.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Supplier Name");
         }
 
     }
 
+    /////////////////////////////////////
+    private void moviestatechange() {
+
+        if (jComboBox9.getSelectedIndex() == 0) {
+
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `movie` "
+                        + "INNER JOIN `movie_category` ON `movie`.`movie_category_id`=`movie_category`.`id`"
+                        + "INNER JOIN `movie_dimension` ON `movie`.`movie_dimension_id`=`movie_dimension`.`id`"
+                        + "INNER JOIN `language` ON `movie`.`language_id`=`language`.`id`  ORDER BY `movie`.`name` ASC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("movie_id"));
+                    vector.add(resultSet.getString("name"));
+                    vector.add(resultSet.getString("duration"));
+                    vector.add(resultSet.getString("relased_date"));
+                    vector.add(resultSet.getString("movie_category.name"));
+                    vector.add(resultSet.getString("movie_dimension.type"));
+                    vector.add(resultSet.getString("language.name"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (jComboBox9.getSelectedIndex() == 1) {
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `movie` "
+                        + "INNER JOIN `movie_category` ON `movie`.`movie_category_id`=`movie_category`.`id`"
+                        + "INNER JOIN `movie_dimension` ON `movie`.`movie_dimension_id`=`movie_dimension`.`id`"
+                        + "INNER JOIN `language` ON `movie`.`language_id`=`language`.`id` ORDER BY `movie`.`name` DESC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("movie_id"));
+                    vector.add(resultSet.getString("name"));
+                    vector.add(resultSet.getString("duration"));
+                    vector.add(resultSet.getString("relased_date"));
+                    vector.add(resultSet.getString("movie_category.name"));
+                    vector.add(resultSet.getString("movie_dimension.type"));
+                    vector.add(resultSet.getString("language.name"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void MovieSearch() {
+
+        try {
+            String moviename = jTextField9.getText().trim();
+            String query = "SELECT * FROM `movie` "
+                    + "INNER JOIN `movie_category` ON `movie`.`movie_category_id`=`movie_category`.`id`"
+                    + "INNER JOIN `movie_dimension` ON `movie`.`movie_dimension_id`=`movie_dimension`.`id`"
+                    + "INNER JOIN `language` ON `movie`.`language_id`=`language`.`id`";
+
+            if (!moviename.isEmpty()) {
+                query += " WHERE `movie`.`name` LIKE '" + moviename + "%'";
+            }
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("movie_id"));
+                vector.add(resultSet.getString("name"));
+                vector.add(resultSet.getString("duration"));
+                vector.add(resultSet.getString("relased_date"));
+                vector.add(resultSet.getString("movie_category.name"));
+                vector.add(resultSet.getString("movie_dimension.type"));
+                vector.add(resultSet.getString("language.name"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void reset() {
+        jTextField9.setText("");
+        jComboBox9.setSelectedIndex(0);
+        LoadMovieTable();
+    }
+
+    private void InvoiceState() {
+
+        if (jComboBox10.getSelectedIndex() == 0) {
+
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT  * FROM `movie_invoiceitem` INNER JOIN `invoice` ON `movie_invoiceitem`.`invoice_id` = `invoice`.id "
+                        + "INNER JOIN `ticket` ON `movie_invoiceitem`.`ticket_id` = `ticket`.`id` "
+                        + "INNER JOIN `schedule` ON `movie_invoiceitem`.`schedule_id` = `schedule`.`id` "
+                        + "INNER JOIN `payment_method` ON `invoice`.`payment_method_id` = `payment_method`.`id` "
+                        + "INNER JOIN `movie` ON `schedule`.`movie_movie_id` = `movie`.`movie_id`"
+                        + "INNER JOIN `movie_customer_type` ON `ticket`.`movie_customer_type_id` = `movie_customer_type`.`id`  ORDER BY `movie_invoiceitem`.`id` ASC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("invoice.id"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("schedule.hall_id"));
+                    vector.add(resultSet.getString("sheet_number"));
+                    vector.add(resultSet.getString("customer_mobile"));
+                    vector.add(resultSet.getString("movie_customer_type.customer_type_name"));
+                    vector.add(resultSet.getString("payment_method.name"));
+                    vector.add(resultSet.getString("invoice.paid_amount"));
+                    vector.add(resultSet.getString("invoice.qty"));
+                    vector.add(resultSet.getString("invoice.user_email"));
+                    vector.add(resultSet.getString("invoice.date"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (jComboBox10.getSelectedIndex() == 1) {
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT  * FROM `movie_invoiceitem` INNER JOIN `invoice` ON `movie_invoiceitem`.`invoice_id` = `invoice`.id "
+                        + "INNER JOIN `ticket` ON `movie_invoiceitem`.`ticket_id` = `ticket`.`id` "
+                        + "INNER JOIN `schedule` ON `movie_invoiceitem`.`schedule_id` = `schedule`.`id` "
+                        + "INNER JOIN `payment_method` ON `invoice`.`payment_method_id` = `payment_method`.`id` "
+                        + "INNER JOIN `movie` ON `schedule`.`movie_movie_id` = `movie`.`movie_id`"
+                        + "INNER JOIN `movie_customer_type` ON `ticket`.`movie_customer_type_id` = `movie_customer_type`.`id`  ORDER BY `movie_invoiceitem`.`id` DESC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("invoice.id"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("schedule.hall_id"));
+                    vector.add(resultSet.getString("sheet_number"));
+                    vector.add(resultSet.getString("customer_mobile"));
+                    vector.add(resultSet.getString("movie_customer_type.customer_type_name"));
+                    vector.add(resultSet.getString("payment_method.name"));
+                    vector.add(resultSet.getString("invoice.paid_amount"));
+                    vector.add(resultSet.getString("invoice.qty"));
+                    vector.add(resultSet.getString("invoice.user_email"));
+                    vector.add(resultSet.getString("invoice.date"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void MovieInvoiceSearch() {
+        try {
+            String moviename = jTextField10.getText().trim();
+            String query = "SELECT  * FROM `movie_invoiceitem` INNER JOIN `invoice` ON `movie_invoiceitem`.`invoice_id` = `invoice`.id "
+                    + "INNER JOIN `ticket` ON `movie_invoiceitem`.`ticket_id` = `ticket`.`id` "
+                    + "INNER JOIN `schedule` ON `movie_invoiceitem`.`schedule_id` = `schedule`.`id` "
+                    + "INNER JOIN `payment_method` ON `invoice`.`payment_method_id` = `payment_method`.`id` "
+                    + "INNER JOIN `movie` ON `schedule`.`movie_movie_id` = `movie`.`movie_id`"
+                    + "INNER JOIN `movie_customer_type` ON `ticket`.`movie_customer_type_id` = `movie_customer_type`.`id`";
+
+//            String query = "SELECT * FROM `employye_attendce` INNER JOIN `emp_qr` ON `employye_attendce`.`emp_qr_qr_number`=`emp_qr`.`qr_number`"
+//                    + "INNER JOIN `attendce_type` ON `employye_attendce`.`attendce_type_id`=`attendce_type`.`id`";
+            if (!moviename.isEmpty()) {
+                query += " WHERE `movie`.`name` LIKE '" + moviename + "%'";
+            }
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("invoice.id"));
+                vector.add(resultSet.getString("movie.name"));
+                vector.add(resultSet.getString("schedule.hall_id"));
+                vector.add(resultSet.getString("sheet_number"));
+                vector.add(resultSet.getString("customer_mobile"));
+                vector.add(resultSet.getString("movie_customer_type.customer_type_name"));
+                vector.add(resultSet.getString("payment_method.name"));
+                vector.add(resultSet.getString("invoice.paid_amount"));
+                vector.add(resultSet.getString("invoice.qty"));
+                vector.add(resultSet.getString("invoice.user_email"));
+                vector.add(resultSet.getString("invoice.date"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void resetInvoice() {
+        jTextField10.setText("");
+        jComboBox10.setSelectedIndex(0);
+        LoadInvoiceTable();
+    }
+
+    private void MovieScheduleState() {
+
+        if (jComboBox11.getSelectedIndex() == 0) {
+
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` "
+                        + "INNER JOIN `movie` ON `schedule`.`movie_movie_id`=`movie`.`movie_id`"
+                        + "INNER JOIN `hall` ON `schedule`.`hall_id`=`hall`.`id`"
+                        + "INNER JOIN `time_slot` ON `schedule`.`time_Slot_id`=`time_slot`.`id` ORDER BY `movie`.`name` ASC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable7.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("id"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("hall.hall_number"));
+                    vector.add(resultSet.getString("schedule_date"));
+                    vector.add(resultSet.getString("time_slot.start_time"));
+                    vector.add(resultSet.getString("time_slot.end_time"));
+
+                    vector.add(resultSet.getString("start_date"));
+                    vector.add(resultSet.getString("end_date"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (jComboBox11.getSelectedIndex() == 1) {
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `schedule` "
+                        + "INNER JOIN `movie` ON `schedule`.`movie_movie_id`=`movie`.`movie_id`"
+                        + "INNER JOIN `hall` ON `schedule`.`hall_id`=`hall`.`id`"
+                        + "INNER JOIN `time_slot` ON `schedule`.`time_Slot_id`=`time_slot`.`id` ORDER BY `movie`.`name` DESC ");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable7.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("id"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("hall.hall_number"));
+                    vector.add(resultSet.getString("schedule_date"));
+                    vector.add(resultSet.getString("time_slot.start_time"));
+                    vector.add(resultSet.getString("time_slot.end_time"));
+
+                    vector.add(resultSet.getString("start_date"));
+                    vector.add(resultSet.getString("end_date"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void MovieScheduleSearch() {
+
+        try {
+            String moviename = jTextField11.getText().trim();
+            String query = "SELECT * FROM `schedule` "
+                    + "INNER JOIN `movie` ON `schedule`.`movie_movie_id`=`movie`.`movie_id`"
+                    + "INNER JOIN `hall` ON `schedule`.`hall_id`=`hall`.`id`"
+                    + "INNER JOIN `time_slot` ON `schedule`.`time_Slot_id`=`time_slot`.`id`";
+
+//            String query = "SELECT * FROM `employye_attendce` INNER JOIN `emp_qr` ON `employye_attendce`.`emp_qr_qr_number`=`emp_qr`.`qr_number`"
+//                    + "INNER JOIN `attendce_type` ON `employye_attendce`.`attendce_type_id`=`attendce_type`.`id`";
+            if (!moviename.isEmpty()) {
+                query += " WHERE `movie`.`name` LIKE '" + moviename + "%'";
+            }
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable7.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("movie.name"));
+                vector.add(resultSet.getString("hall.hall_number"));
+                vector.add(resultSet.getString("schedule_date"));
+                vector.add(resultSet.getString("time_slot.start_time"));
+                vector.add(resultSet.getString("time_slot.end_time"));
+
+                vector.add(resultSet.getString("start_date"));
+                vector.add(resultSet.getString("end_date"));
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void resetMovie() {
+
+        jTextField11.setText("");
+        jComboBox11.setSelectedIndex(0);
+        loadMovieTimeSchedule();
+    }
+
+    private void MRNstate() {
+
+        if (jComboBox12.getSelectedIndex() == 0) {
+
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `movie_grn` INNER JOIN `movie` ON "
+                        + "`movie_grn`.`movie_movie_id` = `movie`.`movie_id`"
+                        + "INNER JOIN `movie_supplier` ON "
+                        + "`movie_grn`.`movie_supplier_supplier_mobile` = `movie_supplier`.supplier_mobile ORDER BY `movie`.`name` ASC");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("id"));
+                    vector.add(resultSet.getString("movie_supplier.supplier_mobile"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("payed_amount"));
+
+                    dtm.addRow(vector);
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (jComboBox12.getSelectedIndex() == 1) {
+            try {
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `movie_grn` INNER JOIN `movie` ON "
+                        + "`movie_grn`.`movie_movie_id` = `movie`.`movie_id`"
+                        + "INNER JOIN `movie_supplier` ON "
+                        + "`movie_grn`.`movie_supplier_supplier_mobile` = `movie_supplier`.supplier_mobile ORDER BY `movie`.`name` DESC");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+                dtm.setRowCount(0);
+
+                while (resultSet.next()) {
+
+                    Vector<String> vector = new Vector<>();
+                    vector.add(resultSet.getString("id"));
+                    vector.add(resultSet.getString("movie_supplier.supplier_mobile"));
+                    vector.add(resultSet.getString("movie.name"));
+                    vector.add(resultSet.getString("payed_amount"));
+
+                    dtm.addRow(vector);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void MRNsearch() {
+
+        try {
+            String grnid = jTextField12.getText().trim();
+            String query = "SELECT * FROM `movie_grn` INNER JOIN `movie` ON "
+                    + "`movie_grn`.`movie_movie_id` = `movie`.`movie_id`"
+                    + "INNER JOIN `movie_supplier` ON "
+                    + "`movie_grn`.`movie_supplier_supplier_mobile` = `movie_supplier`.supplier_mobile";
+
+            if (!grnid.isEmpty()) {
+                query += " WHERE `movie_grn`.`id` LIKE '" + grnid + "%'";
+            }
+
+            java.sql.ResultSet resultSet = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("movie_supplier.supplier_mobile"));
+                vector.add(resultSet.getString("movie.name"));
+                vector.add(resultSet.getString("payed_amount"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void resetMRN() {
+
+        jTextField12.setText("");
+        jComboBox12.setSelectedIndex(0);
+        loadMovieGRN();
+    }
+
+    private void companyState() {
+        if (jComboBox13.getSelectedIndex() == 0) {
+
+            try {
+
+                java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `movie_company` ORDER BY `movie_company`.`company_name` ASC");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable8.getModel();
+                dtm.setRowCount(0);
+
+                while (result.next()) {
+                    Vector<String> v = new Vector();
+                    v.add(result.getString("Hotline"));
+                    v.add(result.getString("company_name"));
+                    v.add(result.getString("company_email"));
+
+                    dtm.addRow(v);
+//                this.repaint();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (jComboBox13.getSelectedIndex() == 1) {
+            try {
+                java.sql.ResultSet result = mySQL.executeSearch("SELECT * FROM `movie_company` ORDER BY `movie_company`.`company_name` DESC");
+
+                DefaultTableModel dtm = (DefaultTableModel) jTable8.getModel();
+                dtm.setRowCount(0);
+
+                while (result.next()) {
+                    Vector<String> v = new Vector();
+                    v.add(result.getString("Hotline"));
+                    v.add(result.getString("company_name"));
+                    v.add(result.getString("company_email"));
+
+                    dtm.addRow(v);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void companySearch() {
+        try {
+            String Cname = jTextField13.getText().trim();
+            String query = "SELECT * FROM `movie_company`";
+
+            if (!Cname.isEmpty()) {
+                query += " WHERE `movie_company`.`company_name` LIKE '" + Cname + "%'";
+            }
+
+            java.sql.ResultSet result = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable8.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (result.next()) {
+                Vector<String> v = new Vector();
+                v.add(result.getString("Hotline"));
+                v.add(result.getString("company_name"));
+                v.add(result.getString("company_email"));
+
+                dtm.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void resetCompany() {
+
+        jTextField13.setText("");
+        jComboBox13.setSelectedIndex(0);
+        loardCompany();
+    }
+
+    private void SupplierState() {
+
+        if (jComboBox14.getSelectedIndex() == 0) {
+            loardSuppliers("fname", "ASC", jTextField14.getText());
+        } else if (jComboBox14.getSelectedIndex() == 1) {
+            loardSuppliers("fname", "DESC", jTextField14.getText());
+        }
+    }
+
+    private void supplierSearch() {
+
+        try {
+            String Fname = jTextField14.getText().trim();
+            String query = "SELECT * FROM `movie_supplier` INNER JOIN `movie_company` ON `movie_supplier`.`movie_company_id`=`movie_company`.`id`";
+
+            if (!Fname.isEmpty()) {
+                query += " WHERE `movie_supplier`.`fname` LIKE '" + Fname + "%'";
+            }
+
+            java.sql.ResultSet result = mySQL.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+            dtm.setRowCount(0); // clear existing rows
+
+            while (result.next()) {
+                Vector<String> v = new Vector<>();
+                v.add(result.getString("supplier_mobile"));
+                v.add(result.getString("fname"));
+                v.add(result.getString("lname"));
+                v.add(result.getString("email"));
+                v.add(result.getString("movie_company.company_name"));
+
+                dtm.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetSupplier() {
+
+        jTextField14.setText("");
+        jComboBox14.setSelectedIndex(0);
+        loardSuppliers("fname", "ASC", "");
+    }
+
+    /////////////////////////////////////
     private void LoadMovieTable() {
 
         try {
@@ -293,7 +865,6 @@ public class movie extends javax.swing.JPanel {
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel15 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
@@ -304,6 +875,7 @@ public class movie extends javax.swing.JPanel {
         jTextField9 = new javax.swing.JTextField();
         jComboBox9 = new javax.swing.JComboBox<>();
         jPanel74 = new javax.swing.JPanel();
+        jButton10 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -317,7 +889,6 @@ public class movie extends javax.swing.JPanel {
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
         jPanel26 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel28 = new javax.swing.JPanel();
@@ -328,6 +899,7 @@ public class movie extends javax.swing.JPanel {
         jTextField10 = new javax.swing.JTextField();
         jComboBox10 = new javax.swing.JComboBox<>();
         jPanel82 = new javax.swing.JPanel();
+        jButton11 = new javax.swing.JButton();
         jPanel78 = new javax.swing.JPanel();
         jPanel79 = new javax.swing.JPanel();
         jPanel80 = new javax.swing.JPanel();
@@ -341,7 +913,6 @@ public class movie extends javax.swing.JPanel {
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jPanel36 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         jPanel37 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel39 = new javax.swing.JPanel();
@@ -352,6 +923,7 @@ public class movie extends javax.swing.JPanel {
         jTextField11 = new javax.swing.JTextField();
         jComboBox11 = new javax.swing.JComboBox<>();
         jPanel103 = new javax.swing.JPanel();
+        jButton12 = new javax.swing.JButton();
         jPanel84 = new javax.swing.JPanel();
         jPanel85 = new javax.swing.JPanel();
         jPanel86 = new javax.swing.JPanel();
@@ -365,7 +937,6 @@ public class movie extends javax.swing.JPanel {
         jPanel45 = new javax.swing.JPanel();
         jPanel46 = new javax.swing.JPanel();
         jPanel47 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
         jPanel48 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel50 = new javax.swing.JPanel();
@@ -376,6 +947,7 @@ public class movie extends javax.swing.JPanel {
         jTextField12 = new javax.swing.JTextField();
         jComboBox12 = new javax.swing.JComboBox<>();
         jPanel102 = new javax.swing.JPanel();
+        jButton13 = new javax.swing.JButton();
         jPanel91 = new javax.swing.JPanel();
         jPanel92 = new javax.swing.JPanel();
         jPanel93 = new javax.swing.JPanel();
@@ -389,7 +961,6 @@ public class movie extends javax.swing.JPanel {
         jPanel56 = new javax.swing.JPanel();
         jPanel57 = new javax.swing.JPanel();
         jPanel58 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
         jPanel59 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel61 = new javax.swing.JPanel();
@@ -400,6 +971,7 @@ public class movie extends javax.swing.JPanel {
         jTextField13 = new javax.swing.JTextField();
         jComboBox13 = new javax.swing.JComboBox<>();
         jPanel104 = new javax.swing.JPanel();
+        jButton14 = new javax.swing.JButton();
         jPanel98 = new javax.swing.JPanel();
         jPanel99 = new javax.swing.JPanel();
         jPanel100 = new javax.swing.JPanel();
@@ -413,7 +985,6 @@ public class movie extends javax.swing.JPanel {
         jPanel67 = new javax.swing.JPanel();
         jPanel68 = new javax.swing.JPanel();
         jPanel69 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
         jPanel70 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel72 = new javax.swing.JPanel();
@@ -424,6 +995,7 @@ public class movie extends javax.swing.JPanel {
         jTextField14 = new javax.swing.JTextField();
         jComboBox14 = new javax.swing.JComboBox<>();
         jPanel112 = new javax.swing.JPanel();
+        jButton15 = new javax.swing.JButton();
         jPanel108 = new javax.swing.JPanel();
         jPanel109 = new javax.swing.JPanel();
         jPanel110 = new javax.swing.JPanel();
@@ -501,32 +1073,15 @@ public class movie extends javax.swing.JPanel {
         jPanel14.setBackground(new java.awt.Color(51, 51, 51));
         jPanel14.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton1.setBackground(new java.awt.Color(24, 119, 242));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Print Report");
-        jButton1.setBorderPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel13.add(jPanel14, java.awt.BorderLayout.LINE_END);
@@ -568,22 +1123,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel73.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel73.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField9KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField9KeyTyped(evt);
+            }
+        });
         jPanel73.add(jTextField9);
 
         jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox9.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox9ItemStateChanged(evt);
+            }
+        });
         jPanel73.add(jComboBox9);
 
         jPanel3.add(jPanel73, java.awt.BorderLayout.LINE_START);
+
+        jButton10.setBackground(new java.awt.Color(51, 51, 51));
+        jButton10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton10.setForeground(new java.awt.Color(255, 255, 255));
+        jButton10.setText("Clear");
+        jButton10.setBorderPainted(false);
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel74Layout = new javax.swing.GroupLayout(jPanel74);
         jPanel74.setLayout(jPanel74Layout);
         jPanel74Layout.setHorizontalGroup(
             jPanel74Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel74Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel74Layout.setVerticalGroup(
             jPanel74Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel74Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.add(jPanel74, java.awt.BorderLayout.CENTER);
@@ -713,31 +1298,15 @@ public class movie extends javax.swing.JPanel {
         jPanel25.setForeground(new java.awt.Color(255, 255, 255));
         jPanel25.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton2.setBackground(new java.awt.Color(31, 117, 254));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setText("Print Report");
-        jButton2.setBorderPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
         jPanel25Layout.setHorizontalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel25Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel25Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_END);
@@ -779,22 +1348,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel81.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel81.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField10KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField10KeyTyped(evt);
+            }
+        });
         jPanel81.add(jTextField10);
 
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox10.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox10ItemStateChanged(evt);
+            }
+        });
         jPanel81.add(jComboBox10);
 
         jPanel77.add(jPanel81, java.awt.BorderLayout.LINE_START);
+
+        jButton11.setBackground(new java.awt.Color(51, 51, 51));
+        jButton11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton11.setForeground(new java.awt.Color(255, 255, 255));
+        jButton11.setText("Clear");
+        jButton11.setBorderPainted(false);
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel82Layout = new javax.swing.GroupLayout(jPanel82);
         jPanel82.setLayout(jPanel82Layout);
         jPanel82Layout.setHorizontalGroup(
             jPanel82Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel82Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel82Layout.setVerticalGroup(
             jPanel82Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel82Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel77.add(jPanel82, java.awt.BorderLayout.CENTER);
@@ -926,32 +1525,15 @@ public class movie extends javax.swing.JPanel {
         jPanel36.setBackground(new java.awt.Color(51, 51, 51));
         jPanel36.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton3.setBackground(new java.awt.Color(31, 117, 254));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Print Report");
-        jButton3.setBorderPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
         jPanel36.setLayout(jPanel36Layout);
         jPanel36Layout.setHorizontalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel36Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel36Layout.setVerticalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel36Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel35.add(jPanel36, java.awt.BorderLayout.LINE_END);
@@ -993,22 +1575,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel87.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel87.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField11KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField11KeyTyped(evt);
+            }
+        });
         jPanel87.add(jTextField11);
 
         jComboBox11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox11.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox11ItemStateChanged(evt);
+            }
+        });
         jPanel87.add(jComboBox11);
 
         jPanel83.add(jPanel87, java.awt.BorderLayout.LINE_START);
+
+        jButton12.setBackground(new java.awt.Color(51, 51, 51));
+        jButton12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton12.setForeground(new java.awt.Color(255, 255, 255));
+        jButton12.setText("Clear");
+        jButton12.setBorderPainted(false);
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel103Layout = new javax.swing.GroupLayout(jPanel103);
         jPanel103.setLayout(jPanel103Layout);
         jPanel103Layout.setHorizontalGroup(
             jPanel103Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel103Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel103Layout.setVerticalGroup(
             jPanel103Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel103Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel83.add(jPanel103, java.awt.BorderLayout.CENTER);
@@ -1137,27 +1749,15 @@ public class movie extends javax.swing.JPanel {
         jPanel47.setBackground(new java.awt.Color(51, 51, 51));
         jPanel47.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton4.setBackground(new java.awt.Color(31, 117, 254));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Print Report");
-        jButton4.setBorderPainted(false);
-
         javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
         jPanel47.setLayout(jPanel47Layout);
         jPanel47Layout.setHorizontalGroup(
             jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel47Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel47Layout.setVerticalGroup(
             jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel47Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel46.add(jPanel47, java.awt.BorderLayout.LINE_END);
@@ -1199,22 +1799,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel94.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel94.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField12.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField12KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField12KeyTyped(evt);
+            }
+        });
         jPanel94.add(jTextField12);
 
         jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox12.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox12ItemStateChanged(evt);
+            }
+        });
         jPanel94.add(jComboBox12);
 
         jPanel90.add(jPanel94, java.awt.BorderLayout.LINE_START);
+
+        jButton13.setBackground(new java.awt.Color(51, 51, 51));
+        jButton13.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton13.setForeground(new java.awt.Color(255, 255, 255));
+        jButton13.setText("Clear");
+        jButton13.setBorderPainted(false);
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel102Layout = new javax.swing.GroupLayout(jPanel102);
         jPanel102.setLayout(jPanel102Layout);
         jPanel102Layout.setHorizontalGroup(
             jPanel102Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel102Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel102Layout.setVerticalGroup(
             jPanel102Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel102Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel90.add(jPanel102, java.awt.BorderLayout.CENTER);
@@ -1343,32 +1973,15 @@ public class movie extends javax.swing.JPanel {
         jPanel58.setBackground(new java.awt.Color(51, 51, 51));
         jPanel58.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton5.setBackground(new java.awt.Color(31, 117, 254));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Print Report");
-        jButton5.setBorderPainted(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel58Layout = new javax.swing.GroupLayout(jPanel58);
         jPanel58.setLayout(jPanel58Layout);
         jPanel58Layout.setHorizontalGroup(
             jPanel58Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel58Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel58Layout.setVerticalGroup(
             jPanel58Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel58Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel57.add(jPanel58, java.awt.BorderLayout.LINE_END);
@@ -1410,22 +2023,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel101.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel101.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField13.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField13KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField13KeyTyped(evt);
+            }
+        });
         jPanel101.add(jTextField13);
 
         jComboBox13.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox13.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox13ItemStateChanged(evt);
+            }
+        });
         jPanel101.add(jComboBox13);
 
         jPanel97.add(jPanel101, java.awt.BorderLayout.LINE_START);
+
+        jButton14.setBackground(new java.awt.Color(51, 51, 51));
+        jButton14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton14.setForeground(new java.awt.Color(255, 255, 255));
+        jButton14.setText("Clear");
+        jButton14.setBorderPainted(false);
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel104Layout = new javax.swing.GroupLayout(jPanel104);
         jPanel104.setLayout(jPanel104Layout);
         jPanel104Layout.setHorizontalGroup(
             jPanel104Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel104Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel104Layout.setVerticalGroup(
             jPanel104Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel104Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel97.add(jPanel104, java.awt.BorderLayout.CENTER);
@@ -1557,32 +2200,15 @@ public class movie extends javax.swing.JPanel {
         jPanel69.setBackground(new java.awt.Color(51, 51, 51));
         jPanel69.setPreferredSize(new java.awt.Dimension(200, 50));
 
-        jButton6.setBackground(new java.awt.Color(31, 117, 254));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Print Report");
-        jButton6.setBorderPainted(false);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel69Layout = new javax.swing.GroupLayout(jPanel69);
         jPanel69.setLayout(jPanel69Layout);
         jPanel69Layout.setHorizontalGroup(
             jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel69Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         jPanel69Layout.setVerticalGroup(
             jPanel69Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel69Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
         jPanel68.add(jPanel69, java.awt.BorderLayout.LINE_END);
@@ -1624,22 +2250,52 @@ public class movie extends javax.swing.JPanel {
 
         jPanel111.setPreferredSize(new java.awt.Dimension(400, 35));
         jPanel111.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+
+        jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField14KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField14KeyTyped(evt);
+            }
+        });
         jPanel111.add(jTextField14);
 
         jComboBox14.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASC", "DESC" }));
+        jComboBox14.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox14ItemStateChanged(evt);
+            }
+        });
         jPanel111.add(jComboBox14);
 
         jPanel107.add(jPanel111, java.awt.BorderLayout.LINE_START);
+
+        jButton15.setBackground(new java.awt.Color(51, 51, 51));
+        jButton15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton15.setForeground(new java.awt.Color(255, 255, 255));
+        jButton15.setText("Clear");
+        jButton15.setBorderPainted(false);
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel112Layout = new javax.swing.GroupLayout(jPanel112);
         jPanel112.setLayout(jPanel112Layout);
         jPanel112Layout.setHorizontalGroup(
             jPanel112Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel112Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel112Layout.setVerticalGroup(
             jPanel112Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel112Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel107.add(jPanel112, java.awt.BorderLayout.CENTER);
@@ -1709,142 +2365,111 @@ public class movie extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        resetSupplier();
+    }//GEN-LAST:event_jButton15ActionPerformed
 
-        try {
-            
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            
-            String path = "print report/cinema manger reports/";
-            
-            String fileName = path + "movies_" + time + ".pdf";
+    private void jComboBox14ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox14ItemStateChanged
+        SupplierState();
+    }//GEN-LAST:event_jComboBox14ItemStateChanged
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+    private void jTextField14KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyTyped
+        supplierSearch();
+    }//GEN-LAST:event_jTextField14KeyTyped
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AMReport2.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-            
-            JasperExportManager.exportReportToPdfFile(report, fileName);
+    private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
+        supplierSearch();
+    }//GEN-LAST:event_jTextField14KeyReleased
 
-            connection.close();
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        resetCompany();
+    }//GEN-LAST:event_jButton14ActionPerformed
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
+    private void jComboBox13ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox13ItemStateChanged
+        companyState();
+    }//GEN-LAST:event_jComboBox13ItemStateChanged
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jTextField13KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyTyped
+        companySearch();
+    }//GEN-LAST:event_jTextField13KeyTyped
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            
-            String path = "print report/cinema manger reports/";
-            
-            String fileName = path + "movieSchedule_" + time + ".pdf";
+    private void jTextField13KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField13KeyReleased
+        companySearch();
+    }//GEN-LAST:event_jTextField13KeyReleased
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        resetMRN();
+    }//GEN-LAST:event_jButton13ActionPerformed
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASMReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-            
-            JasperExportManager.exportReportToPdfFile(report, fileName);
+    private void jComboBox12ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox12ItemStateChanged
+        MRNstate();
+    }//GEN-LAST:event_jComboBox12ItemStateChanged
 
-            connection.close();
+    private void jTextField12KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyTyped
+        MRNsearch();
+    }//GEN-LAST:event_jTextField12KeyTyped
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jTextField12KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField12KeyReleased
+        MRNsearch();
+    }//GEN-LAST:event_jTextField12KeyReleased
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        try {
-            
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            
-            String path = "print report/cinema manger reports/";
-            
-            String fileName = path + "cinemaSuppliers_" + time + ".pdf";
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        resetMovie();
+    }//GEN-LAST:event_jButton12ActionPerformed
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+    private void jComboBox11ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox11ItemStateChanged
+        MovieScheduleState();
+    }//GEN-LAST:event_jComboBox11ItemStateChanged
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASupReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-            
-            JasperExportManager.exportReportToPdfFile(report, fileName);
+    private void jTextField11KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyTyped
+        MovieScheduleSearch();
+    }//GEN-LAST:event_jTextField11KeyTyped
 
-            connection.close();
+    private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
+        MovieScheduleSearch();
+    }//GEN-LAST:event_jTextField11KeyReleased
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        resetInvoice();
+    }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jComboBox10ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox10ItemStateChanged
+        InvoiceState();
+    }//GEN-LAST:event_jComboBox10ItemStateChanged
 
-        try {
-            
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            
-            String path = "print report/cinema manger reports/";
-            
-            String fileName = path + "cinemaCompanies_" + time + ".pdf";
+    private void jTextField10KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyTyped
+        MovieInvoiceSearch();
+    }//GEN-LAST:event_jTextField10KeyTyped
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+    private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
+        MovieInvoiceSearch();
+    }//GEN-LAST:event_jTextField10KeyReleased
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ACReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-            
-            JasperExportManager.exportReportToPdfFile(report, fileName);
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        reset();
+        LoadMovieTable();
+    }//GEN-LAST:event_jButton10ActionPerformed
 
-            connection.close();
+    private void jComboBox9ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox9ItemStateChanged
+        moviestatechange();
+    }//GEN-LAST:event_jComboBox9ItemStateChanged
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void jTextField9KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyTyped
+        MovieSearch();
+    }//GEN-LAST:event_jTextField9KeyTyped
 
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        try {
-            
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            
-            String path = "print report/cinema manger reports/";
-            
-            String fileName = path + "invoices_" + time + ".pdf";
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AInvoices.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-            
-            JasperExportManager.exportReportToPdfFile(report, fileName);
-            
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jTextField9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyPressed
+        MovieSearch();
+    }//GEN-LAST:event_jTextField9KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
     private javax.swing.JComboBox<String> jComboBox10;
     private javax.swing.JComboBox<String> jComboBox11;
     private javax.swing.JComboBox<String> jComboBox12;

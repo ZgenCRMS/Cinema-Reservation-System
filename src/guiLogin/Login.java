@@ -9,9 +9,8 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static com.mysql.cj.conf.PropertyKey.logger;
 import guiCashier.CashierDashboard;
-import guiCashier.SnackCashierDashboard;
+
 import guiManager.AdminDashboard;
-import guiSnackbar.snackbarDashboard;
 import guiSuperAdmin.SupAdminDashboard;
 import java.io.File;
 import java.io.IOException;
@@ -122,6 +121,7 @@ public class Login extends javax.swing.JFrame {
                             logger.log(Level.INFO, "Super Admin Login Successfull at" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
                         } else if (result.getString("user_type.type").equals("Cashier")) {
                             new CashierDashboard().setVisible(true);
+
                             logger.log(Level.INFO, "Cashier Login Successfull at" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
                         }
 

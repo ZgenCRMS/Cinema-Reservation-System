@@ -7,7 +7,7 @@ package guiManager;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.raven.chart.ModelChart;
 import guiLogin.LogingOption;
-import guiSnackbar.snackbarDashboard;
+import guiSnackbar.Manager.snackbarDashboard;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -35,8 +35,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         initComponents();
         progressChart();
         setLiveDateTime(jLabel8);
+        loadDashboard();
 
 //        Frame();
+    }
+
+    private void loadDashboard() {
+        jPanel24.removeAll();
+
+        EmployeeManage employeeManage = new EmployeeManage();
+        jPanel24.add(employeeManage, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(jPanel24);
     }
 
     public void setLiveDateTime(javax.swing.JLabel jLabel8) {
@@ -54,52 +63,52 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     public void progressChart() {
 
-        progress1.start();
-        progress2.start();
-        progress3.start();
-        progress4.start();
-
-        chart1.addLegend("Income", new Color(12, 84, 175), new Color(0, 108, 247));
-        chart1.addLegend("Expense", new Color(54, 4, 143), new Color(104, 48, 200));
-        chart1.addLegend("Profit", new Color(5, 125, 0), new Color(95, 209, 69));
-        chart1.addLegend("Cost", new Color(186, 37, 37), new Color(241, 100, 120));
-        chart1.addData(new ModelChart("January", new double[]{800, 600, 500, 700}));
-        chart1.addData(new ModelChart("February", new double[]{600, 750, 600, 350}));
-        chart1.addData(new ModelChart("March", new double[]{400, 350, 460, 600}));
-        chart1.addData(new ModelChart("April", new double[]{580, 350, 750, 700}));
-        chart1.addData(new ModelChart("May", new double[]{650, 440, 570, 650}));
-        chart1.addData(new ModelChart("June", new double[]{390, 480, 400, 500}));
-        chart1.addData(new ModelChart("July", new double[]{500, 480, 400, 300}));
-
-        chart1.start();
-
-        chart2.addLegend("Income", new Color(12, 84, 175), new Color(0, 108, 247));
-        chart2.addLegend("Expense", new Color(54, 4, 143), new Color(104, 48, 200));
-        chart2.addLegend("Profit", new Color(5, 125, 0), new Color(95, 209, 69));
-        chart2.addLegend("Cost", new Color(186, 37, 37), new Color(241, 100, 120));
-        chart2.addData(new ModelChart("January", new double[]{800, 600, 500, 700}));
-        chart2.addData(new ModelChart("February", new double[]{600, 750, 600, 350}));
-        chart2.addData(new ModelChart("March", new double[]{400, 350, 460, 600}));
-        chart2.addData(new ModelChart("April", new double[]{580, 350, 750, 700}));
-        chart2.addData(new ModelChart("May", new double[]{650, 440, 570, 650}));
-        chart2.addData(new ModelChart("June", new double[]{390, 480, 400, 500}));
-        chart2.addData(new ModelChart("July", new double[]{500, 480, 400, 300}));
-
-        chart2.start();
-
+//        progress1.start();
+//        progress2.start();
+//        progress3.start();
+//        progress4.start();
+//
+//        chart1.addLegend("Income", new Color(12, 84, 175), new Color(0, 108, 247));
+//        chart1.addLegend("Expense", new Color(54, 4, 143), new Color(104, 48, 200));
+//        chart1.addLegend("Profit", new Color(5, 125, 0), new Color(95, 209, 69));
+//        chart1.addLegend("Cost", new Color(186, 37, 37), new Color(241, 100, 120));
+//        chart1.addData(new ModelChart("January", new double[]{800, 600, 500, 700}));
+//        chart1.addData(new ModelChart("February", new double[]{600, 750, 600, 350}));
+//        chart1.addData(new ModelChart("March", new double[]{400, 350, 460, 600}));
+//        chart1.addData(new ModelChart("April", new double[]{580, 350, 750, 700}));
+//        chart1.addData(new ModelChart("May", new double[]{650, 440, 570, 650}));
+//        chart1.addData(new ModelChart("June", new double[]{390, 480, 400, 500}));
+//        chart1.addData(new ModelChart("July", new double[]{500, 480, 400, 300}));
+//
+//        chart1.start();
+//
+//        chart2.addLegend("Income", new Color(12, 84, 175), new Color(0, 108, 247));
+//        chart2.addLegend("Expense", new Color(54, 4, 143), new Color(104, 48, 200));
+//        chart2.addLegend("Profit", new Color(5, 125, 0), new Color(95, 209, 69));
+//        chart2.addLegend("Cost", new Color(186, 37, 37), new Color(241, 100, 120));
+//        chart2.addData(new ModelChart("January", new double[]{800, 600, 500, 700}));
+//        chart2.addData(new ModelChart("February", new double[]{600, 750, 600, 350}));
+//        chart2.addData(new ModelChart("March", new double[]{400, 350, 460, 600}));
+//        chart2.addData(new ModelChart("April", new double[]{580, 350, 750, 700}));
+//        chart2.addData(new ModelChart("May", new double[]{650, 440, 570, 650}));
+//        chart2.addData(new ModelChart("June", new double[]{390, 480, 400, 500}));
+//        chart2.addData(new ModelChart("July", new double[]{500, 480, 400, 300}));
+//
+//        chart2.start();
     }
 
-//     public void Frame() {
-//        setUndecorated(true);
-//        setAlwaysOnTop(true);
-//        setResizable(false);
-//        setVisible(true);
-//        Toolkit tk = Toolkit.getDefaultToolkit();
-//
-//        int x = (int) tk.getScreenSize().getWidth();
-//        int y = (int) tk.getScreenSize().getHeight();
-//        setSize(x, y);
-//    }
+    public void Frame() {
+        setUndecorated(true);
+        setAlwaysOnTop(true);
+        setResizable(false);
+        setVisible(true);
+        Toolkit tk = Toolkit.getDefaultToolkit();
+
+        int x = (int) tk.getScreenSize().getWidth();
+        int y = (int) tk.getScreenSize().getHeight();
+        setSize(x, y);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -135,7 +144,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton14 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
@@ -148,35 +156,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel33 = new javax.swing.JPanel();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
-        roundPanel4 = new com.raven.swing.RoundPanel();
-        jPanel59 = new javax.swing.JPanel();
-        jPanel61 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel62 = new javax.swing.JPanel();
-        jPanel63 = new javax.swing.JPanel();
-        jPanel64 = new javax.swing.JPanel();
-        jPanel65 = new javax.swing.JPanel();
-        jPanel66 = new javax.swing.JPanel();
-        progress1 = new com.raven.swing.progress.Progress();
-        jPanel60 = new javax.swing.JPanel();
-        jPanel67 = new javax.swing.JPanel();
-        jPanel68 = new javax.swing.JPanel();
-        jPanel69 = new javax.swing.JPanel();
-        jPanel71 = new javax.swing.JPanel();
-        jPanel53 = new javax.swing.JPanel();
-        jPanel54 = new javax.swing.JPanel();
-        jPanel56 = new javax.swing.JPanel();
-        progress2 = new com.raven.swing.progress.Progress();
-        jPanel72 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel26 = new javax.swing.JPanel();
         jPanel36 = new javax.swing.JPanel();
         jPanel37 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
         jPanel39 = new javax.swing.JPanel();
         jPanel40 = new javax.swing.JPanel();
-        roundPanel5 = new com.raven.swing.RoundPanel();
-        chart1 = new com.raven.chart.Chart();
         jPanel8 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel27 = new javax.swing.JPanel();
@@ -187,39 +172,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel45 = new javax.swing.JPanel();
         jPanel46 = new javax.swing.JPanel();
         jPanel47 = new javax.swing.JPanel();
-        roundPanel6 = new com.raven.swing.RoundPanel();
-        jPanel57 = new javax.swing.JPanel();
-        jPanel73 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel70 = new javax.swing.JPanel();
-        jPanel74 = new javax.swing.JPanel();
-        jPanel75 = new javax.swing.JPanel();
-        jPanel76 = new javax.swing.JPanel();
-        jPanel77 = new javax.swing.JPanel();
-        jPanel78 = new javax.swing.JPanel();
-        jPanel79 = new javax.swing.JPanel();
-        jPanel80 = new javax.swing.JPanel();
-        progress3 = new com.raven.swing.progress.Progress();
-        jPanel58 = new javax.swing.JPanel();
-        jPanel81 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel82 = new javax.swing.JPanel();
-        jPanel83 = new javax.swing.JPanel();
-        jPanel84 = new javax.swing.JPanel();
-        jPanel85 = new javax.swing.JPanel();
-        jPanel86 = new javax.swing.JPanel();
-        jPanel87 = new javax.swing.JPanel();
-        jPanel88 = new javax.swing.JPanel();
-        jPanel89 = new javax.swing.JPanel();
-        progress4 = new com.raven.swing.progress.Progress();
         jPanel28 = new javax.swing.JPanel();
         jPanel48 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
         jPanel50 = new javax.swing.JPanel();
         jPanel51 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
-        roundPanel7 = new com.raven.swing.RoundPanel();
-        chart2 = new com.raven.chart.LineChart();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin Dashboard");
@@ -554,19 +512,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
         jPanel21.add(jButton15);
 
-        jButton3.setBackground(new java.awt.Color(31, 35, 51));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/icons8-settings-24.png"))); // NOI18N
-        jButton3.setText("Settings");
-        jButton3.setBorderPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel21.add(jButton3);
-
         jPanel16.add(jPanel21, java.awt.BorderLayout.CENTER);
 
         jPanel14.add(jPanel16, java.awt.BorderLayout.CENTER);
@@ -657,157 +602,6 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel35.setBackground(new java.awt.Color(51, 51, 51));
         jPanel35.setLayout(new java.awt.GridLayout(1, 0));
-
-        roundPanel4.setBackground(new java.awt.Color(51, 51, 51));
-        roundPanel4.setLayout(new java.awt.BorderLayout());
-
-        jPanel59.setOpaque(false);
-        jPanel59.setPreferredSize(new java.awt.Dimension(190, 166));
-        jPanel59.setLayout(new java.awt.BorderLayout());
-
-        jPanel61.setOpaque(false);
-        jPanel61.setPreferredSize(new java.awt.Dimension(190, 30));
-        jPanel61.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Monthly Total Income");
-        jPanel61.add(jLabel2);
-
-        jPanel59.add(jPanel61, java.awt.BorderLayout.PAGE_START);
-
-        jPanel62.setOpaque(false);
-        jPanel62.setLayout(new java.awt.BorderLayout());
-
-        jPanel63.setOpaque(false);
-        jPanel63.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel63Layout = new javax.swing.GroupLayout(jPanel63);
-        jPanel63.setLayout(jPanel63Layout);
-        jPanel63Layout.setHorizontalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel63Layout.setVerticalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel62.add(jPanel63, java.awt.BorderLayout.PAGE_START);
-
-        jPanel64.setLayout(new java.awt.BorderLayout());
-
-        jPanel65.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel65.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel65Layout = new javax.swing.GroupLayout(jPanel65);
-        jPanel65.setLayout(jPanel65Layout);
-        jPanel65Layout.setHorizontalGroup(
-            jPanel65Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel65Layout.setVerticalGroup(
-            jPanel65Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel64.add(jPanel65, java.awt.BorderLayout.PAGE_END);
-
-        jPanel66.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel66.setLayout(new java.awt.GridLayout(1, 0));
-
-        progress1.setBackground(new java.awt.Color(30, 159, 224));
-        progress1.setValue(94);
-        jPanel66.add(progress1);
-
-        jPanel64.add(jPanel66, java.awt.BorderLayout.CENTER);
-
-        jPanel62.add(jPanel64, java.awt.BorderLayout.CENTER);
-
-        jPanel59.add(jPanel62, java.awt.BorderLayout.CENTER);
-
-        roundPanel4.add(jPanel59, java.awt.BorderLayout.PAGE_START);
-
-        jPanel60.setOpaque(false);
-        jPanel60.setLayout(new java.awt.BorderLayout());
-
-        jPanel67.setOpaque(false);
-        jPanel67.setLayout(new java.awt.BorderLayout());
-
-        jPanel68.setOpaque(false);
-        jPanel68.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel68Layout = new javax.swing.GroupLayout(jPanel68);
-        jPanel68.setLayout(jPanel68Layout);
-        jPanel68Layout.setHorizontalGroup(
-            jPanel68Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel68Layout.setVerticalGroup(
-            jPanel68Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel67.add(jPanel68, java.awt.BorderLayout.PAGE_START);
-
-        jPanel69.setLayout(new java.awt.BorderLayout());
-
-        jPanel71.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel71.setLayout(new java.awt.BorderLayout());
-
-        jPanel53.setOpaque(false);
-        jPanel53.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel53Layout = new javax.swing.GroupLayout(jPanel53);
-        jPanel53.setLayout(jPanel53Layout);
-        jPanel53Layout.setHorizontalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel53Layout.setVerticalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel71.add(jPanel53, java.awt.BorderLayout.PAGE_START);
-
-        jPanel54.setLayout(new java.awt.BorderLayout());
-
-        jPanel56.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel56.setLayout(new java.awt.GridLayout(1, 0));
-
-        progress2.setBackground(new java.awt.Color(25, 189, 68));
-        progress2.setForeground(new java.awt.Color(66, 246, 59));
-        progress2.setValue(80);
-        jPanel56.add(progress2);
-
-        jPanel54.add(jPanel56, java.awt.BorderLayout.CENTER);
-
-        jPanel71.add(jPanel54, java.awt.BorderLayout.CENTER);
-
-        jPanel69.add(jPanel71, java.awt.BorderLayout.CENTER);
-
-        jPanel67.add(jPanel69, java.awt.BorderLayout.CENTER);
-
-        jPanel60.add(jPanel67, java.awt.BorderLayout.CENTER);
-
-        jPanel72.setOpaque(false);
-        jPanel72.setPreferredSize(new java.awt.Dimension(190, 30));
-        jPanel72.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Monthly Total Expensess");
-        jPanel72.add(jLabel6);
-
-        jPanel60.add(jPanel72, java.awt.BorderLayout.PAGE_START);
-
-        roundPanel4.add(jPanel60, java.awt.BorderLayout.CENTER);
-
-        jPanel35.add(roundPanel4);
-
         jPanel33.add(jPanel35, java.awt.BorderLayout.CENTER);
 
         jPanel31.add(jPanel33, java.awt.BorderLayout.CENTER);
@@ -870,15 +664,6 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel40.setBackground(new java.awt.Color(51, 51, 51));
         jPanel40.setLayout(new java.awt.GridLayout(1, 0));
-
-        roundPanel5.setBackground(new java.awt.Color(51, 51, 51));
-        roundPanel5.setLayout(new java.awt.GridLayout(1, 0));
-
-        chart1.setForeground(new java.awt.Color(255, 255, 255));
-        roundPanel5.add(chart1);
-
-        jPanel40.add(roundPanel5);
-
         jPanel38.add(jPanel40, java.awt.BorderLayout.CENTER);
 
         jPanel26.add(jPanel38, java.awt.BorderLayout.CENTER);
@@ -963,199 +748,6 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel47.setBackground(new java.awt.Color(51, 51, 51));
         jPanel47.setLayout(new java.awt.GridLayout(1, 0));
-
-        roundPanel6.setBackground(new java.awt.Color(51, 51, 51));
-        roundPanel6.setLayout(new java.awt.BorderLayout());
-
-        jPanel57.setOpaque(false);
-        jPanel57.setPreferredSize(new java.awt.Dimension(190, 166));
-        jPanel57.setLayout(new java.awt.BorderLayout());
-
-        jPanel73.setOpaque(false);
-        jPanel73.setPreferredSize(new java.awt.Dimension(190, 30));
-        jPanel73.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Monthly Total Profit");
-        jPanel73.add(jLabel7);
-
-        jPanel57.add(jPanel73, java.awt.BorderLayout.PAGE_START);
-
-        jPanel70.setOpaque(false);
-        jPanel70.setLayout(new java.awt.BorderLayout());
-
-        jPanel74.setOpaque(false);
-        jPanel74.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel74Layout = new javax.swing.GroupLayout(jPanel74);
-        jPanel74.setLayout(jPanel74Layout);
-        jPanel74Layout.setHorizontalGroup(
-            jPanel74Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel74Layout.setVerticalGroup(
-            jPanel74Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel70.add(jPanel74, java.awt.BorderLayout.PAGE_START);
-
-        jPanel75.setLayout(new java.awt.BorderLayout());
-
-        jPanel76.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel76.setLayout(new java.awt.BorderLayout());
-
-        jPanel77.setOpaque(false);
-        jPanel77.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel77Layout = new javax.swing.GroupLayout(jPanel77);
-        jPanel77.setLayout(jPanel77Layout);
-        jPanel77Layout.setHorizontalGroup(
-            jPanel77Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel77Layout.setVerticalGroup(
-            jPanel77Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel76.add(jPanel77, java.awt.BorderLayout.PAGE_START);
-
-        jPanel78.setLayout(new java.awt.BorderLayout());
-
-        jPanel79.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel79.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel79Layout = new javax.swing.GroupLayout(jPanel79);
-        jPanel79.setLayout(jPanel79Layout);
-        jPanel79Layout.setHorizontalGroup(
-            jPanel79Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel79Layout.setVerticalGroup(
-            jPanel79Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel78.add(jPanel79, java.awt.BorderLayout.PAGE_END);
-
-        jPanel80.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel80.setLayout(new java.awt.GridLayout(1, 0));
-
-        progress3.setBackground(new java.awt.Color(227, 181, 9));
-        progress3.setForeground(new java.awt.Color(227, 181, 9));
-        progress3.setValue(65);
-        jPanel80.add(progress3);
-
-        jPanel78.add(jPanel80, java.awt.BorderLayout.CENTER);
-
-        jPanel76.add(jPanel78, java.awt.BorderLayout.CENTER);
-
-        jPanel75.add(jPanel76, java.awt.BorderLayout.CENTER);
-
-        jPanel70.add(jPanel75, java.awt.BorderLayout.CENTER);
-
-        jPanel57.add(jPanel70, java.awt.BorderLayout.CENTER);
-
-        roundPanel6.add(jPanel57, java.awt.BorderLayout.PAGE_START);
-
-        jPanel58.setOpaque(false);
-        jPanel58.setLayout(new java.awt.BorderLayout());
-
-        jPanel81.setOpaque(false);
-        jPanel81.setPreferredSize(new java.awt.Dimension(190, 30));
-        jPanel81.setLayout(new java.awt.GridLayout(1, 0));
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Yearly Total Profit");
-        jPanel81.add(jLabel10);
-
-        jPanel58.add(jPanel81, java.awt.BorderLayout.PAGE_START);
-
-        jPanel82.setOpaque(false);
-        jPanel82.setLayout(new java.awt.BorderLayout());
-
-        jPanel83.setOpaque(false);
-        jPanel83.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel83Layout = new javax.swing.GroupLayout(jPanel83);
-        jPanel83.setLayout(jPanel83Layout);
-        jPanel83Layout.setHorizontalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel83Layout.setVerticalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel82.add(jPanel83, java.awt.BorderLayout.PAGE_START);
-
-        jPanel84.setLayout(new java.awt.BorderLayout());
-
-        jPanel85.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel85.setLayout(new java.awt.BorderLayout());
-
-        jPanel86.setOpaque(false);
-        jPanel86.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel86Layout = new javax.swing.GroupLayout(jPanel86);
-        jPanel86.setLayout(jPanel86Layout);
-        jPanel86Layout.setHorizontalGroup(
-            jPanel86Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel86Layout.setVerticalGroup(
-            jPanel86Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel85.add(jPanel86, java.awt.BorderLayout.PAGE_START);
-
-        jPanel87.setLayout(new java.awt.BorderLayout());
-
-        jPanel88.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel88.setPreferredSize(new java.awt.Dimension(190, 4));
-
-        javax.swing.GroupLayout jPanel88Layout = new javax.swing.GroupLayout(jPanel88);
-        jPanel88.setLayout(jPanel88Layout);
-        jPanel88Layout.setHorizontalGroup(
-            jPanel88Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
-        );
-        jPanel88Layout.setVerticalGroup(
-            jPanel88Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-
-        jPanel87.add(jPanel88, java.awt.BorderLayout.PAGE_END);
-
-        jPanel89.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel89.setLayout(new java.awt.GridLayout(1, 0));
-
-        progress4.setBackground(new java.awt.Color(44, 217, 255));
-        progress4.setForeground(new java.awt.Color(44, 217, 255));
-        progress4.setValue(71);
-        jPanel89.add(progress4);
-
-        jPanel87.add(jPanel89, java.awt.BorderLayout.CENTER);
-
-        jPanel85.add(jPanel87, java.awt.BorderLayout.CENTER);
-
-        jPanel84.add(jPanel85, java.awt.BorderLayout.CENTER);
-
-        jPanel82.add(jPanel84, java.awt.BorderLayout.CENTER);
-
-        jPanel58.add(jPanel82, java.awt.BorderLayout.CENTER);
-
-        roundPanel6.add(jPanel58, java.awt.BorderLayout.CENTER);
-
-        jPanel47.add(roundPanel6);
-
         jPanel45.add(jPanel47, java.awt.BorderLayout.CENTER);
 
         jPanel43.add(jPanel45, java.awt.BorderLayout.CENTER);
@@ -1217,15 +809,6 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         jPanel52.setBackground(new java.awt.Color(51, 51, 51));
         jPanel52.setLayout(new java.awt.GridLayout(1, 0));
-
-        roundPanel7.setBackground(new java.awt.Color(51, 51, 51));
-        roundPanel7.setLayout(new java.awt.GridLayout(1, 0));
-
-        chart2.setForeground(new java.awt.Color(255, 255, 255));
-        roundPanel7.add(chart2);
-
-        jPanel52.add(roundPanel7);
-
         jPanel50.add(jPanel52, java.awt.BorderLayout.CENTER);
 
         jPanel28.add(jPanel50, java.awt.BorderLayout.CENTER);
@@ -1310,16 +893,6 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-        jPanel24.removeAll();
-
-        settings Setting = new settings();
-        jPanel24.add(Setting, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(jPanel24);
-
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         LogingOption loginoption = new LogingOption();
         loginoption.setVisible(true);
@@ -1327,7 +900,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-               
+
         jPanel24.removeAll();
 
         guiManager.movie Movie = new guiManager.movie();
@@ -1351,25 +924,18 @@ public class AdminDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.chart.Chart chart1;
-    private com.raven.chart.LineChart chart2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -1419,54 +985,10 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel50;
     private javax.swing.JPanel jPanel51;
     private javax.swing.JPanel jPanel52;
-    private javax.swing.JPanel jPanel53;
-    private javax.swing.JPanel jPanel54;
-    private javax.swing.JPanel jPanel56;
-    private javax.swing.JPanel jPanel57;
-    private javax.swing.JPanel jPanel58;
-    private javax.swing.JPanel jPanel59;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel60;
-    private javax.swing.JPanel jPanel61;
-    private javax.swing.JPanel jPanel62;
-    private javax.swing.JPanel jPanel63;
-    private javax.swing.JPanel jPanel64;
-    private javax.swing.JPanel jPanel65;
-    private javax.swing.JPanel jPanel66;
-    private javax.swing.JPanel jPanel67;
-    private javax.swing.JPanel jPanel68;
-    private javax.swing.JPanel jPanel69;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel70;
-    private javax.swing.JPanel jPanel71;
-    private javax.swing.JPanel jPanel72;
-    private javax.swing.JPanel jPanel73;
-    private javax.swing.JPanel jPanel74;
-    private javax.swing.JPanel jPanel75;
-    private javax.swing.JPanel jPanel76;
-    private javax.swing.JPanel jPanel77;
-    private javax.swing.JPanel jPanel78;
-    private javax.swing.JPanel jPanel79;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel80;
-    private javax.swing.JPanel jPanel81;
-    private javax.swing.JPanel jPanel82;
-    private javax.swing.JPanel jPanel83;
-    private javax.swing.JPanel jPanel84;
-    private javax.swing.JPanel jPanel85;
-    private javax.swing.JPanel jPanel86;
-    private javax.swing.JPanel jPanel87;
-    private javax.swing.JPanel jPanel88;
-    private javax.swing.JPanel jPanel89;
     private javax.swing.JPanel jPanel9;
-    private com.raven.swing.progress.Progress progress1;
-    private com.raven.swing.progress.Progress progress2;
-    private com.raven.swing.progress.Progress progress3;
-    private com.raven.swing.progress.Progress progress4;
-    private com.raven.swing.RoundPanel roundPanel4;
-    private com.raven.swing.RoundPanel roundPanel5;
-    private com.raven.swing.RoundPanel roundPanel6;
-    private com.raven.swing.RoundPanel roundPanel7;
     // End of variables declaration//GEN-END:variables
 
 }

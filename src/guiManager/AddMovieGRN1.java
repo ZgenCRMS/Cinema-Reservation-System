@@ -753,6 +753,7 @@ public class AddMovieGRN1 extends javax.swing.JFrame {
         // Creating the GRN item object
         GrnItem grnItem = new GrnItem();
         grnItem.setMRNId(invoice);
+        grnItem.setMovie(selectedItem);
         grnItem.setSupplierMobile(supplier);
 
         try {

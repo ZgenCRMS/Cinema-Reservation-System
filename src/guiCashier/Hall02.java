@@ -4,8 +4,13 @@
  */
 package guiCashier;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
 
@@ -16,129 +21,183 @@ import model.mySQL;
 public class Hall02 extends javax.swing.JDialog {
 
     CashierDashboard cd;
-    
-    
+
     public Hall02(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();        
+        initComponents();
         disableBookedButtons();
         cd = (CashierDashboard) parent;
     }
 
-    
-    private void disableBookedButtons() {
-    try {
-        ResultSet resultSet = mySQL.executeSearch(
-            "SELECT sheet.number FROM sheet " +
-            "INNER JOIN hall ON sheet.hall_id = hall.id " +
-            "LEFT JOIN movie_invoiceitem ON sheet.number = movie_invoiceitem.sheet_number " +
-            "WHERE movie_invoiceitem.sheet_number IS NOT NULL;"
-        );
+    public void setDT() {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(now);
+                int h = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+                int m = calendar.get(Calendar.MINUTE);
 
-        while (resultSet.next()) {
-            String bookedSheet = resultSet.getString("number"); // e.g., 1A, 2A, ...
+                //Between 12:00 PM and 12:30 PM
+                if (h == 12 && m >= 00 && m < 30) {
 
-            switch (bookedSheet) {
-                case "1B":
-                    NO1.setEnabled(false);
-                    break;
-                case "2B":
-                    NO2.setEnabled(false);
-                    break;
-                case "3B":
-                    NO3.setEnabled(false);
-                    break;
-                case "4B":
-                    NO4.setEnabled(false);
-                    break;
-                case "5B":
-                    NO5.setEnabled(false);
-                    break;
-                case "6B":
-                    NO6.setEnabled(false);
-                    break;
-                case "7B":
-                    NO7.setEnabled(false);
-                    break;
-                case "8B":
-                    NO8.setEnabled(false);
-                    break;
-                case "9B":
-                    NO9.setEnabled(false);
-                    break;
-                case "10B":
-                    NO10.setEnabled(false);
-                    break;
-                case "11B":
-                    NO11.setEnabled(false);
-                    break;
-                case "12B":
-                    NO12.setEnabled(false);
-                    break;
-                case "13B":
-                    NO13.setEnabled(false);
-                    break;
-                case "14B":
-                    NO14.setEnabled(false);
-                    break;
-                case "15B":
-                    NO15.setEnabled(false);
-                    break;
-                case "16B":
-                    NO16.setEnabled(false);
-                    break;
-                case "17B":
-                    NO17.setEnabled(false);
-                    break;
-                case "18B":
-                    NO18.setEnabled(false);
-                    break;
-                case "19B":
-                    NO19.setEnabled(false);
-                    break;
-                case "20B":
-                    NO20.setEnabled(false);
-                    break;
-                case "21B":
-                    NO21.setEnabled(false);
-                    break;
-                case "22B":
-                    NO22.setEnabled(false);
-                    break;
-                case "23B":
-                    NO23.setEnabled(false);
-                    break;
-                case "24B":
-                    NO24.setEnabled(false);
-                    break;
-                case "25B":
-                    NO25.setEnabled(false);
-                    break;
-                case "26B":
-                    NO26.setEnabled(false);
-                    break;
-                case "27B":
-                    NO27.setEnabled(false);
-                    break;
-                case "28B":
-                    NO28.setEnabled(false);
-                    break;
-                case "29B":
-                    NO29.setEnabled(false);
-                    break;
-                case "30B":
-                    NO30.setEnabled(false);
-                    break;
-                default:
-                    //System.out.println("No matching button for sheet: " + bookedSheet);
+                } else if (h == 14 && m >= 30 && m < 59) {
+                    enableBookedButtons();
+                } else {
+                    disableBookedButtons();
+                }
+
+
             }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
+        });
+        timer.start();
     }
-}
 
-   
+    private void enableBookedButtons() {
+        NO1.setEnabled(true);
+        NO2.setEnabled(true);
+        NO3.setEnabled(true);
+        NO4.setEnabled(true);
+        NO5.setEnabled(true);
+        NO6.setEnabled(true);
+        NO7.setEnabled(true);
+        NO8.setEnabled(true);
+        NO9.setEnabled(true);
+        NO10.setEnabled(true);
+        NO11.setEnabled(true);
+        NO12.setEnabled(true);
+        NO13.setEnabled(true);
+        NO14.setEnabled(true);
+        NO15.setEnabled(true);
+        NO16.setEnabled(true);
+        NO17.setEnabled(true);
+        NO18.setEnabled(true);
+        NO19.setEnabled(true);
+        NO20.setEnabled(true);
+        NO21.setEnabled(true);
+        NO22.setEnabled(true);
+        NO23.setEnabled(true);
+        NO24.setEnabled(true);
+        NO25.setEnabled(true);
+        NO26.setEnabled(true);
+        NO27.setEnabled(true);
+        NO28.setEnabled(true);
+        NO29.setEnabled(true);
+        NO30.setEnabled(true);
+    }
+
+    private void disableBookedButtons() {
+        try {
+            ResultSet resultSet = mySQL.executeSearch(
+                    "SELECT sheet.number FROM sheet "
+                    + "INNER JOIN hall ON sheet.hall_id = hall.id "
+                    + "LEFT JOIN movie_invoiceitem ON sheet.number = movie_invoiceitem.sheet_number "
+                    + "WHERE movie_invoiceitem.sheet_number IS NOT NULL;"
+            );
+
+            while (resultSet.next()) {
+                String bookedSheet = resultSet.getString("number"); // e.g., 1A, 2A, ...
+
+                switch (bookedSheet) {
+                    case "1B":
+                        NO1.setEnabled(false);
+                        break;
+                    case "2B":
+                        NO2.setEnabled(false);
+                        break;
+                    case "3B":
+                        NO3.setEnabled(false);
+                        break;
+                    case "4B":
+                        NO4.setEnabled(false);
+                        break;
+                    case "5B":
+                        NO5.setEnabled(false);
+                        break;
+                    case "6B":
+                        NO6.setEnabled(false);
+                        break;
+                    case "7B":
+                        NO7.setEnabled(false);
+                        break;
+                    case "8B":
+                        NO8.setEnabled(false);
+                        break;
+                    case "9B":
+                        NO9.setEnabled(false);
+                        break;
+                    case "10B":
+                        NO10.setEnabled(false);
+                        break;
+                    case "11B":
+                        NO11.setEnabled(false);
+                        break;
+                    case "12B":
+                        NO12.setEnabled(false);
+                        break;
+                    case "13B":
+                        NO13.setEnabled(false);
+                        break;
+                    case "14B":
+                        NO14.setEnabled(false);
+                        break;
+                    case "15B":
+                        NO15.setEnabled(false);
+                        break;
+                    case "16B":
+                        NO16.setEnabled(false);
+                        break;
+                    case "17B":
+                        NO17.setEnabled(false);
+                        break;
+                    case "18B":
+                        NO18.setEnabled(false);
+                        break;
+                    case "19B":
+                        NO19.setEnabled(false);
+                        break;
+                    case "20B":
+                        NO20.setEnabled(false);
+                        break;
+                    case "21B":
+                        NO21.setEnabled(false);
+                        break;
+                    case "22B":
+                        NO22.setEnabled(false);
+                        break;
+                    case "23B":
+                        NO23.setEnabled(false);
+                        break;
+                    case "24B":
+                        NO24.setEnabled(false);
+                        break;
+                    case "25B":
+                        NO25.setEnabled(false);
+                        break;
+                    case "26B":
+                        NO26.setEnabled(false);
+                        break;
+                    case "27B":
+                        NO27.setEnabled(false);
+                        break;
+                    case "28B":
+                        NO28.setEnabled(false);
+                        break;
+                    case "29B":
+                        NO29.setEnabled(false);
+                        break;
+                    case "30B":
+                        NO30.setEnabled(false);
+                        break;
+                    default:
+                    //System.out.println("No matching button for sheet: " + bookedSheet);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -614,7 +673,7 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO1ActionPerformed
 
     private void NO2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO2ActionPerformed
-       cd.getSheet().setText("2B");
+        cd.getSheet().setText("2B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO2ActionPerformed
@@ -656,31 +715,31 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO8ActionPerformed
 
     private void NO9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO9ActionPerformed
-       cd.getSheet().setText("9B");
+        cd.getSheet().setText("9B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO9ActionPerformed
 
     private void NO10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO10ActionPerformed
-       cd.getSheet().setText("10B");
+        cd.getSheet().setText("10B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO10ActionPerformed
 
     private void NO11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO11ActionPerformed
-       cd.getSheet().setText("11B");
+        cd.getSheet().setText("11B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO11ActionPerformed
 
     private void NO12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO12ActionPerformed
-       cd.getSheet().setText("12B");
+        cd.getSheet().setText("12B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO12ActionPerformed
 
     private void NO13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO13ActionPerformed
-       cd.getSheet().setText("13B");
+        cd.getSheet().setText("13B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO13ActionPerformed
@@ -710,7 +769,7 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO17ActionPerformed
 
     private void NO18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO18ActionPerformed
-       cd.getSheet().setText("18B");
+        cd.getSheet().setText("18B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO18ActionPerformed
@@ -752,7 +811,7 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO24ActionPerformed
 
     private void NO25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO25ActionPerformed
-       cd.getSheet().setText("25B");
+        cd.getSheet().setText("25B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO25ActionPerformed
@@ -770,7 +829,7 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO27ActionPerformed
 
     private void NO28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO28ActionPerformed
-       cd.getSheet().setText("28B");
+        cd.getSheet().setText("28B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO28ActionPerformed
@@ -782,7 +841,7 @@ public class Hall02 extends javax.swing.JDialog {
     }//GEN-LAST:event_NO29ActionPerformed
 
     private void NO30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NO30ActionPerformed
-       cd.getSheet().setText("30B");
+        cd.getSheet().setText("30B");
         this.dispose();
         cd.getButton4().grabFocus();
     }//GEN-LAST:event_NO30ActionPerformed

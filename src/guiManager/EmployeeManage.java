@@ -45,36 +45,22 @@ public class EmployeeManage extends javax.swing.JPanel {
         jButton6.putClientProperty("JButton.buttonType", "roundRect");
         jButton9.putClientProperty("JButton.buttonType", "roundRect");
         jButton10.putClientProperty("JButton.buttonType", "roundRect");
-        jButton1.putClientProperty("JButton.buttonType", "roundRect");
+       
         jButton11.putClientProperty("JButton.buttonType", "roundRect");
 
     }
 
+    private javax.swing.Timer timer;
+
     private void reload() {
+        int delay = 2000;
 
-        java.lang.Runnable runnable = new java.lang.Runnable() {
-            @Override
-            public void run() {
+        timer = new javax.swing.Timer(delay, e -> {
+            viewEmployee();
+        });
 
-                while (true) {
-
-                    viewEmployee();
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(AdminDashboard.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-
-            }
-        };
-
-        java.lang.Thread thread = new java.lang.Thread(runnable);
-        thread.start();
-
-    }
+        timer.start();
+    } 
 
     private void viewEmployee() {
 
@@ -136,8 +122,6 @@ public class EmployeeManage extends javax.swing.JPanel {
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jPanel18 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel19 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
@@ -332,30 +316,11 @@ public class EmployeeManage extends javax.swing.JPanel {
         jPanel14.setPreferredSize(new java.awt.Dimension(929, 45));
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        jPanel18.setPreferredSize(new java.awt.Dimension(300, 45));
-        jPanel18.setLayout(new java.awt.GridLayout(1, 0));
-
-        jButton1.setBackground(new java.awt.Color(0, 65, 112));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/print-32.png"))); // NOI18N
-        jButton1.setText("Print");
-        jButton1.setBorderPainted(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel18.add(jButton1);
-
-        jPanel14.add(jPanel18, java.awt.BorderLayout.LINE_END);
-
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 673, Short.MAX_VALUE)
+            .addGap(0, 973, Short.MAX_VALUE)
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,28 +421,6 @@ public class EmployeeManage extends javax.swing.JPanel {
         new UpdateJobRoles(null, true).show();
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        try {
-
-//            JREmptyDataSource dataSource = new JREmptyDataSource();
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AEReport.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-
-//            JasperPrint report = JasperFillManager.fillReport("src/reports/AllEmployee.jasper", null, connection);
-//            JasperViewer.viewReport(report, false);
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
 //        if (evt.getClickCount() == 2) {
 //
@@ -501,7 +444,6 @@ public class EmployeeManage extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton4;
@@ -516,7 +458,6 @@ public class EmployeeManage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;

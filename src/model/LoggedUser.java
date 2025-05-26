@@ -6,7 +6,7 @@ package model;
 
 /**
  *
- * @author Laky
+ * @author sel
  */
 public class LoggedUser {
     private static String userEmail;

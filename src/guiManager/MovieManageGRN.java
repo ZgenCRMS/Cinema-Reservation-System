@@ -36,7 +36,7 @@ public class MovieManageGRN extends javax.swing.JDialog {
         LoadMovieTable();
         //mgr = (AddMovieGRN1) parent;
         cdb = (CashierDashboard) parent;
-        reload();
+//        reload();
     }
 
     private void LoadMovieTable() {
@@ -72,30 +72,16 @@ public class MovieManageGRN extends javax.swing.JDialog {
 
     }
 
+    private javax.swing.Timer timer;
+
     private void reload() {
+        int delay = 2000;
 
-        java.lang.Runnable runnable = new java.lang.Runnable() {
-            @Override
-            public void run() {
+        timer = new javax.swing.Timer(delay, e -> {
+            LoadMovieTable();
+        });
 
-                while (true) {
-
-                    LoadMovieTable();
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(AdminDashboard.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-
-            }
-        };
-
-        java.lang.Thread thread = new java.lang.Thread(runnable);
-        thread.start();
-
+        timer.start();
     }
 
     /**
@@ -344,6 +330,11 @@ public class MovieManageGRN extends javax.swing.JDialog {
 
             int sheduleID = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
             cdb.setsheduleID(sheduleID);
+
+            String SD = String.valueOf(jTable1.getValueAt(row, 6));
+            String ED = String.valueOf(jTable1.getValueAt(row, 7));
+            cdb.setSD(SD);
+            cdb.setED(ED);
 
             this.dispose();
 

@@ -24,25 +24,29 @@ import model.mySQL;
  */
 public class AddUser extends javax.swing.JFrame {
 
-    
-    HashMap<String,String> usertypemap = new HashMap<>();
-    
-    public AddUser(String mobile,String name,String email) {
+    HashMap<String, String> usertypemap = new HashMap<>();
+
+    public AddUser(String mobile, String name, String email) {
         initComponents();
         loadUserType();
         
+
         jTextField5.setText(mobile);
         jTextField6.setText(name);
         jTextField7.setText(email);
-        
-        
- 
-        
-        
+        editableFalse();
+
     }
+
     
-    
-        public JTextField getjTextField5() {
+
+    private void editableFalse() {
+        jTextField5.setEditable(false);
+        jTextField6.setEditable(false);
+        jTextField7.setEditable(false);
+    }
+
+    public JTextField getjTextField5() {
 
         return jTextField5;
 
@@ -66,10 +70,7 @@ public class AddUser extends javax.swing.JFrame {
 
     }
 
-    
-    
-
-       private void loadUserType() {
+    private void loadUserType() {
         try {
             ResultSet result = mySQL.executeSearch("SELECT * FROM `user_type`");
 
@@ -91,12 +92,6 @@ public class AddUser extends javax.swing.JFrame {
         }
     }
 
-
-
-    
-    
-  
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -536,53 +531,48 @@ public class AddUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                jTextField5.grabFocus();
+        jTextField5.grabFocus();
 
         String Mobile = jTextField5.getText();
         String Name = jTextField6.getText();
-          String Email = jTextField7.getText();
-            String Password = jTextField8.getText();
+        String Email = jTextField7.getText();
+        String Password = jTextField8.getText();
         String Usertype = String.valueOf(jComboBox2.getSelectedItem());
-       
+
         if (Mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Enter Mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (Name.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Enter Your First Name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (Email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Enter Email Addreess", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if ( Password.isEmpty()) {
+        } else if (Password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Enter Your Password", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if ( Usertype.equals("Select")) {
+        } else if (Usertype.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please Sellet Your User Type", "Warning", JOptionPane.WARNING_MESSAGE);
-        
+
         } else {
 
             try {
-                
-                      ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `user` WHERE `email` = '" + Email + "' OR `employee_mobile` = '" + Mobile + "'");
-          
-              
-              if(resultSet.next()){
-                                  JOptionPane.showMessageDialog(this, "This employee already registered !", "Warning", JOptionPane.WARNING_MESSAGE);
-              
-              }else{
 
+                ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `user` WHERE `email` = '" + Email + "' OR `employee_mobile` = '" + Mobile + "'");
 
-           
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "This employee already registered !", "Warning", JOptionPane.WARNING_MESSAGE);
 
-                mySQL.executeIUD("INSERT INTO `user`(`email`,`password`,`user_fname`,`employee_mobile`,`user_type_id`) "
-                        + "VALUES('"+Email+"','"+Password+"','"+Name+"','"+Mobile+"','"+usertypemap.get(Usertype)+"')");
+                } else {
+
+                    mySQL.executeIUD("INSERT INTO `user`(`email`,`password`,`user_fname`,`employee_mobile`,`user_type_id`) "
+                            + "VALUES('" + Email + "','" + Password + "','" + Name + "','" + Mobile + "','" + usertypemap.get(Usertype) + "')");
 
 //                reset();
+                    this.dispose();
 
-                this.dispose();
-              
-              }        
+                }
             } catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
             }
-            }
-        
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

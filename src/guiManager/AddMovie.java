@@ -139,7 +139,7 @@ public class AddMovie extends javax.swing.JDialog {
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JFormattedTextField();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -277,17 +277,7 @@ public class AddMovie extends javax.swing.JDialog {
         });
         jPanel11.add(jTextField1);
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField2KeyTyped(evt);
-            }
-        });
+        jTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
         jPanel11.add(jTextField2);
 
         jPanel10.add(jPanel11, java.awt.BorderLayout.PAGE_START);
@@ -575,10 +565,6 @@ public class AddMovie extends javax.swing.JDialog {
         jTextField2.grabFocus();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        jDateChooser1.grabFocus();
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void jDateChooser1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jDateChooser1AncestorAdded
         jComboBox2.grabFocus();
     }//GEN-LAST:event_jDateChooser1AncestorAdded
@@ -596,14 +582,6 @@ public class AddMovie extends javax.swing.JDialog {
             jButton1.grabFocus();
         }
     }//GEN-LAST:event_jComboBox1KeyPressed
-
-    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
-        char c = evt.getKeyChar();
-
-        if (Character.isLetter(c)) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jTextField2KeyTyped
 
     /**
      * @param args the command line arguments
@@ -673,7 +651,7 @@ public class AddMovie extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JFormattedTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 private void reset() {
         jTextField1.setText(" ");

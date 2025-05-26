@@ -43,7 +43,7 @@ public class MovieManage extends javax.swing.JPanel {
         jButton13.putClientProperty("JButton.buttonType", "roundRect");
         jButton7.putClientProperty("JButton.buttonType", "roundRect");
         jButton11.putClientProperty("JButton.buttonType", "roundRect");
-        jButton1.putClientProperty("JButton.buttonType", "roundRect");
+    
         jButton4.putClientProperty("JButton.buttonType", "roundRect");
         jButton6.putClientProperty("JButton.buttonType", "roundRect");
 
@@ -88,8 +88,6 @@ public class MovieManage extends javax.swing.JPanel {
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
-        jPanel20 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel21 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
@@ -309,7 +307,7 @@ public class MovieManage extends javax.swing.JPanel {
         jButton6.setBackground(new java.awt.Color(31, 117, 254));
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Add Movie Sheet");
+        jButton6.setText("Add Movie Seat");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -357,25 +355,6 @@ public class MovieManage extends javax.swing.JPanel {
 
         jPanel16.setPreferredSize(new java.awt.Dimension(1188, 45));
         jPanel16.setLayout(new java.awt.BorderLayout());
-
-        jPanel20.setPreferredSize(new java.awt.Dimension(300, 45));
-        jPanel20.setLayout(new java.awt.GridLayout(1, 0));
-
-        jButton1.setBackground(new java.awt.Color(0, 65, 112));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/print-32.png"))); // NOI18N
-        jButton1.setText("Print");
-        jButton1.setBorderPainted(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel20.add(jButton1);
-
-        jPanel16.add(jPanel20, java.awt.BorderLayout.LINE_END);
 
         jPanel21.setLayout(new java.awt.BorderLayout());
         jPanel16.add(jPanel21, java.awt.BorderLayout.CENTER);
@@ -469,31 +448,17 @@ public class MovieManage extends javax.swing.JPanel {
         }
 
     }
+    
+    private javax.swing.Timer timer;
 
     private void reload() {
+        int delay = 2000;
 
-        java.lang.Runnable runnable = new java.lang.Runnable() {
-            @Override
-            public void run() {
+        timer = new javax.swing.Timer(delay, e -> {
+            LoadMovieTable();
+        });
 
-                while (true) {
-
-                    LoadMovieTable();
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(AdminDashboard.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-
-            }
-        };
-
-        java.lang.Thread thread = new java.lang.Thread(runnable);
-        thread.start();
-
+        timer.start();
     }
 
 
@@ -552,21 +517,6 @@ public class MovieManage extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
-
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AMReport2.jasper", null, connection);
-            JasperViewer.viewReport(report, false);
-
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         AddMovieHall amh = new AddMovieHall(null, true);
         amh.setVisible(true);
@@ -579,7 +529,6 @@ public class MovieManage extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
@@ -603,7 +552,6 @@ public class MovieManage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;

@@ -167,10 +167,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
-        jPanel21 = new javax.swing.JPanel();
-        jPanel32 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jPanel33 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
@@ -557,38 +553,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
 
         jPanel20.setLayout(new java.awt.BorderLayout());
 
-        jPanel21.setPreferredSize(new java.awt.Dimension(704, 45));
-        jPanel21.setLayout(new java.awt.BorderLayout());
-
-        jPanel32.setPreferredSize(new java.awt.Dimension(300, 45));
-        jPanel32.setLayout(new java.awt.GridLayout(1, 0));
-
-        jButton1.setBackground(new java.awt.Color(0, 65, 112));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/print-32.png"))); // NOI18N
-        jButton1.setText("Print");
-        jButton1.setBorderPainted(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel32.add(jButton1);
-
-        jPanel21.add(jPanel32, java.awt.BorderLayout.LINE_END);
-
-        javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
-        jPanel33.setLayout(jPanel33Layout);
-        jPanel33Layout.setHorizontalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel33Layout.setVerticalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 45, Short.MAX_VALUE)
-        );
-
-        jPanel21.add(jPanel33, java.awt.BorderLayout.CENTER);
-
-        jPanel20.add(jPanel21, java.awt.BorderLayout.PAGE_END);
-
         jPanel22.setLayout(new java.awt.BorderLayout());
 
         jPanel23.setPreferredSize(new java.awt.Dimension(704, 5));
@@ -700,6 +664,29 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         if (!EndDate.after(StartDate)) {
             JOptionPane.showMessageDialog(this, "End date must be after the start date.", "Date Error", JOptionPane.WARNING_MESSAGE);
             return;
+        }
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+
+            // Get today's date and add 1 day to get "tomorrow"
+            Date today = new Date();
+            String todayStr = sdf.format(today);
+            Date cleanToday = sdf.parse(todayStr);
+
+            // Add 1 day to today
+            long oneDayInMillis = 24 * 60 * 60 * 1000;
+            Date tomorrow = new Date(cleanToday.getTime() + oneDayInMillis);
+
+            // 🔥 Validate: StartDate must be tomorrow or later
+            if (StartDate.before(tomorrow)) {
+                JOptionPane.showMessageDialog(null, "❌ Invalid Start Date.\nStart Date must be at least tomorrow or later.");
+                return;
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "⚠️ Invalid date format.\nUse yyyy-MM-dd (e.g., 2025-05-22).");
         }
 
         try {
@@ -936,6 +923,29 @@ public class MovieScheduleTime extends javax.swing.JPanel {
         }
 
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false);
+
+            // Get today's date and add 1 day to get "tomorrow"
+            Date today = new Date();
+            String todayStr = sdf.format(today);
+            Date cleanToday = sdf.parse(todayStr);
+
+            // Add 1 day to today
+            long oneDayInMillis = 24 * 60 * 60 * 1000;
+            Date tomorrow = new Date(cleanToday.getTime() + oneDayInMillis);
+
+            // 🔥 Validate: StartDate must be tomorrow or later
+            if (StartDate.before(tomorrow)) {
+                JOptionPane.showMessageDialog(null, "❌ Invalid Start Date.\nStart Date must be at least tomorrow or later.");
+                return;
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "⚠️ Invalid date format.\nUse yyyy-MM-dd (e.g., 2025-05-22).");
+        }
+
+        try {
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -981,7 +991,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -1010,7 +1019,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
@@ -1022,8 +1030,6 @@ public class MovieScheduleTime extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
-    private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;

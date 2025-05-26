@@ -19,6 +19,7 @@ import com.google.zxing.common.HybridBinarizer;
 import guiManager.AdminDashboard;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Executor;
@@ -29,9 +30,11 @@ import java.util.logging.Logger;
 import model.mySQL;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import model.mySQL;
 
@@ -50,33 +53,46 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         initWebcam();
         viewEmployee();
         jTextField1.setEnabled(false);
+        setLiveDateTime(jLabel8);
 
     }
 
-    private void reload() {
-
-        java.lang.Runnable runnable = new java.lang.Runnable() {
+    public void setLiveDateTime(javax.swing.JLabel jLabel8) {
+        Timer timer = new Timer(1000, new ActionListener() {
             @Override
-            public void run() {
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateTime = sdf.format(now);
+                jLabel8.setText(dateTime);
 
-                while (true) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(now);
+                int h = calendar.get(Calendar.HOUR_OF_DAY);
+                int m = calendar.get(Calendar.MINUTE);
 
-                    viewEmployee();
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(AdminDashboard.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
+//                //12.00 close 
+//                if ((h == 12 && m >= 00)) {
+//                    System.exit(WIDTH);
+//                } else {
+//
+//                }
 
             }
-        };
+        });
+        timer.start();
+    }
 
-        java.lang.Thread thread = new java.lang.Thread(runnable);
-        thread.start();
+    private javax.swing.Timer timer;
 
+    private void reload() {
+        int delay = 2000;
+
+        timer = new javax.swing.Timer(delay, e -> {
+            viewEmployee();
+        });
+
+        timer.start();
     }
 
     private void viewEmployee() {
@@ -125,6 +141,9 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -180,6 +199,19 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
             jTable1.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/clock.png"))); // NOI18N
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("10.00 PM");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/manager (2).png"))); // NOI18N
+        jLabel1.setText(" Employee Attendance");
+        jLabel1.setPreferredSize(new java.awt.Dimension(250, 16));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,28 +221,41 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -240,12 +285,12 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
         String currentDate = onlyDateFormat.format(now);
         String currentTime = timeFormat.format(now);
 
-        if (currentTime.compareTo("17:00:00") > 0) {
-            JOptionPane.showMessageDialog(this,
-                    "❌ Attendance cannot be marked after 5:00 PM!",
-                    "Time Expired", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+//        if (currentTime.compareTo("17:00:00") > 0) {
+//            JOptionPane.showMessageDialog(this,
+//                    "❌ Attendance cannot be marked after 5:00 PM!",
+//                    "Time Expired", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
 
         try {
             ResultSet resultSet1 = mySQL.executeSearch("SELECT * FROM `emp_qr` WHERE `qr_number`='" + Qrcode + "'");
@@ -284,13 +329,12 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                             finalSalary = (attendanceTypeId == 1) ? daySalary : daySalary / 2.0;
                         }
                     }
-
+/////////////////sa;ary
                     if (employeeMobile != null && finalSalary > 0) {
                         ResultSet salaryCheck = mySQL.executeSearch(
                                 "SELECT * FROM employee_salary WHERE employee_mobile = '" + employeeMobile + "'"
                         );
                         boolean salaryExists = salaryCheck.next();
-
 
                         if (salaryExists) {
                             double existingSalary = salaryCheck.getDouble("salary");
@@ -328,6 +372,10 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
                 reload();
             }
 
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ An error occurred: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,
@@ -425,6 +473,9 @@ public class ReadQRCode extends javax.swing.JFrame implements Runnable, ThreadFa
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -1,7 +1,10 @@
 package gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import guiLogin.LogingOption;
 import java.awt.Color;
+import java.awt.geom.RoundRectangle2D;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,20 +12,83 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author dulanjaya
  */
 public class SplashScreen extends javax.swing.JFrame {
 
-    
+    int positionX = 0;
+    int positionY = 0;
+
+    private static SplashScreen splashScreen;
+
     /**
      * Creates new form SplashScreen
      */
     public SplashScreen() {
+//        splashScreen = this;
+//        initComponents();
+//        loadingAnimation();
+//        setLocationRelativeTo(null);
+//        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 40, 40));
+
+        splashScreen = this;
+        setUndecorated(true);
+        setBackground(new Color(0, 0, 0, 0));
         initComponents();
-    
+        loadingAnimation();
+        setLocationRelativeTo(null);
+
+        // Rounded corners
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 40, 40));
+
+        // Adjust shape when resized
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 40, 40));
+            }
+        });
+
+    }
+
+    private void loadingAnimation() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i <= 100; i++) {
+                    jProgressBar1.setValue(i);
+
+                    if (i == 20) {
+                        jLabel4.setText("Please Wait");
+                    } else if (i == 30) {
+                        jLabel4.setText("Security Cheakup");
+                    } else if (i == 45) {
+                        jLabel4.setText("Please Wait");
+                    } else if (i == 70) {
+                        jLabel4.setText("Database Loading");
+                    } else if (i == 88) {
+                        jLabel4.setText("Wait");
+                    } else if (i == 98) {
+                        jLabel4.setText("System Ready");
+                    }
+
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (splashScreen != null) {
+                    splashScreen.dispose();
+                }
+
+                LogingOption logingOption = new LogingOption();
+                logingOption.setVisible(true);
+            }
+        });
+        t.start();
     }
 
     /**
@@ -102,9 +168,10 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 5));
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, 200, -1));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Loading...");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 370, 70, -1));
-        jPanel1.add(jProgressBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 150, 10));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 360, 190, 20));
+        jPanel1.add(jProgressBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 390, 190, 10));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/logo2.png"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -133,11 +200,12 @@ public class SplashScreen extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatDarkLaf.setup();
+        FlatMacDarkLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                SplashScreen screen = new SplashScreen();
                 new SplashScreen().setVisible(true);
             }
         });

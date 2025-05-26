@@ -5,13 +5,16 @@
 package guiSuperAdmin;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import model.DB;
 import model.mySQL;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -31,6 +34,8 @@ public class snackbar extends javax.swing.JPanel {
         loadCompanies();
         loadProduct();
         hint();
+        loadGRNItem("");
+        invoiceItem();
     }
 
     private void hint() {
@@ -53,6 +58,31 @@ public class snackbar extends javax.swing.JPanel {
             jTextField18.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Number");
         }
 
+    }
+
+    private void invoiceItem() {
+        try {
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `snack_invoice` INNER JOIN `user` ON "
+                    + "`snack_invoice`.`user_email` = `user`.`email` INNER JOIN `payment_method` ON"
+                    + " `snack_invoice`.`payment_method_id` = `payment_method`.`id`");
+
+            DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            model.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("user.email"));
+                vector.add(resultSet.getString("date"));
+                vector.add(resultSet.getString("paid_amount"));
+                vector.add(resultSet.getString("payment_method.name"));
+
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadProduct() {
@@ -93,6 +123,37 @@ public class snackbar extends javax.swing.JPanel {
                 vector.add(resultSet.getString("hotline"));
 
                 defaultTableModel.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadGRNItem(String name) {
+
+        try {
+            ResultSet resultSet = mySQL.executeSearch("SELECT * FROM `snack_product` "
+                    + "INNER JOIN `brand`ON `snack_product`.`brand_id`= `brand`.`id` "
+                    + "INNER JOIN `snack_stock` ON `snack_product`.`id`=`snack_stock`.`snack_product_id`"
+                    + "INNER JOIN `grn_item` ON `grn_item`.`snack_stock_id` =`snack_stock`.`id`WHERE `name` LIKE '" + name + "%'");
+
+            DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+            model.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("product"));
+                vector.add(resultSet.getString("brand.name"));
+                vector.add(resultSet.getString("snack_stock.qty"));
+                vector.add(resultSet.getString("grn_item.buying_price"));
+                vector.add(resultSet.getString("snack_stock.selling_price"));
+                vector.add(resultSet.getString("snack_stock.mfd"));
+                vector.add(resultSet.getString("snack_stock.exp"));
+
+                model.addRow(vector);
             }
 
         } catch (Exception e) {
@@ -259,8 +320,8 @@ public class snackbar extends javax.swing.JPanel {
         jPanel92 = new javax.swing.JPanel();
         jPanel93 = new javax.swing.JPanel();
         jPanel94 = new javax.swing.JPanel();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        jTable10 = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
         jPanel51 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
         jPanel53 = new javax.swing.JPanel();
@@ -598,6 +659,11 @@ public class snackbar extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Print Report");
         jButton2.setBorderPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
@@ -698,15 +764,23 @@ public class snackbar extends javax.swing.JPanel {
 
         jTable8.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Invoice ID", "User Email", "Date", "Paid Amount", "Payment Method"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane8.setViewportView(jTable8);
 
         jPanel79.add(jScrollPane8);
@@ -1011,6 +1085,11 @@ public class snackbar extends javax.swing.JPanel {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Print Report");
         jButton4.setBorderPainted(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
         jPanel47.setLayout(jPanel47Layout);
@@ -1109,20 +1188,25 @@ public class snackbar extends javax.swing.JPanel {
 
         jPanel94.setLayout(new java.awt.GridLayout(1, 0));
 
-        jTable10.setModel(new javax.swing.table.DefaultTableModel(
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Product ID", "Name", "Brand", "Quantity", "Buying Price", "Selling Price", "MFD", "EXP"
             }
-        ));
-        jScrollPane10.setViewportView(jTable10);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
 
-        jPanel94.add(jScrollPane10);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(jTable5);
+
+        jPanel94.add(jScrollPane5);
 
         jPanel92.add(jPanel94, java.awt.BorderLayout.CENTER);
 
@@ -1590,16 +1674,26 @@ public class snackbar extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/snack bar/";
 
-            String fileName = path + "products_" + time + ".pdf";
+            String fileName = path + "AllProduct_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/ASReport.jasper", null, connection);
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XASReport01.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -1615,16 +1709,26 @@ public class snackbar extends javax.swing.JPanel {
 
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/snack bar/";
 
-            String fileName = path + "stocks_" + time + ".pdf";
+            String fileName = path + "Stock_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllStocksReports.jasper", null, connection);
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAllStocksReports01.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -1641,16 +1745,26 @@ public class snackbar extends javax.swing.JPanel {
 
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/snack bar/";
 
-            String fileName = path + "snackComapnies_" + time + ".pdf";
+            String fileName = path + "Stock_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllCompaniesReports.jasper", null, connection);
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAllCompaniesReports01.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -1666,16 +1780,26 @@ public class snackbar extends javax.swing.JPanel {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/snack bar/";
 
-            String fileName = path + "snackSuppliers_" + time + ".pdf";
+            String fileName = path + "Stock_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AllSnackSuppliers.jasper", null, connection);
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAllSnackSuppliers01.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -1686,6 +1810,78 @@ public class snackbar extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        try {
+
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "Invoice_" + time + ".pdf";
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
+
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAInvoices02.jasper", params, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
+
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        try {
+
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo3.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/snack bar/";
+
+            String fileName = path + "Invoice_" + time + ".pdf";
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
+
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XSnackGRN01.jasper", params, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
+
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1816,17 +2012,17 @@ public class snackbar extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel98;
     private javax.swing.JPanel jPanel99;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable10;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable8;
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField15;

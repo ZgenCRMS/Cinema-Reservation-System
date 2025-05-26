@@ -40,7 +40,7 @@ public class AddMovieSheet extends javax.swing.JDialog {
 
     private void hint() {
         if (jTextField1 != null) {
-            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Sheet Number");
+            jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Seat Number");
 
         }
     }
@@ -153,7 +153,7 @@ public class AddMovieSheet extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Add Movie Sheet");
+        jLabel2.setText("Add Movie Seat");
         jPanel10.add(jLabel2);
 
         jPanel2.add(jPanel10, java.awt.BorderLayout.CENTER);
@@ -245,7 +245,7 @@ public class AddMovieSheet extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Sheet Number");
+        jLabel4.setText("Seat Number");
         jPanel14.add(jLabel4);
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -421,15 +421,15 @@ public class AddMovieSheet extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        int row = jTable2.getSelectedRow();
-        String nhall = String.valueOf(jTable2.getValueAt(row, 1));
-        jButton1.setEnabled(false);
-        jComboBox1.setEnabled(false);
-        jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 2)));
-        String hallnmbr = jTextField1.getText();
-
-        String hallNum = String.valueOf(jTable2.getValueAt(row, 1));
-        jComboBox1.setSelectedItem(hallNum);
+//        int row = jTable2.getSelectedRow();
+//        String nhall = String.valueOf(jTable2.getValueAt(row, 1));
+//        jButton1.setEnabled(false);
+//        jComboBox1.setEnabled(false);
+//        jTextField1.setText(String.valueOf(jTable2.getValueAt(row, 2)));
+//        String hallnmbr = jTextField1.getText();
+//
+//        String hallNum = String.valueOf(jTable2.getValueAt(row, 1));
+//        jComboBox1.setSelectedItem(hallNum);
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

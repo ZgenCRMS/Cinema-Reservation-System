@@ -6,15 +6,22 @@ package guiSuperAdmin;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import guiManager.AdminDashboard;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.DB;
 import model.mySQL;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -142,15 +149,15 @@ public class employee extends javax.swing.JPanel {
     private void SalaryEmployee() {
         try {
             ResultSet resultSet = mySQL.executeSearch(
-                    "SELECT e.mobile,e.fname,e.lname,et.daySalary,es.salary, "
-                    + "SUM(CASE WHEN at.name = 'On Time' THEN 1 ELSE 0 END) AS onTimeCount,"
-                    + "SUM(CASE WHEN at.name = 'Late' THEN 1 ELSE 0 END) AS lateCount FROM employye_attendce ea "
-                    + "INNER JOIN emp_qr eq ON ea.emp_qr_qr_number = eq.qr_number "
-                    + "INNER JOIN employee e ON eq.employee_mobile = e.mobile "
-                    + "INNER JOIN emp_type et ON e.emp_type_id = et.id "
-                    + "INNER JOIN employee_salary es ON e.mobile = es.employee_mobile "
-                    + "INNER JOIN attendce_type at ON ea.attendce_type_id = at.id "
-                    + "GROUP BY e.mobile, e.fname, e.lname, et.daySalary, es.salary;"
+                    "SELECT e.mobile,e.fname,e.lname,et.daySalary,es.salary, \n"
+                    + "                    SUM(CASE WHEN at.name = 'On Time' THEN 1 ELSE 0 END) AS onTimeCount,\n"
+                    + "                    SUM(CASE WHEN at.name = 'Late' THEN 1 ELSE 0 END) AS lateCount FROM employye_attendce ea \n"
+                    + "                    INNER JOIN emp_qr eq ON ea.emp_qr_qr_number = eq.qr_number \n"
+                    + "                    INNER JOIN employee e ON eq.employee_mobile = e.mobile \n"
+                    + "                    INNER JOIN emp_type et ON e.emp_type_id = et.id \n"
+                    + "                    INNER JOIN employee_salary es ON e.mobile = es.employee_mobile \n"
+                    + "                    INNER JOIN attendce_type at ON ea.attendce_type_id = at.id \n"
+                    + "                    GROUP BY e.mobile, e.fname, e.lname, et.daySalary, es.salary;"
             );
 
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
@@ -230,6 +237,7 @@ public class employee extends javax.swing.JPanel {
         jTextField4 = new javax.swing.JTextField();
         jComboBox4 = new javax.swing.JComboBox<>();
         jPanel8 = new javax.swing.JPanel();
+        jButton9 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -254,6 +262,7 @@ public class employee extends javax.swing.JPanel {
         jTextField5 = new javax.swing.JTextField();
         jComboBox5 = new javax.swing.JComboBox<>();
         jPanel48 = new javax.swing.JPanel();
+        jButton8 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -281,8 +290,8 @@ public class employee extends javax.swing.JPanel {
         jPanel55 = new javax.swing.JPanel();
         jPanel58 = new javax.swing.JPanel();
         jPanel60 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
         jPanel56 = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
         jPanel51 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
@@ -436,15 +445,31 @@ public class employee extends javax.swing.JPanel {
 
         jPanel3.add(jPanel7, java.awt.BorderLayout.LINE_START);
 
+        jButton9.setBackground(new java.awt.Color(51, 51, 51));
+        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton9.setForeground(new java.awt.Color(255, 255, 255));
+        jButton9.setText("Clear");
+        jButton9.setBorderPainted(false);
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.add(jPanel8, java.awt.BorderLayout.CENTER);
@@ -650,15 +675,31 @@ public class employee extends javax.swing.JPanel {
 
         jPanel11.add(jPanel46, java.awt.BorderLayout.LINE_START);
 
+        jButton8.setBackground(new java.awt.Color(51, 51, 51));
+        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(255, 255, 255));
+        jButton8.setText("Clear");
+        jButton8.setBorderPainted(false);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel48Layout = new javax.swing.GroupLayout(jPanel48);
         jPanel48.setLayout(jPanel48Layout);
         jPanel48Layout.setHorizontalGroup(
             jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanel48Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(626, Short.MAX_VALUE))
         );
         jPanel48Layout.setVerticalGroup(
             jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel48Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel11.add(jPanel48, java.awt.BorderLayout.CENTER);
@@ -795,6 +836,11 @@ public class employee extends javax.swing.JPanel {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Print Report");
         jButton3.setBorderPainted(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -866,6 +912,11 @@ public class employee extends javax.swing.JPanel {
         jPanel58.setLayout(new java.awt.BorderLayout());
 
         jPanel60.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel58.add(jPanel60, java.awt.BorderLayout.CENTER);
+
+        jPanel55.add(jPanel58, java.awt.BorderLayout.CENTER);
+
+        jPanel54.add(jPanel55, java.awt.BorderLayout.LINE_END);
 
         jButton6.setBackground(new java.awt.Color(51, 51, 51));
         jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -877,23 +928,21 @@ public class employee extends javax.swing.JPanel {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel60.add(jButton6);
-
-        jPanel58.add(jPanel60, java.awt.BorderLayout.CENTER);
-
-        jPanel55.add(jPanel58, java.awt.BorderLayout.CENTER);
-
-        jPanel54.add(jPanel55, java.awt.BorderLayout.LINE_END);
 
         javax.swing.GroupLayout jPanel56Layout = new javax.swing.GroupLayout(jPanel56);
         jPanel56.setLayout(jPanel56Layout);
         jPanel56Layout.setHorizontalGroup(
             jPanel56Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 553, Short.MAX_VALUE)
+            .addGroup(jPanel56Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(431, Short.MAX_VALUE))
         );
         jPanel56Layout.setVerticalGroup(
             jPanel56Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel56Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel54.add(jPanel56, java.awt.BorderLayout.CENTER);
@@ -979,16 +1028,27 @@ public class employee extends javax.swing.JPanel {
 
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/cinema/";
 
             String fileName = path + "employee_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AEReport.jasper", null, connection);
+            // ✅ Use central DB connection
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAEReport02.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -997,6 +1057,7 @@ public class employee extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "❌ Report generation failed!");
         }
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -1009,16 +1070,27 @@ public class employee extends javax.swing.JPanel {
 
         try {
 
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
             String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             String path = "print report/super admin reports/cinema/";
 
             String fileName = path + "Attendance_" + time + ".pdf";
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
 
-            JasperPrint report = JasperFillManager.fillReport("src/reports/AEAttendance.jasper", null, connection);
+            // ✅ Use central DB connection
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAEAttendance01.jasper", params, connection);
             JasperViewer.viewReport(report, false);
 
             JasperExportManager.exportReportToPdfFile(report, fileName);
@@ -1031,12 +1103,60 @@ public class employee extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        try {
+
+            InputStream logoStream = getClass().getResourceAsStream("/resource/logo.png");
+            if (logoStream == null) {
+                throw new RuntimeException("logo.png file not found in /resource/ folder.");
+            }
+            byte[] logoBytes = logoStream.readAllBytes();
+
+            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            String path = "print report/super admin reports/cinema/";
+
+            String fileName = path + "Salary_" + time + ".pdf";
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("Parameter1", logoBytes);
+
+            // ✅ Use central DB connection
+            Connection connection = DB.getConnection();
+
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/zgencrms_db", "root", "Geeth@200104");
+            JasperPrint report = JasperFillManager.fillReport("src/reports/XAESalary01.jasper", params, connection);
+            JasperViewer.viewReport(report, false);
+
+            JasperExportManager.exportReportToPdfFile(report, fileName);
+
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JComboBox<String> jComboBox6;

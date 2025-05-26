@@ -33,7 +33,6 @@ public class EmployeeManageQR extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
-//        reload();
         viewEmployee();
         CQC = (CreateQRCode1) parent;
     }
@@ -42,31 +41,7 @@ public class EmployeeManageQR extends javax.swing.JDialog {
 
     }
 
-//     private void reload(){
-//    
-//        java.lang.Runnable runnable = new java.lang.Runnable() {
-//            @Override
-//            public void run() {
-//
-//                while (true) {
-//
-//                   viewEmployee();
-//
-//                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(AdminDashboard.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//
-//                }
-//
-//            }
-//        };
-//
-//        java.lang.Thread thread = new java.lang.Thread(runnable);
-//        thread.start();
-//    
-//    }
+
     private void viewEmployee() {
 
         try {

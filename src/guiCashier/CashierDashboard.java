@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package guiCashier;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -41,6 +37,9 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import net.sf.jasperreports.engine.JasperExportManager;
 
 /**
@@ -66,9 +65,10 @@ public class CashierDashboard extends javax.swing.JFrame {
         jTextField2.grabFocus();
         generateInvoceId();
         loadPay();
-        setLiveDateTime(jLabel8);
+        Exitmsg();
         jTextField5.setEnabled(false);
         jLabel7.setText("0");
+        fullScrean();
 
     }
 
@@ -112,6 +112,7 @@ public class CashierDashboard extends javax.swing.JFrame {
     public JTextField getTextField1() {
         return jTextField4;
     }
+///start time end time
 
     public JTextField getTextField2() {
         return jTextField8;
@@ -119,6 +120,26 @@ public class CashierDashboard extends javax.swing.JFrame {
 
     public JTextField getTextField3() {
         return jTextField10;
+    }
+    //// start date end date
+
+    public String sd;
+    public String ed;
+
+    public String getSD() {
+        return sd;
+    }
+
+    public String getED() {
+        return ed;
+    }
+
+    public void setSD(String sDate) {
+        this.sd = sDate;
+    }
+
+    public void setED(String eDate) {
+        this.ed = eDate;
     }
 
     //sheets
@@ -149,6 +170,12 @@ public class CashierDashboard extends javax.swing.JFrame {
         return jButton1;
     }
 
+    private void fullScrean() {
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Fullscreen
+
+    }
+
     private void hint() {
 
         if (jTextField2 != null) {
@@ -171,7 +198,7 @@ public class CashierDashboard extends javax.swing.JFrame {
             jTextField10.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "End Time");
         }
         if (jTextField5 != null) {
-            jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Sheet No");
+            jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Seat No");
         }
         if (jTextField6 != null) {
             jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ticket Price");
@@ -182,17 +209,24 @@ public class CashierDashboard extends javax.swing.JFrame {
 
     }
 
-    public void setLiveDateTime(javax.swing.JLabel jLabel8) {
-        Timer timer = new Timer(1000, new ActionListener() {
+    private void Exitmsg() {
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                Date now = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String dateTime = sdf.format(now);
-                jLabel8.setText(dateTime);
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(
+                        guiCashier.CashierDashboard.this,
+                        "Are you sure you want to exit?",
+                        "Exit Confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    System.exit(WIDTH);
+                }
+                // else: do nothing
             }
         });
-        timer.start();
     }
 
     private void loadInvoiceItems() {
@@ -494,12 +528,13 @@ public class CashierDashboard extends javax.swing.JFrame {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel23.setPreferredSize(new java.awt.Dimension(200, 700));
+        jPanel23.setPreferredSize(new java.awt.Dimension(300, 700));
         jPanel23.setLayout(new java.awt.BorderLayout());
 
         jPanel25.setLayout(new java.awt.BorderLayout());
         jPanel23.add(jPanel25, java.awt.BorderLayout.PAGE_END);
 
+        jPanel26.setPreferredSize(new java.awt.Dimension(300, 590));
         jPanel26.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 10));
@@ -508,7 +543,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -582,7 +617,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel22.setLayout(jPanel22Layout);
         jPanel22Layout.setHorizontalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel22Layout.setVerticalGroup(
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,7 +647,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel31.setLayout(jPanel31Layout);
         jPanel31Layout.setHorizontalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel31Layout.setVerticalGroup(
             jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -656,7 +691,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel37.setLayout(jPanel37Layout);
         jPanel37Layout.setHorizontalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -696,7 +731,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -789,7 +824,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel58.setLayout(jPanel58Layout);
         jPanel58Layout.setHorizontalGroup(
             jPanel58Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel58Layout.setVerticalGroup(
             jPanel58Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -820,7 +855,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel41.setLayout(jPanel41Layout);
         jPanel41Layout.setHorizontalGroup(
             jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel41Layout.setVerticalGroup(
             jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -864,7 +899,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel63.setLayout(jPanel63Layout);
         jPanel63Layout.setHorizontalGroup(
             jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         jPanel63Layout.setVerticalGroup(
             jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -898,13 +933,13 @@ public class CashierDashboard extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(24, 119, 242));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("0");
-        jPanel75.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 180, 90));
+        jPanel75.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 180, 90));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(153, 153, 153));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Total");
-        jPanel75.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 180, 120));
+        jPanel75.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 180, 120));
 
         jPanel65.add(jPanel75, java.awt.BorderLayout.CENTER);
 
@@ -990,7 +1025,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jPanel67Layout.setHorizontalGroup(
             jPanel67Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel67Layout.createSequentialGroup()
-                .addContainerGap(260, Short.MAX_VALUE)
+                .addContainerGap(160, Short.MAX_VALUE)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel67Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1025,7 +1060,7 @@ public class CashierDashboard extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Ticket ID", "Customer", "Movie", "Ticket Price", "Hall No", "Sheet No", "Start Time"
+                "Ticket ID", "Customer", "Movie", "Ticket Price", "Hall No", "Seat No", "Start Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1105,6 +1140,7 @@ public class CashierDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+
         String TicketID = jTextField1.getText();
         String CustomerNum = jTextField2.getText();
         String Moviename = jTextField3.getText();
@@ -1128,7 +1164,23 @@ public class CashierDashboard extends javax.swing.JFrame {
             return;
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Convert Strings to LocalDate
+        LocalDate startDate = LocalDate.parse(sd, formatter);
+        LocalDate endDate = LocalDate.parse(ed, formatter);
+        LocalDate currentDate = LocalDate.now();
+
+        if (!(currentDate.isEqual(startDate)
+                || currentDate.isEqual(endDate)
+                || (currentDate.isAfter(startDate) && currentDate.isBefore(endDate)))) {
+
+            JOptionPane.showMessageDialog(null, "⛔ Current date is not between Start Date and End Date!");
+            return;
+        }
+
         double ticketPriceValue;
+
         try {
             ticketPriceValue = Double.parseDouble(TicketPrice); // Parse TicketPrice to a double
         } catch (NumberFormatException e) {
@@ -1139,7 +1191,9 @@ public class CashierDashboard extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         // Check same movie
-        for (int i = 0; i < model.getRowCount(); i++) {
+        for (int i = 0;
+                i < model.getRowCount();
+                i++) {
             String existingMoviename = model.getValueAt(i, 2).toString(); // Assuming column 2 is movie name
             String existingSheetNo = model.getValueAt(i, 5).toString(); // Assuming column 6 is sheet no
             if (!existingMoviename.equalsIgnoreCase(Moviename)) {
@@ -1152,29 +1206,43 @@ public class CashierDashboard extends javax.swing.JFrame {
             }
         }
         // Add ticket data to table
-        model.addRow(new Object[]{TicketID, CustomerNum, Moviename, ticketPriceValue, HallNo, sheetNo, StartTime});
+
+        model.addRow(new Object[]{TicketID, CustomerNum, Moviename, ticketPriceValue, HallNo, sheetNo, StartTime
+        }
+        );
 
         // Clear 
-        jTextField5.setText("");
+        jTextField5.setText(
+                "");
 
         // Update total 
         double currentTotal = Double.parseDouble(jLabel7.getText());
         currentTotal += ticketPriceValue;
+
         jLabel7.setText(String.valueOf(currentTotal));
 
         // Add ticket to InvoiceItemMap
         InvoiceItem invoiceItem = new InvoiceItem();
+
         invoiceItem.setTicketID(TicketID);
+
         invoiceItem.setCustomerNum(CustomerNum);
+
         invoiceItem.setMoviename(Moviename);
+
         invoiceItem.setHallNo(HallNo);
+
         invoiceItem.setStartTime(StartTime);
+
         invoiceItem.setsheetNo(sheetNo);
+
         invoiceItem.setTicketPrice(ticketPriceValue);
 
         InvoiceItemMap.put(TicketID, invoiceItem);
 
-        jButton1.setEnabled(false);
+        jButton1.setEnabled(
+                false);
+        jTextField2.setEditable(false);
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
@@ -1247,69 +1315,73 @@ public class CashierDashboard extends javax.swing.JFrame {
                     }
 
                 }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+                try {
+                    InputStream imageStream = getClass().getResourceAsStream("/resource/movie.png");
+
+                    if (imageStream == null) {
+                        throw new RuntimeException("Image not found in resources!");
+                    }
+
+                    byte[] imageBytes = imageStream.readAllBytes();
+
+                    InputStream logoStream = getClass().getResourceAsStream("/resource/logo.png");
+                    if (logoStream == null) {
+                        throw new RuntimeException("logo.png file not found in /resource/ folder.");
+                    }
+                    byte[] logoBytes = logoStream.readAllBytes();
+
+                    String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    String path = "print report/tickets/";
+                    String fileName = path + "ticket_" + time + ".pdf";
+
+                    // QR Code text (you can customize this as needed)
+                    String qrText = "Invoice No: " + jTextField1.getText() + "\n"
+                            + "Customer: " + jTextField2.getText() + "\n"
+                            + "Movie: " + jTextField3.getText() + "\n"
+                            + "Hall: " + jTextField4.getText() + "\n"
+                            + "Sheet: " + jTextField5.getText();
+
+                    // Generate QR Code image
+                    BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 160, 160);
+                    BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+                    // Parameters map
+                    HashMap<String, Object> params = new HashMap<>();
+                    params.put("Parameter1", jTextField2.getText());
+                    params.put("Parameter2", jTextField3.getText());
+                    params.put("Parameter3", jTextField4.getText());
+                    params.put("Parameter4", jLabel7.getText());
+                    params.put("Parameter5", jTextField1.getText());
+                    params.put("Parameter6", qrImage); // Pass QR code image 
+                    params.put("Parameter7", imageBytes);
+                    params.put("Parameter8", logoBytes);
+
+                    // Load data
+                    JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+
+                    // Fill report
+                    JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/XTicket01.jasper", params, dataSource);
+                    JasperViewer.viewReport(jasperPrint, false);
+
+                    // Export PDF
+                    JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
+                    reset();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        try {
-            InputStream imageStream = getClass().getResourceAsStream("/resource/movie.png");
-
-            if (imageStream == null) {
-                throw new RuntimeException("Image not found in resources!");
-            }
-
-            byte[] imageBytes = imageStream.readAllBytes();
-
-            InputStream logoStream = getClass().getResourceAsStream("/resource/logo.png");
-            if (logoStream == null) {
-                throw new RuntimeException("logo.png file not found in /resource/ folder.");
-            }
-            byte[] logoBytes = logoStream.readAllBytes();
-
-            String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String path = "print report/tickets/";
-            String fileName = path + "ticket_" + time + ".pdf";
-
-            // QR Code text (you can customize this as needed)
-            String qrText = "Invoice No: " + jTextField1.getText() + "\n"
-                    + "Customer: " + jTextField2.getText() + "\n"
-                    + "Movie: " + jTextField3.getText() + "\n"
-                    + "Hall: " + jTextField4.getText() + "\n"
-                    + "Sheet: " + jTextField5.getText();
-
-            // Generate QR Code image
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 160, 160);
-            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
-
-            // Parameters map
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("Parameter1", jTextField2.getText());
-            params.put("Parameter2", jTextField3.getText());
-            params.put("Parameter3", jTextField4.getText());
-            params.put("Parameter4", jLabel7.getText());
-            params.put("Parameter5", jTextField1.getText());
-            params.put("Parameter6", qrImage); // Pass QR code image 
-            params.put("Parameter7", imageBytes);
-            params.put("Parameter8", logoBytes);
-
-            // Load data
-            JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
-
-            // Fill report
-            JasperPrint jasperPrint = JasperFillManager.fillReport("src/reports/TicketZGenQRGfffff.jasper", params, dataSource);
-            JasperViewer.viewReport(jasperPrint, false);
-
-            // Export PDF
-            JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
-            reset();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
@@ -1327,16 +1399,16 @@ public class CashierDashboard extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CashierDashboard().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        FlatMacDarkLaf.setup();
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new CashierDashboard().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton H1;
@@ -1459,6 +1531,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         jTextField9.setText("");
         InvoiceItemMap.clear();
         jButton1.setEnabled(true);
+        jTextField2.setEditable(true);
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);

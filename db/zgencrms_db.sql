@@ -330,7 +330,8 @@ INSERT INTO `invoice` (`id`, `date`, `paid_amount`, `qty`, `payment_method_id`, 
 	(1747761134438, '2025-05-20', 1200, '2', 1, 'amali@gmail.com'),
 	(1747761775422, '2025-05-20', 600, '1', 1, 'amali@gmail.com'),
 	(1747766256391, '2025-05-21', 1200, '2', 1, 'amali@gmail.com'),
-	(1747766891125, '2025-05-21', 600, '1', 1, 'amali@gmail.com');
+	(1747766891125, '2025-05-21', 600, '1', 1, 'amali@gmail.com'),
+	(1747820045347, '2025-05-21', 600, '1', 1, 'amali@gmail.com');
 
 -- Dumping structure for table zgencrms_db.invoice_item
 CREATE TABLE IF NOT EXISTS `invoice_item` (
@@ -343,9 +344,11 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
   KEY `fk_invoice_item_snack_stock1_idx` (`snack_stock_id`),
   CONSTRAINT `fk_invoice_item_snack_invoice1` FOREIGN KEY (`snack_invoice_id`) REFERENCES `snack_invoice` (`id`),
   CONSTRAINT `fk_invoice_item_snack_stock1` FOREIGN KEY (`snack_stock_id`) REFERENCES `snack_stock` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.invoice_item: ~0 rows (approximately)
+INSERT INTO `invoice_item` (`id`, `qty`, `snack_invoice_id`, `snack_stock_id`) VALUES
+	(2, 5, 1747817727026, 1);
 
 -- Dumping structure for table zgencrms_db.language
 CREATE TABLE IF NOT EXISTS `language` (
@@ -497,14 +500,15 @@ CREATE TABLE IF NOT EXISTS `movie_invoiceitem` (
   CONSTRAINT `fk_movie_invoiceItem_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`id`),
   CONSTRAINT `fk_movie_invoiceItem_sheet1` FOREIGN KEY (`sheet_number`) REFERENCES `sheet` (`number`),
   CONSTRAINT `fk_movie_invoiceItem_ticket1` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table zgencrms_db.movie_invoiceitem: ~0 rows (approximately)
 INSERT INTO `movie_invoiceitem` (`id`, `sheet_number`, `invoice_id`, `ticket_id`, `customer_mobile`, `schedule_id`) VALUES
 	(39, '2A', 1747761134438, 1, '0712654117', 1),
 	(40, '1A', 1747761775422, 1, '0712654117', 1),
 	(41, '2B', 1747766256391, 1, '0712654117', 10),
-	(42, '3A', 1747766891125, 1, '0765435667', 1);
+	(42, '3A', 1747766891125, 1, '0765435667', 1),
+	(43, '4A', 1747820045347, 1, '0712654117', 1);
 
 -- Dumping structure for table zgencrms_db.movie_supplier
 CREATE TABLE IF NOT EXISTS `movie_supplier` (
@@ -696,7 +700,8 @@ CREATE TABLE IF NOT EXISTS `snack_invoice` (
 -- Dumping data for table zgencrms_db.snack_invoice: ~2 rows (approximately)
 INSERT INTO `snack_invoice` (`id`, `date`, `paid_amount`, `payment_method_id`, `customer_mobile`, `user_email`) VALUES
 	(1, '2025-01-09', 1200, 3, '0712654117', ''),
-	(2, '2025-01-09', 1800, 3, '0719876543', '');
+	(2, '2025-01-09', 1800, 3, '0719876543', ''),
+	(1747817727026, '2025-05-21', 750, 3, '0712654117', 'hiruni@gmail.com');
 
 -- Dumping structure for table zgencrms_db.snack_product
 CREATE TABLE IF NOT EXISTS `snack_product` (
@@ -736,7 +741,7 @@ CREATE TABLE IF NOT EXISTS `snack_stock` (
 
 -- Dumping data for table zgencrms_db.snack_stock: ~2 rows (approximately)
 INSERT INTO `snack_stock` (`id`, `selling_price`, `qty`, `mfd`, `exp`, `snack_product_id`) VALUES
-	(1, 150, 100, '2024-01-09', '2026-01-09', 1),
+	(1, 150, 95, '2024-01-09', '2026-01-09', 1),
 	(2, 200, 100, '2024-01-09', '2026-01-09', 10);
 
 -- Dumping structure for table zgencrms_db.snack_supplier
